@@ -1,0 +1,17 @@
+(library
+ (name fex_compiler)
+ (public_name fex.compiler)
+ (preprocess
+  (pps ppx_deriving.show ppx_deriving.eq)))
+
+(ocamllex
+ (modules lexer))
+
+(menhir
+ (modules tokens)
+ (flags --unused-tokens --only-tokens))
+
+(menhir
+ (modules tokens filter_parser)
+ (merge_into filter_parser)
+ (flags --explain --external-tokens Tokens))

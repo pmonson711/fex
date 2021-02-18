@@ -1,0 +1,10 @@
+align-cases = true
+align-constructors-decl = true
+align-variants-decl = true
+break-infix-before-func = true
+let-and = sparse
+type-decl = sparse
+sequence-style = separator
+break-separators = before
+dock-collection-brackets = false
+field-space = tight

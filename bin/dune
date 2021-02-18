@@ -1,0 +1,4 @@
+(executable
+ (public_name fex)
+ (name main)
+ (libraries fex.compiler))
