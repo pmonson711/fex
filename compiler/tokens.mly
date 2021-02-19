@@ -2,7 +2,7 @@
 %token <string> STRING
 %token COLON ":"
 %token COMMA ","
-(* %token DOTDOT ".." *)
+%token DOTDOT ".."
 (* %token QUOTE "\"" *)
 %token MINUS "-"
 %token PLUS "+"

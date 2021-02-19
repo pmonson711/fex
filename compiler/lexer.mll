@@ -27,6 +27,7 @@ rule read_tokens =
   | ','        { COMMA }
   | '-'        { MINUS }
   | '+'        { PLUS }
+  | ".."       { DOTDOT }
   | id         { STRING (Lexing.lexeme lexbuf) }
   | _          { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
   | eof        { EOF }

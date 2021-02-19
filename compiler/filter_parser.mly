@@ -9,15 +9,22 @@ op_result:
   | MINUS;                            { Fex.Exclude }
   | PLUS;                             { Fex.Include }
 
+value_term:
+  | DOTDOT; value= STRING             { Fex.(EndsWith value) }
+  | value= STRING; DOTDOT             { Fex.(BeginsWith value) }
+  | value= STRING;                    { Fex.(Contains value) }
+
 term:
-  | result= op_result; key= STRING; COLON; value= STRING 
-                                      { Fex.(PairFilter (result, Contains key, Contains value)) }
+  | result= op_result; key= STRING; COLON; value= value_term 
+                                      { Fex.(PairFilter (result, Contains key, value)) }
   | result= op_result; key= STRING; COLON;               
                                       { Fex.(KeyFilter (result, Contains key)) }
-  | result= op_result; value= STRING; { Fex.(ValueFiler (result, Contains value)) }
-  | key= STRING; COLON; value= STRING { Fex.(PairFilter (Include, Contains key, Contains value)) }
+  | result= op_result; value= value_term; 
+                                      { Fex.(ValueFiler (result, value)) }
+  | key= STRING; COLON; value= value_term 
+                                      { Fex.(PairFilter (Include, Contains key, value)) }
   | key= STRING; COLON;               { Fex.(KeyFilter (Include, Contains key)) }
-  | value= STRING;                    { Fex.(ValueFiler (Include, Contains value)) }
+  | value= value_term;                { Fex.(ValueFiler (Include, value)) }
 
 value_lst: 
   | lst= separated_nonempty_list(COMMA, term); EOF { lst }
