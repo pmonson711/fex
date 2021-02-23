@@ -1,0 +1,7 @@
+<start> ::= <term> <comma> <start> | <term> ;
+<term> ::= <op> <key> <colon> <value> ;
+<op> ::= "" | "-" | "+" ;
+<colon> ::= ":" ;
+<comma> ::= "," ;
+<key> ::= "key" ;
+<value> ::= "value" ;
