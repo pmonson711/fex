@@ -171,6 +171,16 @@ let value_only_ends_with () =
   in
   make_test "value" "..value"
 
+let key_string_test () =
+  let open Fex_compiler.Fex in
+  let make_test expected input =
+    parse_single_test "value is expected" (contains_value expected) input
+  in
+  make_test {|value:|} {|'value:'|} ;
+  make_test {|value,|} {|'value,'|} ;
+  make_test {|value:|} {|"value:"|} ;
+  make_test {|value,|} {|"value,"|}
+
 let suite =
   let open Alcotest in
   ( test_name
@@ -184,4 +194,5 @@ let suite =
     ; test_case "Splits" `Quick combinatorials
     ; test_case "Begins with" `Quick value_only_begins_with
     ; test_case "Ends with" `Quick value_only_ends_with
+    ; test_case "String tests" `Quick key_string_test
     ] )
