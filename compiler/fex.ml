@@ -12,9 +12,9 @@ type match_operation =
 [@@deriving show, eq]
 
 type t =
-  | ValueFiler of match_operation_result * match_operation
-  | KeyFilter  of match_operation_result * match_operation
-  | PairFilter of match_operation_result * match_operation * match_operation
+  | ValueFilter of match_operation_result * match_operation
+  | KeyFilter   of match_operation_result * match_operation
+  | PairFilter  of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
 let inc = Include
@@ -31,7 +31,7 @@ let begins_with str = BeginsWith str
 
 let ends_with str = EndsWith str
 
-let value_filter a b = ValueFiler (a, b)
+let value_filter a b = ValueFilter (a, b)
 
 let key_filter a b = KeyFilter (a, b)
 

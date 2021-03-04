@@ -20,11 +20,11 @@ term:
   | result= op_result; key= STRING; COLON;               
                                       { Fex.(KeyFilter (result, Contains key)) }
   | result= op_result; value= value_term; 
-                                      { Fex.(ValueFiler (result, value)) }
+                                      { Fex.(ValueFilter (result, value)) }
   | key= STRING; COLON; value= value_term 
                                       { Fex.(PairFilter (Include, Contains key, value)) }
   | key= STRING; COLON;               { Fex.(KeyFilter (Include, Contains key)) }
-  | value= value_term;                { Fex.(ValueFiler (Include, value)) }
+  | value= value_term;                { Fex.(ValueFilter (Include, value)) }
 
 value_lst: 
   | lst= separated_nonempty_list(COMMA, term); EOF { lst }

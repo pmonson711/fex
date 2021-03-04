@@ -24,7 +24,7 @@ let empty () =
 let value_only () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "value is expected" (contains_value expected) input
+    parse_single_test ("value is " ^ expected) (contains_value expected) input
   in
   make_test "value" "value" ;
   make_test "other" "other" ;
@@ -43,7 +43,8 @@ let value_only () =
 let value_only_exclude () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "value is expected"
+    parse_single_test
+      ("inverted value is " ^ expected)
       (contains_value ~op:Exclude expected)
       input
   in
@@ -58,7 +59,7 @@ let value_only_exclude () =
 let key_only () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "key is expected" (contains_key expected) input
+    parse_single_test ("key is " ^ expected) (contains_key expected) input
   in
   make_test "key" "key:" ;
   make_test "other" "other:" ;
@@ -76,7 +77,7 @@ let key_only () =
 let key_only_exclude () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "key is expected"
+    parse_single_test ("key is " ^ expected)
       (contains_key ~op:Exclude expected)
       input
   in
@@ -91,7 +92,8 @@ let key_only_exclude () =
 let key_value () =
   let open Fex_compiler.Fex in
   let make_test (expected_key, expected_value) input =
-    parse_single_test "key value is expected"
+    parse_single_test
+      ("key value is expected (" ^ expected_key ^ ", " ^ expected_value ^ ")")
       (contains_pair expected_key expected_value)
       input
   in
@@ -115,7 +117,9 @@ let key_value () =
 let key_value_exclude () =
   let open Fex_compiler.Fex in
   let make_test (expected_key, expected_value) input =
-    parse_single_test "key value is expected"
+    parse_single_test
+      ( "inverted key value is expected (" ^ expected_key ^ ", "
+      ^ expected_value ^ ")" )
       (contains_pair ~op:Exclude expected_key expected_value)
       input
   in
@@ -131,7 +135,11 @@ let key_value_exclude () =
 
 let combinatorials () =
   let open Fex_compiler.Fex in
-  let make_test lst input = parse_test "key value is expected" lst input in
+  let make_test lst input =
+    parse_test
+      (Printf.sprintf "combined is expected for (" ^ input ^ ")")
+      lst input
+  in
   make_test
     [ contains_value "value1"; contains_value "value2" ]
     "value1, value2" ;
@@ -156,7 +164,8 @@ let combinatorials () =
 let value_only_begins_with () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "value is expected"
+    parse_single_test
+      ("begin with value is expected " ^ expected)
       (value_filter inc @@ begins_with expected)
       input
   in
@@ -165,11 +174,28 @@ let value_only_begins_with () =
 let value_only_ends_with () =
   let open Fex_compiler.Fex in
   let make_test expected input =
-    parse_single_test "value is expected"
+    parse_single_test
+      ("ends with value is expected " ^ expected)
       (value_filter inc @@ ends_with expected)
       input
   in
   make_test "value" "..value"
+
+let key_string_test () =
+  let open Fex_compiler.Fex in
+  let make_test expected input =
+    parse_single_test
+      ("quoted value is expected " ^ expected)
+      (contains_value expected) input
+  in
+  make_test {|value:|} {|'value:'|} ;
+  make_test {|value,|} {|'value,'|} ;
+  make_test {|value:|} {|"value:"|} ;
+  make_test {|value,|} {|"value,"|} ;
+  make_test {|value"|} {|"value\""|} ;
+  make_test {|value'|} {|"value'"|} ;
+  make_test {|value'|} {|'value\''|} ;
+  make_test {|value"|} {|'value"'|}
 
 let suite =
   let open Alcotest in
@@ -184,4 +210,5 @@ let suite =
     ; test_case "Splits" `Quick combinatorials
     ; test_case "Begins with" `Quick value_only_begins_with
     ; test_case "Ends with" `Quick value_only_ends_with
+    ; test_case "String tests" `Quick key_string_test
     ] )
