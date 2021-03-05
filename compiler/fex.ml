@@ -23,7 +23,7 @@ let exc = Exclude
 
 let exact str = Exact str
 
-let containts str = Contains str
+let contains str = Contains str
 
 let contains_in_order str = ContainsInOrder str
 
@@ -37,9 +37,9 @@ let key_filter a b = KeyFilter (a, b)
 
 let pair_filter a b c = PairFilter (a, b, c)
 
-let contains_value ?(op = Include) value = value_filter op (containts value)
+let contains_value ?(op = Include) value = value_filter op (contains value)
 
 let contains_pair ?(op = Include) key value =
-  pair_filter op (containts key) (containts value)
+  pair_filter op (contains key) (contains value)
 
-let contains_key ?(op = Include) key = key_filter op (containts key)
+let contains_key ?(op = Include) key = key_filter op (contains key)

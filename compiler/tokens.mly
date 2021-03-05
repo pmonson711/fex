@@ -1,9 +1,9 @@
 (* tokens only *)
 %token <string> STRING
+%token <string> Q_STRING
 %token COLON ":"
 %token COMMA ","
 %token DOTDOT ".."
-(* %token QUOTE "\"" *)
 %token MINUS "-"
 %token PLUS "+"
 (* %token SPACE " " *)

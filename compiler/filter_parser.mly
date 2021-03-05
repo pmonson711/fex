@@ -13,6 +13,10 @@ value_term:
   | DOTDOT; value= STRING             { Fex.(EndsWith value) }
   | value= STRING; DOTDOT             { Fex.(BeginsWith value) }
   | value= STRING;                    { Fex.(Contains value) }
+  | DOTDOT; value= Q_STRING;          { Fex.(EndsWith value) }
+  | DOTDOT; value= Q_STRING; DOTDOT   { Fex.(Contains value) }
+  | value= Q_STRING; DOTDOT           { Fex.(BeginsWith value) }
+  | value= Q_STRING;                  { Fex.(Exact value) }
 
 term:
   | result= op_result; key= STRING; COLON; value= value_term 

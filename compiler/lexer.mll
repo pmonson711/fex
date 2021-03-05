@@ -33,7 +33,7 @@ rule read_tokens =
 
 and read_string buf =
   parse
-  | '\''       { STRING (Buffer.contents buf) }
+  | '\''       { Q_STRING (Buffer.contents buf) }
   | '\\' '\''  { Buffer.add_char buf '\''; read_string buf lexbuf }
   | '\\' 'n'   { Buffer.add_char buf '\n'; read_string buf lexbuf }
   | '\\' 'r'   { Buffer.add_char buf '\r'; read_string buf lexbuf }
@@ -46,7 +46,7 @@ and read_string buf =
 
 and read_string2 buf =
   parse
-  | '"'        { STRING (Buffer.contents buf) }
+  | '"'        { Q_STRING (Buffer.contents buf) }
   | '\\' '"'   { Buffer.add_char buf '"'; read_string2 buf lexbuf }
   | '\\' 'n'   { Buffer.add_char buf '\n'; read_string2 buf lexbuf }
   | '\\' 'r'   { Buffer.add_char buf '\r'; read_string2 buf lexbuf }
