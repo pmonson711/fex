@@ -36,7 +36,7 @@
 	- any value that contains `/the right way/i`
 
 - `the right way`
-	- any value that contains `the` before it contains `right` before it contains `way` i.e. `/the right way/i`
+	- any value that contains `the` before it contains `right` before it contains `way` i.e. `/the.*right.*way/i`
 
 ## Lexicon
 
