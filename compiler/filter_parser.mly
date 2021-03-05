@@ -19,12 +19,12 @@ standard_term:
   | value= Q_STRING;                  { Fex.(Exact value) }
 
 value_term:
-  | SPACE?; result= standard_term; SPACE?
-                                      { result }
+  | SPACE?; lst= separated_nonempty_list(SPACE, standard_term);
+                                      { List.hd(lst) }
 
 key_term:
-  | SPACE?; result= standard_term; SPACE?
-                                      { result }
+  | SPACE?; lst= separated_nonempty_list(SPACE, standard_term);
+                                      { List.hd(lst) }
 
 term:
   | SPACE?; result= op_result; key= key_term; COLON; value= value_term
