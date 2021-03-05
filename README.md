@@ -9,7 +9,7 @@
 - `title:'the right way', text:go`
 	- a key term of contains i.e. `/title/i`
 	- a value term of exactly `/^the right way$/i`
-	- and
+	- intersected with
 	- any value that contains `/go/i`
 
 - `..title:the right way`
