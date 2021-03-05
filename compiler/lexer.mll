@@ -25,7 +25,7 @@ rule read_tokens =
   | ws ',' ws  { COMMA }
   | ws '-' ws  { MINUS }
   | ws '+' ws  { PLUS }
-  | ".."       { DOTDOT }
+  | '.'+       { DOTDOT }
   | '\''       { read_string (Buffer.create 17) lexbuf }
   | '"'        { read_string2 (Buffer.create 17) lexbuf }
   | str        { STRING (Lexing.lexeme lexbuf)}
