@@ -10,21 +10,25 @@ op_result:
   | PLUS;                             { Fex.Include }
 
 standard_term:
-  | DOTDOT; value= STRING             { Fex.(EndsWith value) }
-  | value= STRING; DOTDOT             { Fex.(BeginsWith value) }
-  | value= STRING;                    { Fex.(Contains value) }
-  | DOTDOT; value= Q_STRING;          { Fex.(EndsWith value) }
-  | DOTDOT; value= Q_STRING; DOTDOT   { Fex.(Contains value) }
-  | value= Q_STRING; DOTDOT           { Fex.(BeginsWith value) }
+  | DOTDOT; value= separated_nonempty_list(SPACE, STRING)
+                                      { Fex.(EndsWith value) }
+  | value= separated_nonempty_list(SPACE, STRING); DOTDOT             
+                                      { Fex.(BeginsWith value) }
+  | value= separated_nonempty_list(SPACE, STRING);                    
+                                      { Fex.(Contains value) }
+  | DOTDOT; value= separated_nonempty_list(SPACE, Q_STRING)
+                                      { Fex.(EndsWith value) }
+  | DOTDOT; value= separated_nonempty_list(SPACE, Q_STRING); DOTDOT   
+                                      { Fex.(Contains value) }
+  | value= separated_nonempty_list(SPACE, Q_STRING); DOTDOT           
+                                      { Fex.(BeginsWith value) }
   | value= Q_STRING;                  { Fex.(Exact value) }
 
 value_term:
-  | SPACE?; result= standard_term; SPACE?
-                                      { result }
+  | SPACE?; term= standard_term       { term }
 
 key_term:
-  | SPACE?; result= standard_term; SPACE?
-                                      { result }
+  | SPACE?; term= standard_term       { term }
 
 term:
   | SPACE?; result= op_result; key= key_term; COLON; value= value_term

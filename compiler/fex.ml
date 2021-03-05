@@ -4,11 +4,10 @@ type match_operation_result =
 [@@deriving show, eq]
 
 type match_operation =
-  | Exact           of string
-  | Contains        of string
-  | ContainsInOrder of string list
-  | BeginsWith      of string
-  | EndsWith        of string
+  | Exact      of string
+  | Contains   of string list
+  | BeginsWith of string list
+  | EndsWith   of string list
 [@@deriving show, eq]
 
 type t =
@@ -23,13 +22,11 @@ let exc = Exclude
 
 let exact str = Exact str
 
-let contains str = Contains str
+let contains str = Contains [ str ]
 
-let contains_in_order str = ContainsInOrder str
+let begins_with str = BeginsWith [ str ]
 
-let begins_with str = BeginsWith str
-
-let ends_with str = EndsWith str
+let ends_with str = EndsWith [ str ]
 
 let value_filter a b = ValueFilter (a, b)
 

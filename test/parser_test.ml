@@ -140,9 +140,7 @@ let combinatorials () =
       (Printf.sprintf "combined is expected for (" ^ input ^ ")")
       lst input
   in
-  make_test
-    [ contains_value "value1"; contains_value "value2" ]
-    "value1,value2" ;
+  make_test [ contains_value "value1"; contains_value "value2" ] "value1,value2" ;
   make_test
     [ contains_value "value1"; contains_value "value2" ]
     "value1, value2" ;
