@@ -18,7 +18,7 @@ let newline = '\r' | '\n' | "\r\n"
 
 rule read_tokens =
   parse
-  | whitespace { read_tokens lexbuf }
+  | whitespace { SPACE }
   | newline    { next_line lexbuf; read_tokens lexbuf }
   | ':'        { COLON }
   | ','        { COMMA }

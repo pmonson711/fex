@@ -142,6 +142,9 @@ let combinatorials () =
   in
   make_test
     [ contains_value "value1"; contains_value "value2" ]
+    "value1,value2" ;
+  make_test
+    [ contains_value "value1"; contains_value "value2" ]
     "value1, value2" ;
   make_test
     [ contains_value ~op:exc "value1"; contains_value "value2" ]
