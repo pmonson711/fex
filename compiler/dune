@@ -14,4 +14,4 @@
 (menhir
  (modules tokens filter_parser)
  (merge_into filter_parser)
- (flags --explain --external-tokens Tokens))
+ (flags --dump --explain --external-tokens Tokens))

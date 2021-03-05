@@ -12,7 +12,7 @@ let next_line lexbuf =
     }
 }
 
-let str = [^ ':' '-' '+' ',' '.' '\'' '"']+
+let str = [^ ':' '-' '+' ',' '.' '\'' '"' ' ']+
 let whitespace = [' ' '\t']+
 let newline = '\r' | '\n' | "\r\n"
 
@@ -27,8 +27,9 @@ rule read_tokens =
   | ".."       { DOTDOT }
   | '\''       { read_string (Buffer.create 17) lexbuf }
   | '"'        { read_string2 (Buffer.create 17) lexbuf }
-  | str        { STRING (Lexing.lexeme lexbuf |> String.trim)}
+  | str        { STRING (Lexing.lexeme lexbuf)}
   | _          { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
+
   | eof        { EOF }
 
 and read_string buf =
