@@ -183,10 +183,11 @@ let value_only_ends_with () =
 
 let key_string_test () =
   let open Fex_compiler.Fex in
-  let make_test expected input =
+  let make_test ?(op = exact) expected input =
     parse_single_test
       ("quoted value is expected " ^ expected)
-      (contains_value expected) input
+      (value_filter inc @@ op expected)
+      input
   in
   make_test {|value:|} {|'value:'|} ;
   make_test {|value,|} {|'value,'|} ;
@@ -195,7 +196,10 @@ let key_string_test () =
   make_test {|value"|} {|"value\""|} ;
   make_test {|value'|} {|"value'"|} ;
   make_test {|value'|} {|'value\''|} ;
-  make_test {|value"|} {|'value"'|}
+  make_test {|value"|} {|'value"'|} ;
+  make_test ~op:ends_with {|value"|} {|..'value"'|} ;
+  make_test ~op:begins_with {|value"|} {|'value"'..|} ;
+  make_test ~op:contains {|value"|} {|..'value"'..|}
 
 let suite =
   let open Alcotest in
