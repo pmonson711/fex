@@ -2,7 +2,7 @@
 %%
 
 prog:
-  | EOF           { None }
+  | SPACE?; EOF   { None }
   | v = value_lst { Some v }
 
 op_result:
@@ -19,17 +19,19 @@ standard_term:
   | value= Q_STRING;                  { Fex.(Exact value) }
 
 value_term:
-  | result= standard_term             { result }
+  | SPACE?; result= standard_term; SPACE?
+                                      { result }
 
 key_term:
-  | result= standard_term             { result }
+  | SPACE?; result= standard_term; SPACE?
+                                      { result }
 
 term:
-  | result= op_result; key= key_term; COLON; value= value_term
+  | SPACE?; result= op_result; key= key_term; COLON; value= value_term
                                       { Fex.(PairFilter (result, key, value)) }
-  | result= op_result; key= key_term; COLON;
+  | SPACE?; result= op_result; key= key_term; COLON;
                                       { Fex.(KeyFilter (result, key)) }
-  | result= op_result; value= value_term;
+  | SPACE?; result= op_result; value= value_term;
                                       { Fex.(ValueFilter (result, value)) }
   | key= key_term; COLON; value= value_term
                                       { Fex.(PairFilter (Include, key, value)) }
@@ -37,4 +39,5 @@ term:
   | value= value_term;                { Fex.(ValueFilter (Include, value)) }
 
 value_lst:
-  | lst= separated_nonempty_list(COMMA, term); EOF { lst }
+  | lst= separated_nonempty_list(COMMA, term); EOF
+                                      { lst }

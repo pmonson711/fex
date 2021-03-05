@@ -6,7 +6,7 @@
 %token DOTDOT ".."
 %token MINUS "-"
 %token PLUS "+"
-(* %token SPACE " " *)
+%token SPACE " "
 (* %token AND *)
 (* %token OR *)
 %token EOF
