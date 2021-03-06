@@ -14,7 +14,7 @@ let next_line lexbuf =
 
 let str = [^ ':' '-' '+' ',' '.' '\'' '"' ' ']+
 let whitespace = [' ' '\t']+
-let ws = [' ']*
+let ws = [' ' '\t']*
 let newline = '\r' | '\n' | "\r\n"
 
 rule read_tokens =
