@@ -1,4 +1,4 @@
-%start <Fex.t list option> prog
+%start <Ast.t list option> prog
 %%
 
 prog:
@@ -6,23 +6,23 @@ prog:
   | v = value_lst                     { Some v }
 
 op_result:
-  | MINUS;                            { Fex.Exclude }
-  | PLUS;                             { Fex.Include }
+  | MINUS;                            { Ast.Exclude }
+  | PLUS;                             { Ast.Include }
 
 standard_term:
   | DOTDOT; value= separated_nonempty_list(SPACE, STRING)
-                                      { Fex.(EndsWith value) }
+                                      { Ast.(EndsWith value) }
   | value= separated_nonempty_list(SPACE, STRING); DOTDOT
-                                      { Fex.(BeginsWith value) }
+                                      { Ast.(BeginsWith value) }
   | value= separated_nonempty_list(SPACE, STRING)
-                                      { Fex.(Contains value) }
+                                      { Ast.(Contains value) }
   | DOTDOT; value= separated_nonempty_list(SPACE, Q_STRING)
-                                      { Fex.(EndsWith value) }
+                                      { Ast.(EndsWith value) }
   | DOTDOT; value= separated_nonempty_list(SPACE, Q_STRING); DOTDOT
-                                      { Fex.(Contains value) }
+                                      { Ast.(Contains value) }
   | value= separated_nonempty_list(SPACE, Q_STRING); DOTDOT
-                                      { Fex.(BeginsWith value) }
-  | value= Q_STRING;                  { Fex.(Exact value) }
+                                      { Ast.(BeginsWith value) }
+  | value= Q_STRING;                  { Ast.(Exact value) }
 
 value_term:
   | SPACE?; term= standard_term       { term }
@@ -32,15 +32,15 @@ key_term:
 
 term:
   | SPACE?; result= op_result; key= key_term; COLON; value= value_term
-                                      { Fex.(PairFilter (result, key, value)) }
+                                      { Ast.(PairFilter (result, key, value)) }
   | SPACE?; result= op_result; key= key_term; COLON
-                                      { Fex.(KeyFilter (result, key)) }
+                                      { Ast.(KeyFilter (result, key)) }
   | SPACE?; result= op_result; value= value_term
-                                      { Fex.(ValueFilter (result, value)) }
+                                      { Ast.(ValueFilter (result, value)) }
   | key= key_term; COLON; value= value_term
-                                      { Fex.(PairFilter (Include, key, value)) }
-  | key= key_term; COLON              { Fex.(KeyFilter (Include, key)) }
-  | value= value_term                 { Fex.(ValueFilter (Include, value)) }
+                                      { Ast.(PairFilter (Include, key, value)) }
+  | key= key_term; COLON              { Ast.(KeyFilter (Include, key)) }
+  | value= value_term                 { Ast.(ValueFilter (Include, value)) }
 
 value_lst:
   | lst= separated_nonempty_list(COMMA, term); EOF

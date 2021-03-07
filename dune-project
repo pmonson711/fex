@@ -1,5 +1,6 @@
 (lang dune 2.5)
 (using menhir 2.0)
+(explicit_js_mode)
 (name fex)
 
 (generate_opam_files true)

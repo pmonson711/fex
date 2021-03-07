@@ -4,9 +4,7 @@ let fex =
   let open Alcotest in
   Fex_compiler.Fex.(testable pp equal)
 
-let parse str =
-  let open Fex_compiler in
-  str |> Lexing.from_string |> Filter_parser.prog @@ Lexer.read_tokens
+let parse = Fex_compiler.Fex.str_parse
 
 let parse_single_test case_name expected to_parse =
   let some_single t = Some [ t ] in
