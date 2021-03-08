@@ -24,7 +24,7 @@ let get_parse_error env =
 let rec parse lexbuf (checkpoint : Ast.t list I.checkpoint) =
   match checkpoint with
   | I.InputNeeded _env ->
-      let token = Lexer.read_tokens lexbuf in
+      let token = Filter_lexer.read_tokens lexbuf in
       let startp = lexbuf.lex_start_p
       and endp = lexbuf.lex_curr_p in
       let checkpoint = I.offer checkpoint (token, startp, endp) in
@@ -65,6 +65,6 @@ let filter_from_file filename =
   let ic = open_in filename in
   filter_from_channel ic
 
-let filter_of = Filter_parser.prog @@ Lexer.read_tokens
+let filter_of = Filter_parser.prog @@ Filter_lexer.read_tokens
 
 let filter_of_string str = str |> Lexing.from_string |> filter_of

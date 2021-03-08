@@ -6,7 +6,7 @@
  (libraries menhirLib))
 
 (ocamllex
- (modules lexer))
+ (modules filter_lexer))
 
 (menhir
  (modules filter_parser)
