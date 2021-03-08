@@ -2,16 +2,20 @@
  (name fex_compiler)
  (public_name fex.compiler)
  (preprocess
-  (pps ppx_deriving.show ppx_deriving.eq)))
+  (pps ppx_deriving.show ppx_deriving.eq))
+ (libraries menhirLib))
 
 (ocamllex
  (modules lexer))
 
 (menhir
- (modules tokens)
- (flags --unused-tokens --only-tokens))
+ (modules filter_parser)
+ (flags --dump --explain --table))
 
-(menhir
- (modules tokens filter_parser)
- (merge_into filter_parser)
- (flags --dump --explain --external-tokens Tokens))
+(rule
+ (targets filter_parser_messages.ml)
+ (deps filter_parser.messages filter_parser.mly)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run menhir --compile-errors %{deps}))))
