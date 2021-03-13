@@ -4,20 +4,23 @@ let fex =
   let open Alcotest in
   Fex_compiler.(testable pp equal)
 
-let parse = Fex_compiler.filter_of_string
+let parse = Fex_compiler.filter_from_string
 
 let parse_single_test case_name expected to_parse =
-  let some_single t = Some [ t ] in
+  let some_single t = Ok [ t ] in
   Alcotest.(
-    check (option (list fex)) case_name (some_single expected) (parse to_parse))
+    check
+      (result (list fex) string)
+      case_name (some_single expected) (parse to_parse))
 
 let parse_test case_name expected to_parse =
   Alcotest.(
-    check (option (list fex)) case_name (Some expected) (parse to_parse))
+    check (result (list fex) string) case_name (Ok expected) (parse to_parse))
 
 let empty () =
-  Alcotest.(check (option (list fex)) "empty is None" None (parse "")) ;
-  Alcotest.(check (option (list fex)) "empty is None" None (parse " "))
+  Alcotest.(check (result (list fex) string) "empty is None" (Ok []) (parse "")) ;
+  Alcotest.(
+    check (result (list fex) string) "empty is None" (Ok []) (parse " "))
 
 let value_only () =
   let open Fex_compiler in
