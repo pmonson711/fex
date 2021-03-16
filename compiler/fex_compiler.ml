@@ -32,9 +32,9 @@ let rec parse lexbuf (checkpoint : Ast.t list I.checkpoint) =
   | I.Shifting _ | I.AboutToReduce _ ->
       let checkpoint = I.resume checkpoint in
       parse lexbuf checkpoint
-  | I.HandlingError _env ->
+  | I.HandlingError env ->
       let line, pos = get_lexing_position lexbuf in
-      let state, err = get_parse_error _env in
+      let state, err = get_parse_error env in
       raise (Syntax_error (Some (line, pos, state), err))
   | I.Accepted v -> v
   | I.Rejected ->
@@ -61,10 +61,4 @@ let filter_from_string str = str |> Lexing.from_string |> parse_from
 
 let filter_from_channel ic = ic |> Lexing.from_channel |> parse_from
 
-let filter_from_file filename =
-  let ic = open_in filename in
-  filter_from_channel ic
-
-let filter_of = Filter_parser.prog @@ Filter_lexer.read_tokens
-
-let filter_of_string str = str |> Lexing.from_string |> filter_of
+let filter_from_file filename = filename |> open_in |> filter_from_channel

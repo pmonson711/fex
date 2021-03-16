@@ -19,19 +19,19 @@ let newline = '\r' | '\n' | "\r\n"
 
 rule read_tokens =
   parse
-  | whitespace { SPACE }
-  | newline    { next_line lexbuf; read_tokens lexbuf }
-  | ws ':' ws  { COLON }
-  | ws ',' ws  { COMMA }
-  | ws '-' ws  { MINUS }
-  | ws '+' ws  { PLUS }
-  | '.'+       { DOTDOT }
-  | '\''       { read_string (Buffer.create 17) lexbuf }
-  | '"'        { read_string2 (Buffer.create 17) lexbuf }
-  | str        { STRING (Lexing.lexeme lexbuf)}
-  | _          { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
-
-  | ws eof     { EOF }
+  | whitespace    { SPACE }
+  | newline       { next_line lexbuf; read_tokens lexbuf }
+  | ws ':'        { COLON }
+  | ws ','        { COMMA }
+  | ws '-'        { MINUS }
+  | ws '+'        { PLUS }
+  | '.'+          { DOTDOT }
+  | '\''          { read_string (Buffer.create 17) lexbuf }
+  | '"'           { read_string2 (Buffer.create 17) lexbuf }
+  | ' '+ str ' '+ { STRING (Lexing.lexeme lexbuf |> String.trim)}
+  | str           { STRING (Lexing.lexeme lexbuf)}
+  | _             { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
+  | ws eof        { EOF }
 
 and read_string buf =
   parse
