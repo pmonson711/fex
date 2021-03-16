@@ -13,8 +13,16 @@
  (flags --dump --explain --table))
 
 (rule
- (targets filter_parser_messages.ml)
+ (targets filter_parser.processed_messages)
  (deps filter_parser.messages filter_parser.mly)
+ (action
+  (with-stdout-to
+   %{targets}
+   (run menhir --update-errors %{deps}))))
+
+(rule
+ (targets filter_parser_messages.ml)
+ (deps filter_parser.processed_messages filter_parser.mly)
  (action
   (with-stdout-to
    %{targets}

@@ -33,10 +33,10 @@ standard_term:
   | value= Q_STRING;                  { Ast.(Exact value) }
 
 %inline value_term:
-  | " "?; term= standard_term         { term }
+  | " "*; term= standard_term         { term }
 
 %inline key_term:
-  | " "?; term= standard_term         { term }
+  | " "*; term= standard_term         { term }
 
 term:
   | result= op_result; key= key_term; ":"; value= value_term
@@ -57,5 +57,5 @@ value_lst:
 
 terms:
   | " "*; EOF                         { [] }
-  | " "?; ","+; EOF                   { [] }
-  | lst= value_lst; " "?; ","*; EOF { lst }
+  | " "*; ","+; EOF                   { [] }
+  | lst= value_lst; " "?; ","*; EOF   { lst }
