@@ -25,6 +25,7 @@
     (cmdliner (>= 0.9))
     (bos (>= 0.2))
     (menhir (>= 20200624))
+    (yojson (>= 1.7.0))
     (ppx_deriving (>= 4.4))
 
     ;; Testing

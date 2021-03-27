@@ -1,0 +1,369 @@
+terms: COLON PLUS
+##
+## Ends in an error in state: 5.
+##
+## term -> COLON . list(SPACE) standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## COLON
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: COLON Q_STRING COLON
+##
+## Ends in an error in state: 31.
+##
+## separated_nonempty_list(COMMA,term) -> term . [ EOF ]
+## separated_nonempty_list(COMMA,term) -> term . COMMA separated_nonempty_list(COMMA,term) [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## term
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 10, spurious reduction of production standard_term -> Q_STRING
+## In state 18, spurious reduction of production term -> COLON list(SPACE) standard_term
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: COLON SPACE COMMA
+##
+## Ends in an error in state: 6.
+##
+## term -> COLON list(SPACE) . standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## COLON list(SPACE)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(SPACE) ->
+## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: COMMA STRING
+##
+## Ends in an error in state: 49.
+##
+## nonempty_list(COMMA) -> COMMA . [ EOF ]
+## nonempty_list(COMMA) -> COMMA . nonempty_list(COMMA) [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: DOTDOT Q_STRING STRING
+##
+## Ends in an error in state: 12.
+##
+## separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING . [ EOF DOTDOT COMMA COLON ]
+## separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING . SPACE separated_nonempty_list(SPACE,Q_STRING) [ EOF DOTDOT COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## Q_STRING
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: DOTDOT SPACE
+##
+## Ends in an error in state: 14.
+##
+## standard_term -> DOTDOT . separated_nonempty_list(SPACE,STRING) [ EOF COMMA COLON ]
+## standard_term -> DOTDOT . separated_nonempty_list(SPACE,Q_STRING) [ EOF COMMA COLON ]
+## standard_term -> DOTDOT . separated_nonempty_list(SPACE,Q_STRING) DOTDOT [ EOF COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## DOTDOT
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: PLUS PLUS
+##
+## Ends in an error in state: 34.
+##
+## term -> op_result . list(SPACE) standard_term COLON list(SPACE) standard_term [ EOF COMMA ]
+## term -> op_result . list(SPACE) standard_term COLON [ EOF COMMA ]
+## term -> op_result . list(SPACE) standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## op_result
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: PLUS SPACE COMMA
+##
+## Ends in an error in state: 35.
+##
+## term -> op_result list(SPACE) . standard_term COLON list(SPACE) standard_term [ EOF COMMA ]
+## term -> op_result list(SPACE) . standard_term COLON [ EOF COMMA ]
+## term -> op_result list(SPACE) . standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## op_result list(SPACE)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(SPACE) ->
+## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: PLUS STRING COLON PLUS
+##
+## Ends in an error in state: 37.
+##
+## term -> op_result list(SPACE) standard_term COLON . list(SPACE) standard_term [ EOF COMMA ]
+## term -> op_result list(SPACE) standard_term COLON . [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## op_result list(SPACE) standard_term COLON
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: PLUS STRING COLON SPACE COMMA
+##
+## Ends in an error in state: 38.
+##
+## term -> op_result list(SPACE) standard_term COLON list(SPACE) . standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## op_result list(SPACE) standard_term COLON list(SPACE)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(SPACE) ->
+## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: PLUS STRING DOTDOT STRING
+##
+## Ends in an error in state: 36.
+##
+## term -> op_result list(SPACE) standard_term . COLON list(SPACE) standard_term [ EOF COMMA ]
+## term -> op_result list(SPACE) standard_term . COLON [ EOF COMMA ]
+## term -> op_result list(SPACE) standard_term . [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## op_result list(SPACE) standard_term
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: Q_STRING SPACE Q_STRING EOF
+##
+## Ends in an error in state: 21.
+##
+## standard_term -> separated_nonempty_list(SPACE,Q_STRING) . DOTDOT [ EOF COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## separated_nonempty_list(SPACE,Q_STRING)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 12, spurious reduction of production separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING
+## In state 13, spurious reduction of production separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING SPACE separated_nonempty_list(SPACE,Q_STRING)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: Q_STRING SPACE STRING
+##
+## Ends in an error in state: 11.
+##
+## separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING SPACE . separated_nonempty_list(SPACE,Q_STRING) [ EOF DOTDOT COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## Q_STRING SPACE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: Q_STRING STRING
+##
+## Ends in an error in state: 10.
+##
+## separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING . [ DOTDOT ]
+## separated_nonempty_list(SPACE,Q_STRING) -> Q_STRING . SPACE separated_nonempty_list(SPACE,Q_STRING) [ DOTDOT ]
+## standard_term -> Q_STRING . [ EOF COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## Q_STRING
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: SPACE PLUS
+##
+## Ends in an error in state: 1.
+##
+## list(SPACE) -> SPACE . list(SPACE) [ STRING Q_STRING EOF DOTDOT COMMA ]
+##
+## The known suffix of the stack is as follows:
+## SPACE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING COLON PLUS
+##
+## Ends in an error in state: 42.
+##
+## term -> list(SPACE) standard_term COLON . list(SPACE) standard_term [ EOF COMMA ]
+## term -> list(SPACE) standard_term COLON . [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## list(SPACE) standard_term COLON
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING COLON SPACE COMMA
+##
+## Ends in an error in state: 43.
+##
+## term -> list(SPACE) standard_term COLON list(SPACE) . standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## list(SPACE) standard_term COLON list(SPACE)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(SPACE) ->
+## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING COMMA EOF
+##
+## Ends in an error in state: 32.
+##
+## separated_nonempty_list(COMMA,term) -> term COMMA . separated_nonempty_list(COMMA,term) [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## term COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING COMMA SPACE COMMA
+##
+## Ends in an error in state: 40.
+##
+## term -> list(SPACE) . standard_term COLON list(SPACE) standard_term [ EOF COMMA ]
+## term -> list(SPACE) . standard_term COLON [ EOF COMMA ]
+## term -> list(SPACE) . standard_term [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## list(SPACE)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(SPACE) ->
+## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING DOTDOT STRING
+##
+## Ends in an error in state: 41.
+##
+## term -> list(SPACE) standard_term . COLON list(SPACE) standard_term [ EOF COMMA ]
+## term -> list(SPACE) standard_term . COLON [ EOF COMMA ]
+## term -> list(SPACE) standard_term . [ EOF COMMA ]
+##
+## The known suffix of the stack is as follows:
+## list(SPACE) standard_term
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING EOF COMMA STRING
+##
+## Ends in an error in state: 26.
+##
+## list(COMMA) -> COMMA . list(COMMA) [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING EOF SPACE COLON
+##
+## Ends in an error in state: 25.
+##
+## terms -> value_lst option(SPACE) . list(COMMA) EOF [ # ]
+##
+## The known suffix of the stack is as follows:
+## value_lst option(SPACE)
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING EOF STRING
+##
+## Ends in an error in state: 23.
+##
+## terms -> value_lst . option(SPACE) list(COMMA) EOF [ # ]
+##
+## The known suffix of the stack is as follows:
+## value_lst
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING SPACE SPACE
+##
+## Ends in an error in state: 8.
+##
+## separated_nonempty_list(SPACE,STRING) -> STRING SPACE . separated_nonempty_list(SPACE,STRING) [ EOF DOTDOT COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## STRING SPACE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+terms: STRING STRING
+##
+## Ends in an error in state: 7.
+##
+## separated_nonempty_list(SPACE,STRING) -> STRING . [ EOF DOTDOT COMMA COLON ]
+## separated_nonempty_list(SPACE,STRING) -> STRING . SPACE separated_nonempty_list(SPACE,STRING) [ EOF DOTDOT COMMA COLON ]
+##
+## The known suffix of the stack is as follows:
+## STRING
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+

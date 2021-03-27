@@ -16,6 +16,8 @@ type t =
   | PairFilter  of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
+type parsed = t list option [@@deriving show]
+
 let inc = Include
 
 let exc = Exclude
