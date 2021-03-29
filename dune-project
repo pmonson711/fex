@@ -1,4 +1,4 @@
-(lang dune 2.5)
+(lang dune 2.7)
 (using menhir 2.0)
 (explicit_js_mode)
 (name fex)
@@ -24,6 +24,7 @@
     
     (cmdliner (>= 0.9))
     (bos (>= 0.2))
+    (containers (>= 3.2))
     (menhir (>= 20200624))
     (yojson (>= 1.7.0))
     (ppx_deriving (>= 4.4))

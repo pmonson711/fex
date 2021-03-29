@@ -1,14 +1,18 @@
 open Cmdliner
 
 let parse str =
-  let open Fex_compiler in
-  str |> Lexing.from_string |> Filter_parser.prog @@ Lexer.read_tokens
+  let trimmed =
+    match str.[0] with
+    | '\\' -> String.sub str 1 (String.length str - 1)
+    | _    -> str
+  in
+  Fex_compiler.filter_from_string trimmed
 
 let fex json_str fex_str =
   let json = Yojson.Safe.from_string json_str in
   let fex = parse fex_str in
   print_endline @@ Yojson.Safe.pretty_to_string json ;
-  print_endline @@ Fex_compiler.Fex.show_parsed fex
+  print_endline @@ Fex_compiler.show_parsed_result fex
 
 let input_string =
   let doc = "JSON string to filter" in

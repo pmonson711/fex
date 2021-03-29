@@ -2,6 +2,8 @@ include Ast
 open Lexing
 module I = Filter_parser.MenhirInterpreter
 
+type parsed_result = (t list, string) result [@@deriving show]
+
 exception Syntax_error of ((int * int * int option) option * string)
 
 exception Grammar_error of string
