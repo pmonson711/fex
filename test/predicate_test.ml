@@ -246,7 +246,9 @@ let simple_pair_test () =
   in
   make_test inc (exact "key") (exact "value") true ;
   make_test inc (exact "value") (exact "key") false ;
-  make_test inc (contains "k") (exact "value") true
+  make_test inc (contains "k") (exact "value") true ;
+  make_test exc (contains "k") (exact "value") false ;
+  make_test exc (contains "other") (exact "value") true
 
 let suite =
   let open Alcotest in
