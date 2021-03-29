@@ -33,9 +33,9 @@ module MatchInOrder = struct
       ~subs:(List.rev subs |> List.map CCString.rev)
       (CCString.rev to_check)
 
-  let string_match_operation (from_input : string) =
+  let string_match_operation ast from_input =
     let open CCString in
-    function
+    match ast with
     | Exact expected  -> equal from_input expected
     | Contains subs   -> contains_in_order ~subs from_input
     | BeginsWith subs -> begins_with_in_order ~subs from_input
@@ -46,16 +46,17 @@ let key_match_operation = MatchInOrder.string_match_operation
 
 let value_match_operation = MatchInOrder.string_match_operation
 
-let filter_to_predicate (key, value) = function
-  | ValueFilter (Include, match_op) -> value_match_operation value match_op
+let filter_to_predicate ast (key, value) =
+  match ast with
+  | ValueFilter (Include, match_op) -> value_match_operation match_op value
   | ValueFilter (Exclude, match_op) ->
-      invert @@ value_match_operation value match_op
-  | KeyFilter (Include, match_op) -> key_match_operation key match_op
-  | KeyFilter (Exclude, match_op) -> invert @@ key_match_operation key match_op
+      invert @@ value_match_operation match_op value
+  | KeyFilter (Include, match_op) -> key_match_operation match_op key
+  | KeyFilter (Exclude, match_op) -> invert @@ key_match_operation match_op key
   | PairFilter (Include, key_match_op, value_match_op) ->
-      key_match_operation key key_match_op
-      && value_match_operation value value_match_op
+      key_match_operation key_match_op key
+      && value_match_operation value_match_op value
   | PairFilter (Exclude, key_match_op, value_match_op) -> (
-      match key_match_operation key key_match_op with
+      match key_match_operation key_match_op key with
       | false -> true
-      | true  -> invert @@ value_match_operation value value_match_op )
+      | true  -> invert @@ value_match_operation value_match_op value )

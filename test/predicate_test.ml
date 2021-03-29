@@ -1,26 +1,31 @@
 let test_name = "Predicate"
 
-let first_filter_for_string str =
-  Fex_compiler.filter_from_string str |> Result.value ~default:[] |> List.hd
-
 let filter_to_bool to_check with_filter =
   Fex_compiler__Predicate.filter_to_predicate to_check with_filter
 
 let make_key_test op_result filter expected =
-  let filter' = Fex_compiler.key_filter op_result @@ filter in
+  let filter' = Fex_compiler.key_filter op_result filter in
   Alcotest.(
     check bool
       (Fex_compiler.show filter' ^ {| to ("key", "value") |})
       expected
-      (filter_to_bool ("key", "value") filter'))
+      (filter_to_bool filter' ("key", "value")))
 
 let make_value_test op_result filter expected =
-  let filter' = Fex_compiler.value_filter op_result @@ filter in
+  let filter' = Fex_compiler.value_filter op_result filter in
   Alcotest.(
     check bool
       (Fex_compiler.show filter' ^ {| to ("key", "value") |})
       expected
-      (filter_to_bool ("key", "value") filter'))
+      (filter_to_bool filter' ("key", "value")))
+
+let make_pair_test op_result key_filter value_filter expected =
+  let filter' = Fex_compiler.pair_filter op_result key_filter value_filter in
+  Alcotest.(
+    check bool
+      (Fex_compiler.show filter' ^ {| to ("key", "value") |})
+      expected
+      (filter_to_bool filter' ("key", "value")))
 
 let exact_keys () =
   let open Fex_compiler in
@@ -234,6 +239,15 @@ let contains_in_order_value () =
   make_test exc [ "e"; "u"; "l" ] true ;
   make_test inc [ "a"; "u" ] true
 
+let simple_pair_test () =
+  let open Fex_compiler in
+  let make_test result_op k v expected =
+    make_pair_test result_op k v expected
+  in
+  make_test inc (exact "key") (exact "value") true ;
+  make_test inc (exact "value") (exact "key") false ;
+  make_test inc (contains "k") (exact "value") true
+
 let suite =
   let open Alcotest in
   ( test_name
@@ -251,4 +265,5 @@ let suite =
     ; test_case "Contains Values" `Quick contains_value
     ; test_case "Contains in order Keys" `Quick contains_in_order_key
     ; test_case "Contains in order Values" `Quick contains_in_order_value
+    ; test_case "Simple Pair Test" `Quick simple_pair_test
     ] )
