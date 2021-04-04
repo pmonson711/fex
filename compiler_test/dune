@@ -1,5 +1,5 @@
 (test
- (name fex)
+ (name fex_compiler_test)
  (libraries alcotest fex_compiler)
  (action
   (run %{test} --show-errors)))

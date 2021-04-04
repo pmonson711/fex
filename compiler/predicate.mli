@@ -1,5 +1,13 @@
-val filter_to_predicate : Ast.t -> string * string -> bool
+type key = [ `Key of string ]
 
-val key_match_operation : Ast.match_operation -> string -> bool
+type value = [ `Value of string ]
 
-val value_match_operation : Ast.match_operation -> string -> bool
+type pair = [ `Pair of key * value ]
+
+val pair_of_strings : string -> string -> pair
+
+val filter_to_predicate : Ast.t -> pair -> bool
+
+val key_match_operation : Ast.match_operation -> key -> bool
+
+val value_match_operation : Ast.match_operation -> value -> bool

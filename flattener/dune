@@ -1,0 +1,3 @@
+(library
+ (name fex_flattener)
+ (public_name fex.flattener))

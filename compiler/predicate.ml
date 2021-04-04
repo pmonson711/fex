@@ -1,5 +1,11 @@
 open Ast
 
+type key = [ `Key of string ]
+
+type value = [ `Value of string ]
+
+type pair = [ `Pair of key * value ]
+
 let invert = function true -> false | false -> true
 
 module MatchInOrder = struct
@@ -42,11 +48,15 @@ module MatchInOrder = struct
     | EndsWith subs   -> ends_with_in_order ~subs from_input
 end
 
-let key_match_operation = MatchInOrder.string_match_operation
+let key_match_operation op (`Key str) =
+  MatchInOrder.string_match_operation op str
 
-let value_match_operation = MatchInOrder.string_match_operation
+let value_match_operation op (`Value str) =
+  MatchInOrder.string_match_operation op str
 
-let filter_to_predicate ast (key, value) =
+let filter_to_predicate ast pair =
+  let (`Pair (_, value)) = pair in
+  let (`Pair (key, _)) = pair in
   match ast with
   | ValueFilter (Include, match_op) -> value_match_operation match_op value
   | ValueFilter (Exclude, match_op) ->
@@ -60,3 +70,5 @@ let filter_to_predicate ast (key, value) =
       match key_match_operation key_match_op key with
       | false -> true
       | true  -> invert @@ value_match_operation value_match_op value )
+
+let pair_of_strings k v = `Pair (`Key k, `Value v)

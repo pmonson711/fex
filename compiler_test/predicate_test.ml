@@ -9,7 +9,7 @@ let make_key_test op_result filter expected =
     check bool
       (Fex_compiler.show filter' ^ {| to ("key", "value") |})
       expected
-      (filter_to_bool filter' ("key", "value")))
+      (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let make_value_test op_result filter expected =
   let filter' = Fex_compiler.value_filter op_result filter in
@@ -17,7 +17,7 @@ let make_value_test op_result filter expected =
     check bool
       (Fex_compiler.show filter' ^ {| to ("key", "value") |})
       expected
-      (filter_to_bool filter' ("key", "value")))
+      (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let make_pair_test op_result key_filter value_filter expected =
   let filter' = Fex_compiler.pair_filter op_result key_filter value_filter in
@@ -25,7 +25,7 @@ let make_pair_test op_result key_filter value_filter expected =
     check bool
       (Fex_compiler.show filter' ^ {| to ("key", "value") |})
       expected
-      (filter_to_bool filter' ("key", "value")))
+      (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let exact_keys () =
   let open Fex_compiler in
