@@ -10,9 +10,21 @@ let parse str =
 
 let fex json_str fex_str =
   let json = Yojson.Safe.from_string json_str in
+  let pairs = Fex_flattener.pair_of_json json in
   let fex = parse fex_str in
-  print_endline @@ Yojson.Safe.pretty_to_string json ;
-  print_endline @@ Fex_compiler.show_parsed_result fex
+  print_endline @@ Fex_flattener.show_pairs pairs ;
+  print_endline @@ Fex_compiler.show_parsed_result fex ;
+  match fex with
+  | Ok [ f1 ] ->
+      List.iter
+        (fun pair ->
+          Printf.printf "%b %s\n"
+            (Fex_compiler.apply_filter f1 pair)
+            (Fex_flattener__.Pair.show pair))
+        pairs
+  | Ok []     -> print_endline "empty filter"
+  | Ok _      -> print_endline "Not implemented with combined filters yet"
+  | Error s   -> print_endline s
 
 let input_string =
   let doc = "JSON string to filter" in

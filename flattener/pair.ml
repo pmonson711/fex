@@ -1,8 +1,8 @@
-type key = [ `Key of string ]
+type key = [ `Key of string ] [@@deriving show, eq]
 
-type value = [ `Value of string ]
+type value = [ `Value of string ] [@@deriving show, eq]
 
-type t = [ `Pair of key * value ]
+type t = [ `Pair of key * value ] [@@deriving show, eq]
 
 let key_of_string k = `Key k
 
