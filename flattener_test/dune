@@ -1,0 +1,5 @@
+(test
+ (name flattener_test)
+ (libraries alcotest yojson fex_flattener)
+ (action
+  (run %{test} --show-errors)))

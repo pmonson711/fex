@@ -171,7 +171,7 @@ let value_only_begins_with () =
       (value_filter inc @@ begins_with expected)
       input
   in
-  make_test "value" "value.."
+  make_test "value" "value..."
 
 let value_only_ends_with () =
   let open Fex_compiler in
@@ -181,7 +181,8 @@ let value_only_ends_with () =
       (value_filter inc @@ ends_with expected)
       input
   in
-  make_test "value" "..value"
+  make_test "value" "..value" ;
+  make_test "value" "...value"
 
 let key_string_test () =
   let open Fex_compiler in

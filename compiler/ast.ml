@@ -22,11 +22,17 @@ let exc = Exclude
 
 let exact str = Exact str
 
-let contains str = Contains [ str ]
+let contains_in_order lst = Contains lst
 
-let begins_with str = BeginsWith [ str ]
+let contains str = contains_in_order [ str ]
 
-let ends_with str = EndsWith [ str ]
+let begins_with_in_order lst = BeginsWith lst
+
+let begins_with str = begins_with_in_order [ str ]
+
+let ends_with_in_order lst = EndsWith lst
+
+let ends_with str = ends_with_in_order [ str ]
 
 let value_filter a b = ValueFilter (a, b)
 

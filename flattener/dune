@@ -1,0 +1,7 @@
+(library
+ (name fex_flattener)
+ (public_name fex.flattener)
+ (preprocess
+  (pps ppx_deriving.show ppx_deriving.eq))
+ (instrumentation
+  (backend bisect_ppx)))

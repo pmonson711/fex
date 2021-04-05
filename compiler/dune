@@ -1,9 +1,11 @@
 (library
  (name fex_compiler)
  (public_name fex.compiler)
+ (instrumentation
+  (backend bisect_ppx))
  (preprocess
   (pps ppx_deriving.show ppx_deriving.eq))
- (libraries menhirLib))
+ (libraries menhirLib containers))
 
 (ocamllex
  (modules filter_lexer))
