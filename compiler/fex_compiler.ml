@@ -68,3 +68,9 @@ let filter_from_file filename = filename |> open_in |> filter_from_channel
 let pair_of_strings = Predicate.pair_of_strings
 
 let apply_filter = Predicate.filter_to_predicate
+
+let apply_list_filter lst pairs =
+  let and_group = Combiner.imply_logical_operators lst in
+  List.for_all
+    (List.exists (fun filter -> Predicate.filter_to_predicate filter pairs))
+    and_group

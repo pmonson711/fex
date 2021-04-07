@@ -52,3 +52,9 @@ let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
       pair_of_json' ~prefix:(Printf.sprintf "%s%s%s" prefix prefix_sep s) v
 
 let pair_of_json = pair_of_json' ~prefix:""
+
+let pairs_of_json_array (`List lst) = List.map pair_of_json lst |> List.flatten
+
+let pair_list_of_json = function
+  | `List lst -> pairs_of_json_array (`List lst)
+  | json      -> pair_of_json json
