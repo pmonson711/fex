@@ -1,5 +1,8 @@
 open Cmdliner
 
+let print_pair (`Pair (`Key key, `Value value)) =
+  Printf.sprintf "%15s : %s" key value
+
 let parse str =
   let trimmed =
     match str.[0] with
@@ -8,35 +11,39 @@ let parse str =
   in
   Fex_compiler.filter_from_string trimmed
 
-let fex json_str fex_str =
+let fex_op fex_str json_str =
   let json = Yojson.Safe.from_string json_str in
-  let pairs = Fex_flattener.pair_of_json json in
+  let pairs = Fex_flattener.pair_list_of_json json in
   let fex = parse fex_str in
-  print_endline @@ Fex_flattener.show_pairs pairs ;
-  print_endline @@ Fex_compiler.show_parsed_result fex ;
   match fex with
   | Ok [ f1 ] ->
       List.iter
         (fun pair ->
-          Printf.printf "%b %s\n"
+          Printf.printf "%5b %s\n"
             (Fex_compiler.apply_filter f1 pair)
-            (Fex_flattener__.Pair.show pair))
+            (print_pair pair))
         pairs
   | Ok []     -> print_endline "empty filter"
-  | Ok _      -> print_endline "Not implemented with combined filters yet"
+  | Ok lst    ->
+      List.iter
+        (fun pair ->
+          Printf.printf "%5b %s\n"
+            (Fex_compiler.apply_list_filter lst pair)
+            (print_pair pair))
+        pairs
   | Error s   -> print_endline s
 
 let input_string =
   let doc = "JSON string to filter" in
   let docv = "JSON" in
-  Arg.(value & pos 0 string "[]" & info [] ~docv ~doc)
+  Arg.(value & pos 1 string "[]" & info [] ~docv ~doc)
 
 let fex_string =
   let doc = "Filter string to predicate" in
   let docv = "FEX" in
-  Arg.(value & pos 1 string "" & info [] ~docv ~doc)
+  Arg.(value & pos 0 string "" & info [] ~docv ~doc)
 
-let fex_t = Term.(const fex $ input_string $ fex_string)
+let fex_t = Term.(const fex_op $ fex_string $ input_string)
 
 let info =
   let doc = "Filter JSON via the fex expression" in
