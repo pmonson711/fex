@@ -12,6 +12,7 @@ bug-reports: "http://gitlab.com"
 depends: [
   "dune" {>= "2.7" & >= "2.5"}
   "ocaml" {>= "4.08"}
+  "js_of_ocaml-compiler" {>= "3.7"}
   "cmdliner" {>= "0.9"}
   "bos" {>= "0.2"}
   "containers" {>= "3.2"}
