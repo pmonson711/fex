@@ -53,8 +53,8 @@ let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
 
 let pair_of_json = pair_of_json' ~prefix:""
 
-let pairs_of_json_array (`List lst) = List.map pair_of_json lst |> List.flatten
+let pairs_of_json_array (`List lst) = List.map pair_of_json lst
 
 let pair_list_of_json = function
-  | `List lst -> pairs_of_json_array (`List lst)
+  | `List lst -> pairs_of_json_array (`List lst) |> List.flatten
   | json      -> pair_of_json json
