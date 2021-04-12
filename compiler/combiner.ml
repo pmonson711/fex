@@ -55,7 +55,7 @@ let apply_list_of_filters_for_pair lst pair =
   List.for_all if_has_one and_group
 
 let apply_list_of_filters_for_list_of_pairs lst (pairs : Predicate.pair list) =
-  let and_group = Combiner.imply_logical_operators lst in
+  let and_group = imply_logical_operators lst in
   List.for_all
     (fun or_group ->
       let hd = List.hd or_group in
