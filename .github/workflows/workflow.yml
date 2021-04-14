@@ -1,8 +1,8 @@
+---
 name: Main workflow
 
 on:
   - pull_request
-  - push
 
 jobs:
   build:
@@ -12,18 +12,27 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
-          - windows-latest
         ocaml-version:
           - 4.11.0
-          - 4.10.1
-          - 4.09.1
-          - 4.08.1
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Cached Infra
+        uses: actions/cache@v2
+        with:
+          path: |
+           ~/.opam
+           _build
+           C:\cygwin
+           D:\a\fex\fex
+          key: v${{ matrix.os }}-${{ matrix.ocaml-version }}-${{ hashFiles('**/*.opam*') }}
+          restore-keys: |
+            v{{ matrix.os }}-${{ matrix.ocaml-version }}-
+            v{{ matrix.os }}-
 
       - name: Use OCaml ${{ matrix.ocaml-version }}
         uses: avsm/setup-ocaml@v1
@@ -38,10 +47,10 @@ jobs:
 
       - run: opam exec -- dune build
 
-      - run: opam exec -- dune runtest
+      - run: opam exec -- dune runtest --force
 
       - name: Upload the build artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}-${{ matrix.ocaml-version }}-world.exe
-          path: _build/default/world.exe
+          name: ${{ matrix.os }}-${{ matrix.ocaml-version }}-fex.exe
+          path: _build/default/fex.exe
