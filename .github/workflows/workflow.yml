@@ -47,7 +47,7 @@ jobs:
 
       - run: opam exec -- dune build
 
-      - run: opam exec -- dune runtest
+      - run: opam exec -- dune runtest --force
 
       - name: Upload the build artifact
         uses: actions/upload-artifact@v2
