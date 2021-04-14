@@ -17,7 +17,7 @@ test:
 .PHONY: coverage
 coverage:
 	dune runtest --instrument-with bisect_ppx --force
-	bisect-ppx-report summary 
+	bisect-ppx-report summary --per-file
 	bisect-ppx-report html 
 
 .PHONY: fmt

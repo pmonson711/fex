@@ -47,7 +47,9 @@ jobs:
 
       - run: opam exec -- dune build
 
-      - run: opam exec -- dune runtest --force
+      - run: opam exec -- dune runtest --instrument-with bisect_ppx --force
+
+      - run: opam exec -- bisect-ppx-report summary --per-file
 
       - name: Upload the build artifact
         uses: actions/upload-artifact@v2
