@@ -1,3 +1,4 @@
+---
 name: Main workflow
 
 on:
@@ -11,7 +12,6 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
-          - windows-latest
         ocaml-version:
           - 4.11.0
 
