@@ -9,10 +9,10 @@
 (authors "Paul Monson")
 (maintainers "pmonson711@gmail.com")
 (license MIT)
-(source (uri "git+http://gitlab.com"))
-(homepage "http://gitlab.com")
-(bug_reports "http://gitlab.com")
-(documentation "http://gitlab.com")
+(source (uri "git+https://github.com/pmonson711/fex/"))
+(homepage "https://github.com/pmonson711/fex/")
+(bug_reports "https://github.com/pmonson711/fex/issues")
+(documentation "https://github.com/pmonson711/fex/")
 
 (package
   (name fex)
