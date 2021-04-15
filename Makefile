@@ -14,6 +14,10 @@ install:
 test:
 	dune runtest
 
+.PHONY: watch_test
+watch_test:
+	dune runtest -w
+
 .PHONY: coverage
 coverage:
 	dune runtest --instrument-with bisect_ppx --force

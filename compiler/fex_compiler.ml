@@ -71,4 +71,5 @@ let apply_filter = Predicate.filter_to_predicate
 
 let apply_list_filter = Combiner.apply_list_of_filters_for_pair
 
-let apply_list_filter_for_pairs = Combiner.apply_list_of_filters_for_list_of_pairs
+let apply_list_filter_for_pairs =
+  Combiner.apply_list_of_filters_for_list_of_pairs

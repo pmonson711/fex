@@ -54,7 +54,7 @@ let fex_string =
   let docv = "FEX" in
   Arg.(value & pos 0 string "" & info [] ~docv ~doc)
 
-let fex_t = Term.(const fex_field_op $ fex_string $ input_string)
+let fex_t = Term.(const fex_record_op $ fex_string $ input_string)
 
 let info =
   let doc = "Filter JSON via the fex expression" in

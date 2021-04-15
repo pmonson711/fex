@@ -6,7 +6,7 @@ type value = [ `Value of string ]
 
 type pair = [ `Pair of key * value ]
 
-let invert = function true -> false | false -> true
+let invert = Bool.not
 
 module MatchInOrder = struct
   let match_in_order_acc ~comp ~subs:sub_list to_check =

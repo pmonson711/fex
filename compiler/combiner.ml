@@ -56,19 +56,18 @@ let apply_list_of_filters_for_pair lst pair =
 
 let apply_list_of_filters_for_list_of_pairs lst (pairs : Predicate.pair list) =
   let and_group = imply_logical_operators lst in
-  List.for_all
-    (fun or_group ->
-      let hd = List.hd or_group in
-      match Ast.is_include hd with
-      | true  ->
-          List.exists
-            (fun filter ->
-              List.exists (Predicate.filter_to_predicate filter) pairs)
-            or_group
-      | false ->
-          List.for_all
-            (fun filter ->
-              Bool.not
-              @@ List.exists (Predicate.filter_to_predicate filter) pairs)
-            or_group)
-    and_group
+  let apply_logic group =
+    let hd = List.hd group in
+    match Ast.is_include hd with
+    | true  ->
+        List.exists
+          (fun filter ->
+            List.exists (Predicate.filter_to_predicate filter) pairs)
+          group
+    | false ->
+        List.for_all
+          (fun filter ->
+            List.for_all (Predicate.filter_to_predicate filter) pairs)
+          group
+  in
+  List.for_all apply_logic and_group
