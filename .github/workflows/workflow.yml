@@ -55,4 +55,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.os }}-${{ matrix.ocaml-version }}-fex.exe
-          path: _build/default/fex.exe
+          path: _build/default/bin/fex.exe

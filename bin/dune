@@ -1,4 +1,4 @@
 (executable
  (modes js exe)
- (name main)
+ (name fex)
  (libraries fex.compiler fex.flattener yojson cmdliner))
