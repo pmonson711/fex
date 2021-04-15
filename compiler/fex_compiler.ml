@@ -69,8 +69,7 @@ let pair_of_strings = Predicate.pair_of_strings
 
 let apply_filter = Predicate.filter_to_predicate
 
-let apply_list_filter lst pairs =
-  let and_group = Combiner.imply_logical_operators lst in
-  List.for_all
-    (List.exists (fun filter -> Predicate.filter_to_predicate filter pairs))
-    and_group
+let apply_list_filter = Combiner.apply_list_of_filters_for_pair
+
+let apply_list_filter_for_pairs =
+  Combiner.apply_list_of_filters_for_list_of_pairs

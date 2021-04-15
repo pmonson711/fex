@@ -46,3 +46,15 @@ let contains_pair ?(op = Include) key value =
   pair_filter op (contains key) (contains value)
 
 let contains_key ?(op = Include) key = key_filter op (contains key)
+
+let is_include = function
+  | ValueFilter (Include, _)   -> true
+  | KeyFilter (Include, _)     -> true
+  | PairFilter (Include, _, _) -> true
+  | _                          -> false
+
+let is_exclude = function
+  | ValueFilter (Exclude, _)   -> true
+  | KeyFilter (Exclude, _)     -> true
+  | PairFilter (Exclude, _, _) -> true
+  | _                          -> false

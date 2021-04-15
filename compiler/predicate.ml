@@ -6,7 +6,7 @@ type value = [ `Value of string ]
 
 type pair = [ `Pair of key * value ]
 
-let invert = function true -> false | false -> true
+let invert = Bool.not
 
 module MatchInOrder = struct
   let match_in_order_acc ~comp ~subs:sub_list to_check =
@@ -42,10 +42,22 @@ module MatchInOrder = struct
   let string_match_operation ast from_input =
     let open CCString in
     match ast with
-    | Exact expected  -> equal from_input expected
-    | Contains subs   -> contains_in_order ~subs from_input
-    | BeginsWith subs -> begins_with_in_order ~subs from_input
-    | EndsWith subs   -> ends_with_in_order ~subs from_input
+    | Exact expected  ->
+        equal
+          (String.lowercase_ascii from_input)
+          (String.lowercase_ascii expected)
+    | Contains subs   ->
+        contains_in_order
+          ~subs:(List.map String.lowercase_ascii subs)
+          (String.lowercase_ascii from_input)
+    | BeginsWith subs ->
+        begins_with_in_order
+          ~subs:(List.map String.lowercase_ascii subs)
+          (String.lowercase_ascii from_input)
+    | EndsWith subs   ->
+        ends_with_in_order
+          ~subs:(List.map String.lowercase_ascii subs)
+          (String.lowercase_ascii from_input)
 end
 
 let key_match_operation op (`Key str) =

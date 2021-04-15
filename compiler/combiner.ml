@@ -46,3 +46,28 @@ let group ~fn lst =
   grouping [] lst
 
 let imply_logical_operators a = group ~fn:group_as a
+
+let apply_list_of_filters_for_pair lst pair =
+  let and_group = imply_logical_operators lst in
+  let if_has_one =
+    List.exists (fun filter -> Predicate.filter_to_predicate filter pair)
+  in
+  List.for_all if_has_one and_group
+
+let apply_list_of_filters_for_list_of_pairs lst (pairs : Predicate.pair list) =
+  let and_group = imply_logical_operators lst in
+  let apply_logic group =
+    let hd = List.hd group in
+    match Ast.is_include hd with
+    | true  ->
+        List.exists
+          (fun filter ->
+            List.exists (Predicate.filter_to_predicate filter) pairs)
+          group
+    | false ->
+        List.for_all
+          (fun filter ->
+            List.for_all (Predicate.filter_to_predicate filter) pairs)
+          group
+  in
+  List.for_all apply_logic and_group
