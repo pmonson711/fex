@@ -6,9 +6,9 @@ description: "Parser generater for fex"
 maintainer: ["pmonson711@gmail.com"]
 authors: ["Paul Monson"]
 license: "MIT"
-homepage: "http://gitlab.com"
-doc: "http://gitlab.com"
-bug-reports: "http://gitlab.com"
+homepage: "https://github.com/pmonson711/fex/"
+doc: "https://github.com/pmonson711/fex/"
+bug-reports: "https://github.com/pmonson711/fex/issues"
 depends: [
   "dune" {>= "2.7" & >= "2.5"}
   "ocaml" {>= "4.08"}
@@ -43,4 +43,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+http://gitlab.com"
+dev-repo: "git+https://github.com/pmonson711/fex/"

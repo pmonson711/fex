@@ -1,6 +1,7 @@
 (lang dune 2.7)
 (using menhir 2.0)
 (explicit_js_mode)
+(cram enable)
 (name fex)
 
 (generate_opam_files true)
