@@ -67,3 +67,6 @@ Finds person nested c and value exists
            prop.a : 2
          prop.b.d : f
   -------
+
+Finds person nested c and value exists
+  $ fex "b:f,abc" data.json
