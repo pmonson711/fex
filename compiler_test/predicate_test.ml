@@ -4,31 +4,34 @@ let filter_to_bool to_check with_filter =
   Fex_compiler__Predicate.filter_to_predicate to_check with_filter
 
 let make_key_test op_result filter expected =
-  let filter' = Fex_compiler.key_filter op_result filter in
+  let filter' = Fex_compiler.Ast.key_filter op_result filter in
   Alcotest.(
     check bool
-      (Fex_compiler.show filter' ^ {| to ("key", "value") |})
+      (Fex_compiler.Ast.show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let make_value_test op_result filter expected =
-  let filter' = Fex_compiler.value_filter op_result filter in
+  let open Fex_compiler.Ast in
+  let filter' = value_filter op_result filter in
   Alcotest.(
     check bool
-      (Fex_compiler.show filter' ^ {| to ("key", "value") |})
+      (show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let make_pair_test op_result key_filter value_filter expected =
-  let filter' = Fex_compiler.pair_filter op_result key_filter value_filter in
+  let filter' =
+    Fex_compiler.Ast.pair_filter op_result key_filter value_filter
+  in
   Alcotest.(
     check bool
-      (Fex_compiler.show filter' ^ {| to ("key", "value") |})
+      (Fex_compiler.Ast.show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
 let exact_keys () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_key_test result_op (exact str) expected
   in
@@ -38,7 +41,7 @@ let exact_keys () =
   make_test exc "other" true
 
 let exact_values () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_value_test result_op (exact str) expected
   in
@@ -48,7 +51,7 @@ let exact_values () =
   make_test exc "other" true
 
 let begins_with_keys () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_key_test result_op (begins_with str) expected
   in
@@ -60,7 +63,7 @@ let begins_with_keys () =
   make_test exc "keys" true
 
 let begins_with_values () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_value_test result_op (begins_with str) expected
   in
@@ -72,7 +75,7 @@ let begins_with_values () =
   make_test exc "values" true
 
 let begins_with_in_order_keys () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_key_test result_op (begins_with_in_order lst) expected
   in
@@ -89,7 +92,7 @@ let begins_with_in_order_keys () =
   make_test exc [ "k"; "ey" ] false
 
 let begins_with_in_order_values () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_value_test result_op (begins_with_in_order lst) expected
   in
@@ -106,7 +109,7 @@ let begins_with_in_order_values () =
   make_test exc [ "v"; "al" ] false
 
 let ends_with_keys () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_key_test result_op (ends_with str) expected
   in
@@ -123,7 +126,7 @@ let ends_with_keys () =
   make_test exc "keys" true
 
 let ends_with_values () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_value_test result_op (ends_with str) expected
   in
@@ -140,7 +143,7 @@ let ends_with_values () =
   make_test exc "values" true
 
 let ends_with_in_order_keys () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_key_test result_op (ends_with_in_order lst) expected
   in
@@ -158,7 +161,7 @@ let ends_with_in_order_keys () =
   make_test exc [ "k"; "ey" ] false
 
 let ends_with_in_order_values () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_value_test result_op (ends_with_in_order lst) expected
   in
@@ -176,7 +179,7 @@ let ends_with_in_order_values () =
   make_test exc [ "l"; "ue" ] false
 
 let contains_key () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_key_test result_op (contains str) expected
   in
@@ -194,7 +197,7 @@ let contains_key () =
   make_test exc "ey" false
 
 let contains_value () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op str expected =
     make_value_test result_op (contains str) expected
   in
@@ -212,7 +215,7 @@ let contains_value () =
   make_test exc "al" false
 
 let contains_in_order_key () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_key_test result_op (contains_in_order lst) expected
   in
@@ -226,7 +229,7 @@ let contains_in_order_key () =
   make_test inc [ "e"; "y" ] true
 
 let contains_in_order_value () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op lst expected =
     make_value_test result_op (contains_in_order lst) expected
   in
@@ -240,7 +243,7 @@ let contains_in_order_value () =
   make_test inc [ "a"; "u" ] true
 
 let simple_pair_test () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test result_op k v expected =
     make_pair_test result_op k v expected
   in

@@ -2,7 +2,7 @@ open Ast
 
 type key = [ `Key of string ]
 
-type value = [ `Value of string ]
+type value = [ `Value of [ `String of string ] ]
 
 type pair = [ `Pair of key * value ]
 
@@ -63,7 +63,7 @@ end
 let key_match_operation op (`Key str) =
   MatchInOrder.string_match_operation op str
 
-let value_match_operation op (`Value str) =
+let value_match_operation op (`Value (`String str)) =
   MatchInOrder.string_match_operation op str
 
 let filter_to_predicate ast pair =
@@ -83,4 +83,4 @@ let filter_to_predicate ast pair =
       | false -> true
       | true  -> invert @@ value_match_operation value_match_op value )
 
-let pair_of_strings k v = `Pair (`Key k, `Value v)
+let pair_of_strings k v = `Pair (`Key k, `Value (`String v))

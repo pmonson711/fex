@@ -16,9 +16,9 @@ type t =
   | PairFilter  of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
-let inc = Include
-
 let exc = Exclude
+
+let inc = Include
 
 let exact str = Exact str
 

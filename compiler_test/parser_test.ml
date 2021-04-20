@@ -2,7 +2,7 @@ let test_name = "Filter Parser"
 
 let fex =
   let open Alcotest in
-  Fex_compiler.(testable pp equal)
+  Fex_compiler.Ast.(testable pp equal)
 
 let parse = Fex_compiler.filter_from_string
 
@@ -23,7 +23,7 @@ let empty () =
     check (result (list fex) string) "empty is None" (Ok []) (parse " "))
 
 let value_only () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test ("value is " ^ expected) (contains_value expected) input
   in
@@ -42,7 +42,7 @@ let value_only () =
   make_test "trailingspace" "+trailingspace "
 
 let value_only_exclude () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test
       ("inverted value is " ^ expected)
@@ -58,7 +58,7 @@ let value_only_exclude () =
   make_test "trailingspace" "-trailingspace "
 
 let key_only () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test ("key is " ^ expected) (contains_key expected) input
   in
@@ -76,7 +76,7 @@ let key_only () =
   make_test "trailingspace" "+trailingspace :"
 
 let key_only_exclude () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test ("key is " ^ expected)
       (contains_key ~op:Exclude expected)
@@ -91,7 +91,7 @@ let key_only_exclude () =
   make_test "trailingspace" "-trailingspace :"
 
 let key_value () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test (expected_key, expected_value) input =
     parse_single_test
       ("key value is expected (" ^ expected_key ^ ", " ^ expected_value ^ ")")
@@ -116,7 +116,7 @@ let key_value () =
   make_test ("key", "trailingspace") "+key:trailingspace "
 
 let key_value_exclude () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test (expected_key, expected_value) input =
     parse_single_test
       ( "inverted key value is expected (" ^ expected_key ^ ", "
@@ -135,7 +135,7 @@ let key_value_exclude () =
   make_test ("key", "trailingspace") "-key:trailingspace "
 
 let combinatorials () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test lst input =
     parse_test
       (Printf.sprintf "combined is expected for (" ^ input ^ ")")
@@ -164,7 +164,7 @@ let combinatorials () =
     "+key1:value1, +key2:value2"
 
 let value_only_begins_with () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test
       ("begin with value is expected " ^ expected)
@@ -174,7 +174,7 @@ let value_only_begins_with () =
   make_test "value" "value..."
 
 let value_only_ends_with () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test expected input =
     parse_single_test
       ("ends with value is expected " ^ expected)
@@ -185,7 +185,7 @@ let value_only_ends_with () =
   make_test "value" "...value"
 
 let key_string_test () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let make_test ?(op = exact) expected input =
     parse_single_test
       ("quoted value is expected " ^ expected)

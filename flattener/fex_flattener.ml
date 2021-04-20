@@ -1,6 +1,6 @@
 include Pair
 
-type pairs = Pair.t list [@@deriving show, eq]
+type pairs = Pair.StringPair.t list [@@deriving show, eq]
 
 module JSON = struct
   type t =
@@ -17,7 +17,7 @@ module JSON = struct
     ]
 end
 
-let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
+let rec pair_of_json' ~prefix (json : JSON.t) : Pair.StringPair.t list =
   let prefix_sep = match prefix with "" -> "" | _ -> "." in
   let pair_list_of_json_assoc =
     List.fold_left

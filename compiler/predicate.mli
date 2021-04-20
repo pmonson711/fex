@@ -1,6 +1,6 @@
 type key = [ `Key of string ]
 
-type value = [ `Value of string ]
+type value = [ `Value of [ `String of string ] ]
 
 type pair = [ `Pair of key * value ]
 

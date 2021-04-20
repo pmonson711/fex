@@ -7,7 +7,7 @@ let filter_list_to_bool to_check with_filters =
 let empty () = Alcotest.(check bool "empty" true (filter_list_to_bool [] []))
 
 let simple_implies () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_a = value_filter inc (contains "a") in
   let contains_b = value_filter inc (contains "b") in
   let contains_aa = pair_filter exc (exact "a") (contains "a") in
@@ -22,11 +22,11 @@ let simple_implies () =
       = [ [ contains_bb ]; [ contains_aa ] ] ))
 
 let two_include_union () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter inc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key "", `Value value) in
+  let pair_of_value value = `Pair (`Key "", `Value (`String value)) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -42,11 +42,11 @@ let two_include_union () =
   make_test false "z"
 
 let one_include_one_exclude_union () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter exc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key "", `Value value) in
+  let pair_of_value value = `Pair (`Key "", `Value (`String value)) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -62,13 +62,13 @@ let one_include_one_exclude_union () =
   make_test true "ab"
 
 let paired_union () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_ab_or_c =
     [ pair_filter inc (exact "a") (contains "a")
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value = `Pair (`Key "a", `Value value) in
+  let pair_of_keyed_a value = `Pair (`Key "a", `Value (`String value)) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -87,13 +87,13 @@ let paired_union () =
   make_test false [ "y"; "z" ]
 
 let mixed_paired_union () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_ab_or_c =
     [ pair_filter exc (exact "a") (contains "a")
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value = `Pair (`Key "a", `Value value) in
+  let pair_of_keyed_a value = `Pair (`Key "a", `Value (`String value)) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -112,14 +112,14 @@ let mixed_paired_union () =
   make_test false [ "y"; "z" ]
 
 let mixed_paired_intersect () =
-  let open Fex_compiler in
+  let open Fex_compiler.Ast in
   let contains_ab_or_c =
     [ pair_filter inc (exact "a") (contains "a")
     ; pair_filter inc (exact "b") (contains "b")
     ]
   in
-  let pair_of_keyed_a value = `Pair (`Key "a", `Value value) in
-  let pair_of_keyed_b value = `Pair (`Key "b", `Value value) in
+  let pair_of_keyed_a value = `Pair (`Key "a", `Value (`String value)) in
+  let pair_of_keyed_b value = `Pair (`Key "b", `Value (`String value)) in
   let make_test expected a_value b_value =
     Alcotest.(
       check bool

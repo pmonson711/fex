@@ -23,6 +23,7 @@
     (dune (>= 2.5))
     (ocaml (>= 4.08))
     (js_of_ocaml-compiler (>= 3.7))
+    (js_of_ocaml-ppx (>= 3.7))
     
     (cmdliner (>= 0.9))
     (bos (>= 0.2))

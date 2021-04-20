@@ -2,6 +2,10 @@
 build:
 	dune build @all -j8
 
+.PHONY: deps
+deps:
+	opam install . --deps-only --with-doc --with-test
+
 .PHONY: watch
 watch:
 	dune build @all --watch -j8
@@ -22,7 +26,7 @@ watch_test:
 coverage:
 	dune runtest --instrument-with bisect_ppx --force
 	bisect-ppx-report summary --per-file
-	bisect-ppx-report html 
+	bisect-ppx-report html
 
 .PHONY: fmt
 format:
@@ -32,3 +36,12 @@ format:
 clean:
 	dune clean
 	rm -Rf _coverage
+
+.PHONY: doc
+doc:
+	dune build @doc
+
+.PHONY: doc-serve
+doc-serve:
+	dune build @doc -w &
+	(cd _build/default/_doc/_html/; cohttp-server-lwt)

@@ -2,7 +2,7 @@ let test_name = "Json Flattener"
 
 let flat_pair =
   let open Alcotest in
-  Fex_flattener__Pair.(testable pp equal)
+  Fex_flattener__Pair.StringPair.(testable pp equal)
 
 let flatten_test expected from_input =
   let open Alcotest in

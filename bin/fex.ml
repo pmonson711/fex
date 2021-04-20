@@ -1,6 +1,6 @@
 open Cmdliner
 
-let print_pair (`Pair (`Key key, `Value value)) =
+let print_pair (`Pair (`Key key, `Value (`String value))) =
   Printf.sprintf "%15s : %s" key value
 
 let parse str =
