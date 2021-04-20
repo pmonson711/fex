@@ -33,8 +33,8 @@ install:
 test:
 	dune runtest
 
-.PHONY: watch_test
-watch_test:
+.PHONY: watch-test
+watch-test:
 	dune runtest -w
 
 .PHONY: coverage
