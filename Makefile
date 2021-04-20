@@ -3,8 +3,23 @@ build:
 	dune build @all -j8
 
 .PHONY: deps
-deps:
+install-deps:
 	opam install . --deps-only --with-doc --with-test
+
+.PHONY: update
+update:
+	opam update
+
+.PHONY: upgrade
+upgrade:
+	opam upgrade
+	
+.PHONY: lock
+lock:
+	opam lock
+
+.PHONY: update-deps
+update-deps: update upgrade lock
 
 .PHONY: watch
 watch:
