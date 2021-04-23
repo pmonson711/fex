@@ -9,7 +9,7 @@ let flatten_test expected from_input =
   check (list flat_pair)
     (Printf.sprintf "%s value" @@ Yojson.Safe.to_string from_input)
     expected
-    (Fex_flattener.pair_of_json from_input)
+    (Fex_flattener.pair_from_json from_input)
 
 let primitives () =
   let open Fex_flattener__Pair in

@@ -2,4 +2,6 @@
  (modes js exe)
  (name fex)
  (public_name fex)
+ (instrumentation
+  (backend bisect_ppx))
  (libraries fex.compiler fex.flattener yojson cmdliner))

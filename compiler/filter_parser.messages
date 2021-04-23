@@ -8,7 +8,7 @@ terms: COLON PLUS
 ## COLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+The `+` (plus) operator can not directly follow a `:` (colon) operator.
 
 terms: COLON Q_STRING COLON
 ##
@@ -28,7 +28,7 @@ terms: COLON Q_STRING COLON
 ## In state 18, spurious reduction of production term -> COLON list(SPACE) standard_term
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+The `:` (colon) can only be included once in each query term.
 
 terms: COLON SPACE COMMA
 ##
@@ -47,7 +47,7 @@ terms: COLON SPACE COMMA
 ## In state 2, spurious reduction of production list(SPACE) -> SPACE list(SPACE)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+The `+` (plus) operator can not directly follow a `,` (comma) operator.
 
 terms: COMMA STRING
 ##
@@ -366,3 +366,4 @@ terms: STRING STRING
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
+

@@ -3,7 +3,6 @@ module JsonPrimatives = struct
     [ `Null
     | `Bool   of bool
     | `Int    of int
-    | `Intlit of string
     | `Float  of float
     | `String of string
     ]
