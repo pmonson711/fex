@@ -2,4 +2,4 @@
  (name fex_compiler_test)
  (libraries alcotest fex_compiler)
  (action
-  (run %{test} --show-errors)))
+  (run %{test} -c --show-errors)))

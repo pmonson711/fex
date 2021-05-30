@@ -1,6 +1,6 @@
 include Pair
 
-type pairs = Pair.t list [@@deriving show, eq]
+type pairs = Pair.StringPair.t list [@@deriving show, eq]
 
 module JSON = struct
   type t =
@@ -17,13 +17,13 @@ module JSON = struct
     ]
 end
 
-let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
+let rec pair_from_json' ~prefix (json : JSON.t) : pairs =
   let prefix_sep = match prefix with "" -> "" | _ -> "." in
   let pair_list_of_json_assoc =
     List.fold_left
       (fun acc (k, v) ->
         let prefix' = Printf.sprintf "%s%s%s" prefix prefix_sep k in
-        acc @ pair_of_json' ~prefix:prefix' v)
+        acc @ pair_from_json' ~prefix:prefix' v)
       []
   in
   let pair_list_of_json_list l =
@@ -33,7 +33,7 @@ let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
         let prefix' =
           Printf.sprintf "%s%s%i" prefix prefix_sep one_base_index
         in
-        pair_of_json' ~prefix:prefix' v)
+        pair_from_json' ~prefix:prefix' v)
       l
     |> List.flatten
   in
@@ -49,12 +49,12 @@ let rec pair_of_json' ~prefix (json : JSON.t) : Pair.t list =
   | `Tuple l             -> pair_list_of_json_list l
   | `Variant (_, None)   -> []
   | `Variant (s, Some v) ->
-      pair_of_json' ~prefix:(Printf.sprintf "%s%s%s" prefix prefix_sep s) v
+      pair_from_json' ~prefix:(Printf.sprintf "%s%s%s" prefix prefix_sep s) v
 
-let pair_of_json = pair_of_json' ~prefix:""
+let pair_from_json = pair_from_json' ~prefix:""
 
-let pairs_of_json_array (`List lst) = List.map pair_of_json lst
+let pairs_from_json_array (`List lst) = List.map pair_from_json lst
 
 let pair_list_of_json = function
-  | `List lst -> pairs_of_json_array (`List lst) |> List.flatten
-  | json      -> pair_of_json json
+  | `List lst -> pairs_from_json_array (`List lst) |> List.flatten
+  | json      -> pair_from_json json

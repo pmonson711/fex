@@ -54,7 +54,6 @@ term:
 value_lst:
   | lst= separated_nonempty_list(",", term); EOF
                                       { lst }
-
 terms:
   | " "*; EOF                         { [] }
   | " "*; ","+; EOF                   { [] }

@@ -13,10 +13,10 @@ module JSON : sig
     ]
 end
 
-type pairs = Pair.t list [@@deriving show, eq]
+type pairs = Pair.StringPair.t list [@@deriving show, eq]
 
-val pair_of_json : JSON.t -> Pair.t list
+val pair_from_json : JSON.t -> pairs
 
-val pairs_of_json_array : [ `List of JSON.t list ] -> Pair.t list list
+val pairs_from_json_array : [ `List of JSON.t list ] -> pairs list
 
-val pair_list_of_json : JSON.t -> Pair.t list
+val pair_list_of_json : JSON.t -> pairs

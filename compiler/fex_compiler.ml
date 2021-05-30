@@ -1,12 +1,12 @@
-include Ast
 open Lexing
 module I = Filter_parser.MenhirInterpreter
-
-type parsed_result = (t list, string) result [@@deriving show]
-
-exception Syntax_error of ((int * int * int option) option * string)
+module Ast = Ast
 
 exception Grammar_error of string
+
+type parsed_result = (Ast.t list, string) result [@@deriving show]
+
+exception Syntax_error of ((int * int * int option) option * string)
 
 let get_lexing_position lexbuf =
   let p = Lexing.lexeme_start_p lexbuf in

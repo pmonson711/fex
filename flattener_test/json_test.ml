@@ -2,14 +2,14 @@ let test_name = "Json Flattener"
 
 let flat_pair =
   let open Alcotest in
-  Fex_flattener__Pair.(testable pp equal)
+  Fex_flattener__Pair.StringPair.(testable pp equal)
 
 let flatten_test expected from_input =
   let open Alcotest in
   check (list flat_pair)
     (Printf.sprintf "%s value" @@ Yojson.Safe.to_string from_input)
     expected
-    (Fex_flattener.pair_of_json from_input)
+    (Fex_flattener.pair_from_json from_input)
 
 let primitives () =
   let open Fex_flattener__Pair in
