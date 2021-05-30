@@ -20,9 +20,9 @@ We create a test file
   > ]
   > EOF
 
-  $ fex "a" ./data.json | column -t -s '|'
-  name      age  prop.a  prop.b.c  
-  person a  50   1       d         
+  $ fex "a" ./data.json
+  name|age|prop.a|prop.b.c|
+  person a|50|1|d|
 
   $ fex "a" -f"b"  ./data.json
   Can't have the `--fex-string b` and `a` set
