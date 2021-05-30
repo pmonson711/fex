@@ -8,6 +8,7 @@ let parse = Fex_compiler.filter_from_string
 
 let parse_single_test case_name expected to_parse =
   let some_single t = Ok [ t ] in
+  let _ = print_endline @@ Printf.sprintf "`%s`" to_parse in
   Alcotest.(
     check
       (result (list fex) string)
@@ -137,6 +138,7 @@ let key_value_exclude () =
 let combinatorials () =
   let open Fex_compiler.Ast in
   let make_test lst input =
+    print_endline @@ Printf.sprintf "`%s`" input ;
     parse_test
       (Printf.sprintf "combined is expected for (" ^ input ^ ")")
       lst input

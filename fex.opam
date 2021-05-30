@@ -16,6 +16,7 @@ depends: [
   "js_of_ocaml-ppx" {>= "3.7"}
   "cmdliner" {>= "0.9"}
   "bos" {>= "0.2"}
+  "brr" {>= "0.0.1"}
   "containers" {>= "3.2"}
   "menhir" {>= "20200624"}
   "yojson" {>= "1.7.0"}

@@ -62,5 +62,5 @@ Finds person nested c and value exists
 Finds person nested c and value exists
   $ fex ":+" data.json
   name|age|prop.a|prop.b.c|
-  Syntax error 5 on line 1, character 2: The `+` (plus) operator can not directly follow a `:` (colon) operator.
+  Syntax error 5 on line 1, character 2: <YOUR SYNTAX ERROR MESSAGE HERE>
   
