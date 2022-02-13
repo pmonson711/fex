@@ -3,17 +3,18 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type match_operation =
-  | Exact of string
-  | Contains of string list
-  | BeginsWith of string list
-  | EndsWith of string list
+type 'a match_operation =
+  | Exact of 'a
+  | Contains of 'a list
+  | BeginsWith of 'a list
+  | EndsWith of 'a list
 [@@deriving show, eq]
 
-type t =
-  | ValueFilter of match_operation_result * match_operation
-  | KeyFilter of match_operation_result * match_operation
-  | PairFilter of match_operation_result * match_operation * match_operation
+type 'a t =
+  | ValueFilter of match_operation_result * 'a match_operation
+  | KeyFilter of match_operation_result * 'a match_operation
+  | PairFilter of
+      match_operation_result * 'a match_operation * 'a match_operation
 [@@deriving show, eq]
 
 let exc = Exclude

@@ -1,8 +1,10 @@
 let test_name = "Combiner"
+let equal_fun = CCString.equal
 
 let filter_list_to_bool to_check with_filters =
-  Fex_compiler__Combiner.apply_list_of_filters_for_list_of_pairs to_check
-    with_filters
+  Fex_compiler__Combiner.apply_list_of_filters_for_list_of_pairs
+    ~match_fun:Fex_compiler__Match_in_order.string_match_operation ~equal_fun
+    to_check with_filters
 
 let empty () = Alcotest.(check bool "empty" true (filter_list_to_bool [] []))
 
@@ -14,10 +16,11 @@ let simple_implies () =
   let contains_bb = pair_filter inc (exact "b") (contains "b") in
   Alcotest.(
     check bool {|[["a"; "b"]] matches `a,c`|} true
-      (Fex_compiler__Combiner.imply_logical_operators [ contains_a; contains_b ]
+      (Fex_compiler__Combiner.imply_logical_operators ~equal_fun
+         [ contains_a; contains_b ]
       = [ [ contains_a; contains_b ] ]) ;
     check bool {|[["a:a"; "b:b"]] matches `a:a,b:b`|} true
-      (Fex_compiler__Combiner.imply_logical_operators
+      (Fex_compiler__Combiner.imply_logical_operators ~equal_fun
          [ contains_aa; contains_bb ]
       = [ [ contains_bb ]; [ contains_aa ] ]))
 

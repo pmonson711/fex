@@ -6,4 +6,4 @@ let suites =
 
 let () =
   let open Alcotest in
-  run "Fex Parser" suites
+  run "Fex_Parser" suites
