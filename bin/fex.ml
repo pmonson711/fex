@@ -33,17 +33,20 @@ let build_input_for fn fex1 file1 fex2 file2 =
   let fex = Fex_string.get_fex fex1 fex2 in
   fn fex json
 
+
 let fex_t =
-  Term.(
-    const (build_input_for fex_record_op)
-    $ Fex_string.pos $ Json_file.pos $ Fex_string.flag $ Json_file.flag)
-
-let info =
-  let doc = "Filter JSON via the fex expression" in
-  let man =
-    [ `S Manpage.s_bugs; `P "Email bug reports to <pmonson711@gmail.com>." ]
+  let info =
+    let doc = "Filter JSON via the fex expression" in
+    let man =
+      [ `S Manpage.s_bugs; `P "Email bug reports to <pmonson711@gmail.com>." ]
+    in
+    Cmd.info "fex" ~version:"%%VERSION%%" ~doc ~exits:Cmd.Exit.defaults
+      ~man
   in
-  Term.info "fex" ~version:"%%VERSION%%" ~doc ~exits:Cmdliner.Term.default_exits
-    ~man
+  let term = Term.(
+      const (build_input_for fex_record_op)
+      $ Fex_string.pos $ Json_file.pos $ Fex_string.flag $ Json_file.flag)
+  in
+  Cmd.v info term
 
-let () = Term.exit @@ Term.eval (fex_t, info)
+let () = exit @@ Cmd.eval fex_t
