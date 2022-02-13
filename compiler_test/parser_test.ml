@@ -120,8 +120,8 @@ let key_value_exclude () =
   let open Fex_compiler.Ast in
   let make_test (expected_key, expected_value) input =
     parse_single_test
-      ( "inverted key value is expected (" ^ expected_key ^ ", "
-      ^ expected_value ^ ")" )
+      ("inverted key value is expected (" ^ expected_key ^ ", " ^ expected_value
+     ^ ")")
       (contains_pair ~op:Exclude expected_key expected_value)
       input
   in

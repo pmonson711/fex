@@ -8,9 +8,9 @@
 module JsonPrimatives : sig
   type t =
     [ `Null
-    | `Bool   of bool
-    | `Int    of int
-    | `Float  of float
+    | `Bool of bool
+    | `Int of int
+    | `Float of float
     | `String of string
     ]
 end

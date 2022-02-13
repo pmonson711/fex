@@ -15,17 +15,17 @@ type match_operation_result =
 
 (** The type of operation to use in the the filter *)
 type match_operation =
-  | Exact      of string
-  | Contains   of string list
+  | Exact of string
+  | Contains of string list
   | BeginsWith of string list
-  | EndsWith   of string list
+  | EndsWith of string list
 [@@deriving show, eq]
 
 (** The full AST including opterations and include vs exclude result *)
 type t =
   | ValueFilter of match_operation_result * match_operation
-  | KeyFilter   of match_operation_result * match_operation
-  | PairFilter  of match_operation_result * match_operation * match_operation
+  | KeyFilter of match_operation_result * match_operation
+  | PairFilter of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
 (** {1 Helpers } 

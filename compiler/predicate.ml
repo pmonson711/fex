@@ -1,9 +1,7 @@
 open Ast
 
 type key = [ `Key of string ]
-
 type value = [ `Value of [ `String of string ] ]
-
 type pair = [ `Pair of key * value ]
 
 let invert = Bool.not
@@ -42,11 +40,11 @@ module MatchInOrder = struct
   let string_match_operation ast from_input =
     let open CCString in
     match ast with
-    | Exact expected  ->
+    | Exact expected ->
         equal
           (String.lowercase_ascii from_input)
           (String.lowercase_ascii expected)
-    | Contains subs   ->
+    | Contains subs ->
         contains_in_order
           ~subs:(List.map String.lowercase_ascii subs)
           (String.lowercase_ascii from_input)
@@ -54,7 +52,7 @@ module MatchInOrder = struct
         begins_with_in_order
           ~subs:(List.map String.lowercase_ascii subs)
           (String.lowercase_ascii from_input)
-    | EndsWith subs   ->
+    | EndsWith subs ->
         ends_with_in_order
           ~subs:(List.map String.lowercase_ascii subs)
           (String.lowercase_ascii from_input)
@@ -81,6 +79,6 @@ let filter_to_predicate ast pair =
   | PairFilter (Exclude, key_match_op, value_match_op) -> (
       match key_match_operation key_match_op key with
       | false -> true
-      | true  -> invert @@ value_match_operation value_match_op value )
+      | true -> invert @@ value_match_operation value_match_op value)
 
 let pair_of_strings k v = `Pair (`Key k, `Value (`String v))
