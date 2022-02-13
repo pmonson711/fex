@@ -1,19 +1,19 @@
-type t =
+type 'a t =
   | IncludeValueGroup
   | ExcludeValueGroup
   | IncludeKeyGroup
   | ExcludeKeyGroup
-  | IncludePairGroupExact of string
-  | IncludePairGroupContains of string list
-  | IncludePairGroupBeginsWith of string list
-  | IncludePairGroupEndsWith of string list
-  | ExcludePairGroupExact of string
-  | ExcludePairGroupContains of string list
-  | ExcludePairGroupBeginsWith of string list
-  | ExcludePairGroupEndsWith of string list
+  | IncludePairGroupExact of 'a
+  | IncludePairGroupContains of 'a list
+  | IncludePairGroupBeginsWith of 'a list
+  | IncludePairGroupEndsWith of 'a list
+  | ExcludePairGroupExact of 'a
+  | ExcludePairGroupContains of 'a list
+  | ExcludePairGroupBeginsWith of 'a list
+  | ExcludePairGroupEndsWith of 'a list
 [@@deriving eq]
 
-let group_as a b =
+let group_as ~equal_fun a b =
   let categorize =
     let open Ast in
     function
@@ -34,7 +34,8 @@ let group_as a b =
   in
   let category_a = categorize a in
   let category_b = categorize b in
-  equal category_a category_b
+  equal equal_fun category_a category_b
+(* constrain 'a to have equal *)
 
 let group ~fn lst =
   let rec grouping acc = function
@@ -45,29 +46,31 @@ let group ~fn lst =
   in
   grouping [] lst
 
-let imply_logical_operators a = group ~fn:group_as a
+let imply_logical_operators ~equal_fun a = group ~fn:(group_as ~equal_fun) a
 
-let apply_list_of_filters_for_pair lst pair =
-  let and_group = imply_logical_operators lst in
+let apply_list_of_filters_for_pair ~match_fun ~equal_fun lst pair =
+  let and_group = imply_logical_operators ~equal_fun lst in
   let if_has_one =
-    List.exists (fun filter -> Predicate.filter_to_predicate filter pair)
+    List.exists (fun filter ->
+        Predicate.filter_to_predicate ~match_fun filter pair)
   in
   List.for_all if_has_one and_group
 
-let apply_list_of_filters_for_list_of_pairs lst (pairs : Predicate.pair list) =
-  let and_group = imply_logical_operators lst in
+let apply_list_of_filters_for_list_of_pairs ~match_fun ~equal_fun lst
+    (pairs : 'a Predicate.pair list) =
+  let and_group = imply_logical_operators ~equal_fun lst in
   let apply_logic group =
     let hd = List.hd group in
     match Ast.is_include hd with
     | true ->
         List.exists
           (fun filter ->
-            List.exists (Predicate.filter_to_predicate filter) pairs)
+            List.exists (Predicate.filter_to_predicate ~match_fun filter) pairs)
           group
     | false ->
         List.for_all
           (fun filter ->
-            List.for_all (Predicate.filter_to_predicate filter) pairs)
+            List.for_all (Predicate.filter_to_predicate ~match_fun filter) pairs)
           group
   in
   List.for_all apply_logic and_group

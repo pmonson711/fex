@@ -1,84 +1,34 @@
-open Ast
-
-type key = [ `Key of string ]
-type value = [ `Value of [ `String of string ] ]
-type pair = [ `Pair of key * value ]
+type 'a key = [ `Key of 'a ]
+type 'a value = [ `Value of [ `String of 'a ] ]
+type 'a pair = [ `Pair of 'a key * 'a value ]
 
 let invert = Bool.not
 
-module MatchInOrder = struct
-  let match_in_order_acc ~comp ~subs:sub_list to_check =
-    let open CCString in
-    let init_acc = (false, 0) in
-    let is_in_order acc to_find =
-      match acc with
-      | false, left when left != 0 -> (false, left)
-      | _, idx ->
-          let found = find ~start:idx ~sub:to_find to_check in
-          let is_found = comp found idx in
-          let next_idx = if is_found then found + length to_find else idx in
-          (is_found, next_idx)
-    in
-    List.fold_left is_in_order init_acc sub_list
+let key_match_operation ~match_fun op (`Key str : 'a key) : bool =
+  match_fun str op
 
-  let fst input = match input with b, _ -> b
+let value_match_operation ~match_fun op (`Value (`String str) : 'a value) : bool
+    =
+  match_fun str op
 
-  let match_in_order ~comp ~subs to_check =
-    match_in_order_acc ~comp ~subs to_check |> fst
-
-  let contains_in_order ~subs string_to_check =
-    match_in_order ~comp:(fun found _ -> found != -1) ~subs string_to_check
-
-  let begins_with_in_order ~subs string_to_check =
-    match_in_order ~comp:(fun found idx -> found == idx) ~subs string_to_check
-
-  let ends_with_in_order ~subs to_check =
-    begins_with_in_order
-      ~subs:(List.rev subs |> List.map CCString.rev)
-      (CCString.rev to_check)
-
-  let string_match_operation ast from_input =
-    let open CCString in
-    match ast with
-    | Exact expected ->
-        equal
-          (String.lowercase_ascii from_input)
-          (String.lowercase_ascii expected)
-    | Contains subs ->
-        contains_in_order
-          ~subs:(List.map String.lowercase_ascii subs)
-          (String.lowercase_ascii from_input)
-    | BeginsWith subs ->
-        begins_with_in_order
-          ~subs:(List.map String.lowercase_ascii subs)
-          (String.lowercase_ascii from_input)
-    | EndsWith subs ->
-        ends_with_in_order
-          ~subs:(List.map String.lowercase_ascii subs)
-          (String.lowercase_ascii from_input)
-end
-
-let key_match_operation op (`Key str) =
-  MatchInOrder.string_match_operation op str
-
-let value_match_operation op (`Value (`String str)) =
-  MatchInOrder.string_match_operation op str
-
-let filter_to_predicate ast pair =
+let filter_to_predicate ~match_fun (ast : 'a Ast.t) (pair : 'a pair) =
+  let open Ast in
   let (`Pair (_, value)) = pair in
   let (`Pair (key, _)) = pair in
   match ast with
-  | ValueFilter (Include, match_op) -> value_match_operation match_op value
+  | ValueFilter (Include, match_op) ->
+      value_match_operation ~match_fun match_op value
   | ValueFilter (Exclude, match_op) ->
-      invert @@ value_match_operation match_op value
-  | KeyFilter (Include, match_op) -> key_match_operation match_op key
-  | KeyFilter (Exclude, match_op) -> invert @@ key_match_operation match_op key
+      invert @@ value_match_operation ~match_fun match_op value
+  | KeyFilter (Include, match_op) -> key_match_operation ~match_fun match_op key
+  | KeyFilter (Exclude, match_op) ->
+      invert @@ key_match_operation ~match_fun match_op key
   | PairFilter (Include, key_match_op, value_match_op) ->
-      key_match_operation key_match_op key
-      && value_match_operation value_match_op value
+      key_match_operation ~match_fun key_match_op key
+      && value_match_operation ~match_fun value_match_op value
   | PairFilter (Exclude, key_match_op, value_match_op) -> (
-      match key_match_operation key_match_op key with
+      match key_match_operation ~match_fun key_match_op key with
       | false -> true
-      | true -> invert @@ value_match_operation value_match_op value)
+      | true -> invert @@ value_match_operation ~match_fun value_match_op value)
 
 let pair_of_strings k v = `Pair (`Key k, `Value (`String v))

@@ -2,7 +2,11 @@ let test_name = "Filter Parser"
 
 let fex =
   let open Alcotest in
-  Fex_compiler.Ast.(testable pp equal)
+  let string_pp = Fex_compiler.Ast.pp Fex_compiler__Match_in_order.T.pp in
+  let string_equal =
+    Fex_compiler.Ast.equal Fex_compiler__Match_in_order.T.equal
+  in
+  testable string_pp string_equal
 
 let parse = Fex_compiler.filter_from_string
 

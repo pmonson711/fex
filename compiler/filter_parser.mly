@@ -10,7 +10,7 @@
 (* %token OR *)
 %token EOF
 
-%start <Ast.t list> terms
+%start <string Ast.t list> terms
 %%
 
 op_result:
