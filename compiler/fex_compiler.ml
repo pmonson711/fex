@@ -21,7 +21,7 @@ let get_parse_error env =
       try
         (Some (I.number state), Filter_parser_messages.message (I.number state))
       with Not_found ->
-        (None, "invalid syntax (no specific message for this eror)") )
+        (None, "invalid syntax (no specific message for this eror)"))
 
 let rec parse lexbuf (checkpoint : Ast.t list I.checkpoint) =
   match checkpoint with
@@ -55,20 +55,14 @@ let parse_from lexbuf =
             (Printf.sprintf "Syntax error %d on line %d, character %d: %s"
                (Option.value state ~default:(-1))
                line pos err)
-      | None                    -> Error (Printf.sprintf "Syntax error: %s" err)
-      )
-  | Grammar_error msg       -> Error (Printf.sprintf "Grammar error: %s" msg)
+      | None -> Error (Printf.sprintf "Syntax error: %s" err))
+  | Grammar_error msg -> Error (Printf.sprintf "Grammar error: %s" msg)
 
 let filter_from_string str = str |> Lexing.from_string |> parse_from
-
 let filter_from_channel ic = ic |> Lexing.from_channel |> parse_from
-
 let filter_from_file filename = filename |> open_in |> filter_from_channel
-
 let pair_of_strings = Predicate.pair_of_strings
-
 let apply_filter = Predicate.filter_to_predicate
-
 let apply_list_filter = Combiner.apply_list_of_filters_for_pair
 
 let apply_list_filter_for_pairs =

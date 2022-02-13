@@ -3,14 +3,14 @@ type t =
   | ExcludeValueGroup
   | IncludeKeyGroup
   | ExcludeKeyGroup
-  | IncludePairGroupExact      of string
-  | IncludePairGroupContains   of string list
+  | IncludePairGroupExact of string
+  | IncludePairGroupContains of string list
   | IncludePairGroupBeginsWith of string list
-  | IncludePairGroupEndsWith   of string list
-  | ExcludePairGroupExact      of string
-  | ExcludePairGroupContains   of string list
+  | IncludePairGroupEndsWith of string list
+  | ExcludePairGroupExact of string
+  | ExcludePairGroupContains of string list
   | ExcludePairGroupBeginsWith of string list
-  | ExcludePairGroupEndsWith   of string list
+  | ExcludePairGroupEndsWith of string list
 [@@deriving eq]
 
 let group_as a b =
@@ -38,7 +38,7 @@ let group_as a b =
 
 let group ~fn lst =
   let rec grouping acc = function
-    | []       -> acc
+    | [] -> acc
     | hd :: tl ->
         let lst1, lst2 = List.partition (fn hd) tl in
         grouping ((hd :: lst1) :: acc) lst2
@@ -59,7 +59,7 @@ let apply_list_of_filters_for_list_of_pairs lst (pairs : Predicate.pair list) =
   let apply_logic group =
     let hd = List.hd group in
     match Ast.is_include hd with
-    | true  ->
+    | true ->
         List.exists
           (fun filter ->
             List.exists (Predicate.filter_to_predicate filter) pairs)

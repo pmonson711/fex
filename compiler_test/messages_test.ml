@@ -99,16 +99,16 @@ Did you mean to have a string directly before or after the `..`?|}
     ]
   in
   let to_char = function
-    | "MINUS"    -> "-"
-    | "PLUS"     -> "+"
-    | "STRING"   -> "abc"
-    | "COLON"    -> ":"
-    | "SPACE"    -> " "
-    | "COMMA"    -> ","
-    | "DOTDOT"   -> ".."
+    | "MINUS" -> "-"
+    | "PLUS" -> "+"
+    | "STRING" -> "abc"
+    | "COLON" -> ":"
+    | "SPACE" -> " "
+    | "COMMA" -> ","
+    | "DOTDOT" -> ".."
     | "Q_STRING" -> "'abc'"
-    | "EOF"      -> "\n"
-    | str        -> failwith ("unknown [" ^ str ^ "]")
+    | "EOF" -> "\n"
+    | str -> failwith ("unknown [" ^ str ^ "]")
   in
   let build_filter str =
     List.map to_char @@ String.split_on_char ' ' str |> String.concat ""

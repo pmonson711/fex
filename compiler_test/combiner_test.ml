@@ -14,12 +14,12 @@ let simple_implies () =
   let contains_bb = pair_filter inc (exact "b") (contains "b") in
   Alcotest.(
     check bool {|[["a"; "b"]] matches `a,c`|} true
-      ( Fex_compiler__Combiner.imply_logical_operators [ contains_a; contains_b ]
-      = [ [ contains_a; contains_b ] ] ) ;
+      (Fex_compiler__Combiner.imply_logical_operators [ contains_a; contains_b ]
+      = [ [ contains_a; contains_b ] ]) ;
     check bool {|[["a:a"; "b:b"]] matches `a:a,b:b`|} true
-      ( Fex_compiler__Combiner.imply_logical_operators
-          [ contains_aa; contains_bb ]
-      = [ [ contains_bb ]; [ contains_aa ] ] ))
+      (Fex_compiler__Combiner.imply_logical_operators
+         [ contains_aa; contains_bb ]
+      = [ [ contains_bb ]; [ contains_aa ] ]))
 
 let two_include_union () =
   let open Fex_compiler.Ast in
@@ -75,8 +75,8 @@ let paired_union () =
         (Printf.sprintf {|[%s] doesn't match `a:a,a:b`|}
            (String.concat "; " str_value))
         expected
-        ( filter_list_to_bool contains_ab_or_c
-        @@ List.map pair_of_keyed_a str_value ))
+        (filter_list_to_bool contains_ab_or_c
+        @@ List.map pair_of_keyed_a str_value))
   in
   make_test true [ "a"; "b" ] ;
   make_test true [ "a" ] ;
@@ -100,8 +100,8 @@ let mixed_paired_union () =
         (Printf.sprintf {|[%s] doesn't match `-a:a,a:b`|}
            (String.concat "; " str_value))
         expected
-        ( filter_list_to_bool contains_ab_or_c
-        @@ List.map pair_of_keyed_a str_value ))
+        (filter_list_to_bool contains_ab_or_c
+        @@ List.map pair_of_keyed_a str_value))
   in
   make_test false [ "a"; "b" ] ;
   make_test false [ "a" ] ;

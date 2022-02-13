@@ -5,14 +5,14 @@ type pairs = Pair.StringPair.t list [@@deriving show, eq]
 module JSON = struct
   type t =
     [ `Null
-    | `Bool    of bool
-    | `Int     of int
-    | `Intlit  of string
-    | `Float   of float
-    | `String  of string
-    | `Assoc   of (string * t) list
-    | `List    of t list
-    | `Tuple   of t list
+    | `Bool of bool
+    | `Int of int
+    | `Intlit of string
+    | `Float of float
+    | `String of string
+    | `Assoc of (string * t) list
+    | `List of t list
+    | `Tuple of t list
     | `Variant of string * t option
     ]
 end
@@ -38,23 +38,22 @@ let rec pair_from_json' ~prefix (json : JSON.t) : pairs =
     |> List.flatten
   in
   match json with
-  | `Null                -> [ Pair.of_strings prefix "" ]
-  | `Bool b              -> [ Pair.of_strings prefix @@ string_of_bool b ]
-  | `Int i               -> [ Pair.of_strings prefix @@ string_of_int i ]
-  | `Intlit s            -> [ Pair.of_strings prefix @@ s ]
-  | `Float f             -> [ Pair.of_strings prefix @@ string_of_float f ]
-  | `String s            -> [ Pair.of_strings prefix @@ s ]
-  | `Assoc l             -> pair_list_of_json_assoc l
-  | `List l              -> pair_list_of_json_list l
-  | `Tuple l             -> pair_list_of_json_list l
-  | `Variant (_, None)   -> []
+  | `Null -> [ Pair.of_strings prefix "" ]
+  | `Bool b -> [ Pair.of_strings prefix @@ string_of_bool b ]
+  | `Int i -> [ Pair.of_strings prefix @@ string_of_int i ]
+  | `Intlit s -> [ Pair.of_strings prefix @@ s ]
+  | `Float f -> [ Pair.of_strings prefix @@ string_of_float f ]
+  | `String s -> [ Pair.of_strings prefix @@ s ]
+  | `Assoc l -> pair_list_of_json_assoc l
+  | `List l -> pair_list_of_json_list l
+  | `Tuple l -> pair_list_of_json_list l
+  | `Variant (_, None) -> []
   | `Variant (s, Some v) ->
       pair_from_json' ~prefix:(Printf.sprintf "%s%s%s" prefix prefix_sep s) v
 
 let pair_from_json = pair_from_json' ~prefix:""
-
 let pairs_from_json_array (`List lst) = List.map pair_from_json lst
 
 let pair_list_of_json = function
   | `List lst -> pairs_from_json_array (`List lst) |> List.flatten
-  | json      -> pair_from_json json
+  | json -> pair_from_json json
