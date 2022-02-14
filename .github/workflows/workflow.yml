@@ -10,10 +10,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-latest
           - ubuntu-latest
         ocaml-version:
-          - 4.11.0
+          - 4.13.1
 
     runs-on: ${{ matrix.os }}
 
@@ -39,11 +38,7 @@ jobs:
         with:
           ocaml-version: ${{ matrix.ocaml-version }}
 
-      - run: opam pin add fex.dev . --no-action
-
-      - run: opam depext fex --yes --with-doc --with-test
-
-      - run: opam install . --deps-only --with-doc --with-test
+      - run: opam install . --deps-only --with-doc --with-test --locked
 
       - run: opam exec -- dune build
 
