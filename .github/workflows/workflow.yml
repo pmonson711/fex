@@ -20,13 +20,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Cached Infra
+        uses: actions/cache@v2
+        with:
+          path: |
+           ~/.opam
+           _build
+           C:\cygwin
+           D:\a\fex\fex
+          key: v${{ matrix.os }}-${{ matrix.ocaml-version }}-${{ hashFiles('**/*.opam*') }}
+          restore-keys: |
+            v{{ matrix.os }}-${{ matrix.ocaml-version }}-
+            v{{ matrix.os }}-
+
       - name: Use OCaml ${{ matrix.ocaml-version }}
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-version }}
           dune-cache: true
 
-      - run: opam install . --deps-only --with-doc --with-test --locked
+      - run: opam install . --deps-only --with-test --locked
 
       - run: opam exec -- dune build
 

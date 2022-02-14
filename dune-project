@@ -24,7 +24,7 @@
     (ocaml (>= 4.08))
     (js_of_ocaml-compiler (>= 3.7))
     (js_of_ocaml-ppx (>= 3.7))
-    
+
     (cmdliner (>= 0.9))
     (bos (>= 0.2))
     (brr (>= 0.0.1))
@@ -42,6 +42,6 @@
     (ocp-index :dev)
     (odig :dev)
     (utop :dev)
-    (bisect_ppx :dev)
+    (bisect_ppx :with-test)
   )
  )

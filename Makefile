@@ -17,10 +17,10 @@ update:
 .PHONY: upgrade
 upgrade:
 	opam upgrade
-	
+
 .PHONY: lock
 lock:
-	opam lock
+	opam lock fex
 
 .PHONY: update-deps
 update-deps: update upgrade lock
