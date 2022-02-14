@@ -28,7 +28,7 @@ depends: [
   "ocp-index" {dev}
   "odig" {dev}
   "utop" {dev}
-  "bisect_ppx" {dev}
+  "bisect_ppx" {with-test}
   "odoc" {with-doc}
 ]
 build: [
