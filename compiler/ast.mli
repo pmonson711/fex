@@ -1,4 +1,6 @@
-(** {1 Overview}
+(** Delcare filter expression on operations
+
+   {1 Overview}
 
     Declare filter expression on operations
 
@@ -50,28 +52,28 @@ val inc : match_operation_result
     *)
 
 val begins_with : 'a -> 'a match_operation
-(** [begins_with s] Begins with builder for a single string *)
+(** [begins_with s] Begins with builder for a single ['string] *)
 
 val begins_with_in_order : 'a list -> 'a match_operation
-(** [begins_with_in_order lst] Begin with operation builder for a list of string. *)
+(** [begins_with_in_order lst] Begin with operation builder for a list of ['string]. *)
 
 val contains : 'a -> 'a match_operation
-(** [contains s] Contains operation builder for a single string *)
+(** [contains s] Contains operation builder for a single ['string] *)
 
 val contains_in_order : 'a list -> 'a match_operation
-(** [contains_in_order lst] Conatins operation build for list of strings *)
+(** [contains_in_order lst] Conatins operation build for list of ['string]s *)
 
 val ends_with : 'a -> 'a match_operation
-(** [ends_with s] Ends with operation builder for single string *)
+(** [ends_with s] Ends with operation builder for single ['string] *)
 
 val ends_with_in_order : 'a list -> 'a match_operation
-(** [ends_with_in_order lst] Ends with operation builder for a list of strings *)
+(** [ends_with_in_order lst] Ends with operation builder for a list of ['string]s *)
 
 val exact : 'a -> 'a match_operation
-(** [exact str] Exact match operation builder for a single string *)
+(** [exact str] Exact match operation builder for a single ['string] *)
 
 val contains_key : ?op:match_operation_result -> 'a -> 'a t
-(** [contains_key ?result k] Contains match operation builder for a single string *)
+(** [contains_key ?result k] Contains match operation builder for a single ['string] *)
 
 val contains_pair : ?op:match_operation_result -> 'a -> 'a -> 'a t
 (** [contains_pair ?result k v] Contains a pair with the key of k and a value of v *)
