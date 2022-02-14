@@ -20,7 +20,7 @@ upgrade:
 
 .PHONY: lock
 lock:
-	opam lock fex
+	opam lock -d fex
 
 .PHONY: update-deps
 update-deps: update upgrade lock
