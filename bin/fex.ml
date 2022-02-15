@@ -1,10 +1,11 @@
 open Cmdliner
 
-let sprint_key (`Pair (`Key key, `Value (`String _value))) =
-  Printf.printf "%s|" key
+let sprint_key (`Pair (`Key key, `Value _value)) = Printf.printf "%s|" key
 
-let sprint_pair (`Pair (`Key _key, `Value (`String value))) =
-  Printf.printf "%s|" value
+let sprint_pair (`Pair (`Key _key, `Value value)) =
+  match value with
+  | `String s -> Printf.printf "%s|" s
+  | `Int n -> Printf.printf "%d|" n
 
 let fex_record_op fex json =
   let list_of_pairs =

@@ -31,7 +31,8 @@ module StringPair : sig
   and key = [ `Key of string ] [@@deriving show, eq]
   (** Tagged string to represent a key in a key-value pair *)
 
-  and value = [ `Value of [ `String of string ] ] [@@deriving show, eq]
+  and value = [ `Value of [ `String of string | `Int of int ] ]
+  [@@deriving show, eq]
   (** Tagged string to represent a value in a key-value pair *)
 end
 

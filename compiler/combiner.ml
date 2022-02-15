@@ -57,7 +57,7 @@ let apply_list_of_filters_for_pair ~match_fun ~equal_fun lst pair =
   List.for_all if_has_one and_group
 
 let apply_list_of_filters_for_list_of_pairs ~match_fun ~equal_fun lst
-    (pairs : 'a Predicate.pair list) =
+    (pairs : ('a, 'b) Predicate.pair list) =
   let and_group = imply_logical_operators ~equal_fun lst in
   let apply_logic group =
     let hd = List.hd group in

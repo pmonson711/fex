@@ -5,12 +5,12 @@ val apply_list_of_filters_for_pair :
      match_fun:('a -> 'a Ast.match_operation -> bool)
   -> equal_fun:('a -> 'a -> bool)
   -> 'a Ast.t list
-  -> 'a Predicate.pair
+  -> ('a, 'b) Predicate.pair
   -> bool
 
 val apply_list_of_filters_for_list_of_pairs :
      match_fun:('a -> 'a Ast.match_operation -> bool)
   -> equal_fun:('a -> 'a -> bool)
   -> 'a Ast.t list
-  -> 'a Predicate.pair list
+  -> ('a, 'b) Predicate.pair list
   -> bool
