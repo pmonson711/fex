@@ -18,19 +18,19 @@ op_result:
   | "+";                              { Ast.Include }
 
 standard_term:
-  | ".."; value= separated_nonempty_list(" ", STRING)
-                                      { Ast.(EndsWith value) }
-  | value= separated_nonempty_list(" ", STRING); ".."
-                                      { Ast.(BeginsWith value) }
-  | value= separated_nonempty_list(" ", STRING)
-                                      { Ast.(Contains value) }
-  | ".."; value= separated_nonempty_list(" ", Q_STRING)
-                                      { Ast.(EndsWith value) }
-  | ".."; value= separated_nonempty_list(" ", Q_STRING); ".."
-                                      { Ast.(Contains value) }
-  | value= separated_nonempty_list(" ", Q_STRING); ".."
-                                      { Ast.(BeginsWith value) }
-  | value= Q_STRING;                  { Ast.(Exact value) }
+  | ".."; values= separated_nonempty_list(" ", STRING)
+                                      { Ast.ends_with_in_order values }
+  | values= separated_nonempty_list(" ", STRING); ".."
+                                      { Ast.begins_with_in_order values }
+  | values= separated_nonempty_list(" ", STRING)
+                                      { Ast.contains_in_order values }
+  | ".."; values= separated_nonempty_list(" ", Q_STRING)
+                                      { Ast.ends_with_in_order values }
+  | ".."; values= separated_nonempty_list(" ", Q_STRING); ".."
+                                      { Ast.contains_in_order values }
+  | values= separated_nonempty_list(" ", Q_STRING); ".."
+                                      { Ast.begins_with_in_order values }
+  | value= Q_STRING;                  { Ast.exact value }
 
 %inline value_term:
   | " "*; term= standard_term         { term }
@@ -40,16 +40,16 @@ standard_term:
 
 term:
   | result= op_result; key= key_term; ":"; value= value_term
-                                      { Ast.(PairFilter (result, key, value)) }
+                                      { Ast.pair_filter result key value }
   | result= op_result; key= key_term; ":"
-                                      { Ast.(KeyFilter (result, key)) }
+                                      { Ast.key_filter result key }
   | result= op_result; value= value_term
-                                      { Ast.(ValueFilter (result, value)) }
+                                      { Ast.value_filter  result value }
   | key= key_term; ":"; value= value_term
-                                      { Ast.(PairFilter (Include, key, value)) }
-  | key= key_term; ":"                { Ast.(KeyFilter (Include, key)) }
-  | ":"; value= value_term            { Ast.(ValueFilter (Include, value)) }
-  | value= value_term                 { Ast.(ValueFilter (Include, value)) }
+                                      { Ast.pair_filter Include key value }
+  | key= key_term; ":"                { Ast.key_filter Include key }
+  | ":"; value= value_term            { Ast.value_filter Include value }
+  | value= value_term                 { Ast.value_filter Include value }
 
 value_lst:
   | lst= separated_nonempty_list(",", term); EOF
