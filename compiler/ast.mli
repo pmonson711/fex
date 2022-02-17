@@ -13,9 +13,11 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
+type 'a match_type = [ `String of 'a ] [@@deriving show, eq]
+
 (** The type of operation to use in the the filter *)
 type 'a match_operation =
-  | Exact of 'a
+  | Exact of 'a match_type
   | Contains of 'a list
   | BeginsWith of 'a list
   | EndsWith of 'a list

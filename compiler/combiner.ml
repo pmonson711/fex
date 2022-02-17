@@ -21,12 +21,12 @@ let group_as ~equal_fun a b =
     | ValueFilter (Exclude, _) -> ExcludeValueGroup
     | KeyFilter (Include, _) -> IncludeKeyGroup
     | KeyFilter (Exclude, _) -> ExcludeKeyGroup
-    | PairFilter (Include, Exact key, _) -> IncludePairGroupExact key
+    | PairFilter (Include, Exact `String key, _) -> IncludePairGroupExact key
     | PairFilter (Include, Contains keys, _) -> IncludePairGroupContains keys
     | PairFilter (Include, BeginsWith keys, _) ->
         IncludePairGroupBeginsWith keys
     | PairFilter (Include, EndsWith keys, _) -> IncludePairGroupEndsWith keys
-    | PairFilter (Exclude, Exact key, _) -> ExcludePairGroupExact key
+    | PairFilter (Exclude, Exact `String key, _) -> ExcludePairGroupExact key
     | PairFilter (Exclude, Contains keys, _) -> ExcludePairGroupContains keys
     | PairFilter (Exclude, BeginsWith keys, _) ->
         ExcludePairGroupBeginsWith keys

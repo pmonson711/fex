@@ -32,7 +32,7 @@ let string_match_operation (from_input : string)
     (ast : string Ast.match_operation) : bool =
   let open CCString in
   match ast with
-  | Exact expected ->
+  | Exact `String expected ->
       equal
         (String.lowercase_ascii from_input)
         (String.lowercase_ascii expected)

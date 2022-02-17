@@ -3,8 +3,10 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
+type 'a match_type = [ `String of 'a ] [@@deriving show, eq]
+
 type 'a match_operation =
-  | Exact of 'a
+  | Exact of 'a match_type
   | Contains of 'a list
   | BeginsWith of 'a list
   | EndsWith of 'a list
@@ -19,7 +21,7 @@ type 'a t =
 
 let exc = Exclude
 let inc = Include
-let exact str = Exact str
+let exact str = Exact (`String str)
 let contains_in_order lst = Contains lst
 let contains str = contains_in_order [ str ]
 let begins_with_in_order lst = BeginsWith lst
