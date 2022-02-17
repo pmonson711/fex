@@ -31,4 +31,10 @@ let filter_to_predicate ~match_fun (ast : 'a Ast.t) (pair : 'a pair) =
       | false -> true
       | true -> invert @@ value_match_operation ~match_fun value_match_op value)
 
-let pair_of_strings k v = `Pair (`Key (`String k), `Value (`String v))
+let of_string s = `String s
+let key k = `Key k
+let value v = `Value v
+let pair k v = `Pair (k, v)
+let key_of_string k = key @@ of_string k
+let value_of_string v = value @@ of_string v
+let pair_of_strings k v = pair (key_of_string k) (value_of_string v)

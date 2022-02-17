@@ -9,3 +9,5 @@ val filter_to_predicate :
   -> bool
 
 val pair_of_strings : 'a -> 'a -> 'a pair
+val key_of_string : 'a -> 'a key
+val value_of_string : 'a -> 'a value
