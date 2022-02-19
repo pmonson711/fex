@@ -17,10 +17,10 @@ type match_operation_result =
 
 (** The type of operation to use in the the filter *)
 type 'a match_operation =
-  | Exact of 'a
-  | Contains of 'a list
-  | BeginsWith of 'a list
-  | EndsWith of 'a list
+  | ExactString of 'a
+  | ContainsString of 'a list
+  | BeginsWithString of 'a list
+  | EndsWithString of 'a list
 [@@deriving show, eq]
 
 (** The full AST including opterations and include vs exclude result *)

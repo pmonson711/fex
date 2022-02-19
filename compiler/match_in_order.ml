@@ -34,19 +34,19 @@ let string_match_operation (from_input : string)
     (ast : string Ast.match_operation) : bool =
   let open CCString in
   match ast with
-  | Exact expected ->
+  | ExactString expected ->
       equal
         (String.lowercase_ascii from_input)
         (String.lowercase_ascii expected)
-  | Contains subs ->
+  | ContainsString subs ->
       contains_in_order
         ~subs:(List.map String.lowercase_ascii subs)
         (String.lowercase_ascii from_input)
-  | BeginsWith subs ->
+  | BeginsWithString subs ->
       begins_with_in_order
         ~subs:(List.map String.lowercase_ascii subs)
         (String.lowercase_ascii from_input)
-  | EndsWith subs ->
+  | EndsWithString subs ->
       ends_with_in_order
         ~subs:(List.map String.lowercase_ascii subs)
         (String.lowercase_ascii from_input)
