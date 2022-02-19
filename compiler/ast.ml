@@ -4,10 +4,10 @@ type match_operation_result =
 [@@deriving show, eq]
 
 type 'a match_operation =
-  | Exact of 'a
-  | Contains of 'a list
-  | BeginsWith of 'a list
-  | EndsWith of 'a list
+  | ExactString of 'a
+  | ContainsString of 'a list
+  | BeginsWithString of 'a list
+  | EndsWithString of 'a list
 [@@deriving show, eq]
 
 type 'a t =
@@ -19,12 +19,12 @@ type 'a t =
 
 let exc = Exclude
 let inc = Include
-let exact str = Exact str
-let contains_in_order lst = Contains lst
+let exact str = ExactString str
+let contains_in_order lst = ContainsString lst
 let contains str = contains_in_order [ str ]
-let begins_with_in_order lst = BeginsWith lst
+let begins_with_in_order lst = BeginsWithString lst
 let begins_with str = begins_with_in_order [ str ]
-let ends_with_in_order lst = EndsWith lst
+let ends_with_in_order lst = EndsWithString lst
 let ends_with str = ends_with_in_order [ str ]
 let value_filter a b = ValueFilter (a, b)
 let key_filter a b = KeyFilter (a, b)

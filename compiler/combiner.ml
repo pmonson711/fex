@@ -3,14 +3,14 @@ type 'a t =
   | ExcludeValueGroup
   | IncludeKeyGroup
   | ExcludeKeyGroup
-  | IncludePairGroupExact of 'a
-  | IncludePairGroupContains of 'a list
-  | IncludePairGroupBeginsWith of 'a list
-  | IncludePairGroupEndsWith of 'a list
-  | ExcludePairGroupExact of 'a
-  | ExcludePairGroupContains of 'a list
-  | ExcludePairGroupBeginsWith of 'a list
-  | ExcludePairGroupEndsWith of 'a list
+  | IncludePairGroupExactString of 'a
+  | IncludePairGroupContainsString of 'a list
+  | IncludePairGroupBeginsWithString of 'a list
+  | IncludePairGroupEndsWithString of 'a list
+  | ExcludePairGroupExactString of 'a
+  | ExcludePairGroupContainsString of 'a list
+  | ExcludePairGroupBeginsWithString of 'a list
+  | ExcludePairGroupEndsWithString of 'a list
 [@@deriving eq]
 
 let group_as ~equal_fun a b =
@@ -21,16 +21,22 @@ let group_as ~equal_fun a b =
     | ValueFilter (Exclude, _) -> ExcludeValueGroup
     | KeyFilter (Include, _) -> IncludeKeyGroup
     | KeyFilter (Exclude, _) -> ExcludeKeyGroup
-    | PairFilter (Include, Exact key, _) -> IncludePairGroupExact key
-    | PairFilter (Include, Contains keys, _) -> IncludePairGroupContains keys
-    | PairFilter (Include, BeginsWith keys, _) ->
-        IncludePairGroupBeginsWith keys
-    | PairFilter (Include, EndsWith keys, _) -> IncludePairGroupEndsWith keys
-    | PairFilter (Exclude, Exact key, _) -> ExcludePairGroupExact key
-    | PairFilter (Exclude, Contains keys, _) -> ExcludePairGroupContains keys
-    | PairFilter (Exclude, BeginsWith keys, _) ->
-        ExcludePairGroupBeginsWith keys
-    | PairFilter (Exclude, EndsWith keys, _) -> ExcludePairGroupEndsWith keys
+    | PairFilter (Include, ExactString key, _) ->
+        IncludePairGroupExactString key
+    | PairFilter (Include, ContainsString keys, _) ->
+        IncludePairGroupContainsString keys
+    | PairFilter (Include, BeginsWithString keys, _) ->
+        IncludePairGroupBeginsWithString keys
+    | PairFilter (Include, EndsWithString keys, _) ->
+        IncludePairGroupEndsWithString keys
+    | PairFilter (Exclude, ExactString key, _) ->
+        ExcludePairGroupExactString key
+    | PairFilter (Exclude, ContainsString keys, _) ->
+        ExcludePairGroupContainsString keys
+    | PairFilter (Exclude, BeginsWithString keys, _) ->
+        ExcludePairGroupBeginsWithString keys
+    | PairFilter (Exclude, EndsWithString keys, _) ->
+        ExcludePairGroupEndsWithString keys
   in
   let category_a = categorize a in
   let category_b = categorize b in
