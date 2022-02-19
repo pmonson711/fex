@@ -7,9 +7,9 @@ type 'a match_type = [ `String of 'a ] [@@deriving show, eq]
 
 type 'a match_operation =
   | Exact of 'a match_type
-  | Contains of 'a list
-  | BeginsWith of 'a list
-  | EndsWith of 'a list
+  | Contains of 'a match_type list
+  | BeginsWith of 'a match_type list
+  | EndsWith of 'a match_type list
 [@@deriving show, eq]
 
 type 'a t =
@@ -21,12 +21,17 @@ type 'a t =
 
 let exc = Exclude
 let inc = Include
-let exact str = Exact (`String str)
-let contains_in_order lst = Contains lst
+let of_match_type (str : 'a) : 'a match_type = `String str
+
+let list_of_match_type (lst : 'a list) : 'a match_type list =
+  List.map of_match_type lst
+
+let exact str = Exact (of_match_type str)
+let contains_in_order lst = Contains (list_of_match_type lst)
 let contains str = contains_in_order [ str ]
-let begins_with_in_order lst = BeginsWith lst
+let begins_with_in_order lst = BeginsWith (list_of_match_type lst)
 let begins_with str = begins_with_in_order [ str ]
-let ends_with_in_order lst = EndsWith lst
+let ends_with_in_order lst = EndsWith (list_of_match_type lst)
 let ends_with str = ends_with_in_order [ str ]
 let value_filter a b = ValueFilter (a, b)
 let key_filter a b = KeyFilter (a, b)

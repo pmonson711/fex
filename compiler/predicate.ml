@@ -4,14 +4,13 @@ type 'a pair = [ `Pair of 'a key * 'a value ]
 
 let invert = Bool.not
 
-let key_match_operation ~match_fun op (`Key (`String str) : 'a key) : bool =
+let key_match_operation ~match_fun op (`Key str : 'a key) : bool =
   match_fun str op
 
-let value_match_operation ~match_fun op (`Value (`String str) : 'a value) : bool
-    =
+let value_match_operation ~match_fun op (`Value str : 'a value) : bool =
   match_fun str op
 
-let filter_to_predicate ~match_fun (ast : 'a Ast.t) (pair : 'a pair) =
+let filter_to_predicate ~match_fun ast pair =
   let open Ast in
   let (`Pair (_, value)) = pair in
   let (`Pair (key, _)) = pair in

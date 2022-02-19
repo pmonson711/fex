@@ -1,10 +1,10 @@
 let test_name = "Combiner"
-let equal_fun = CCString.equal
+let equal_fun (`String x) (`String y) = CCString.equal x y
 
 let filter_list_to_bool to_check with_filters =
   Fex_compiler__Combiner.apply_list_of_filters_for_list_of_pairs
-    ~match_fun:Fex_compiler__Match_in_order.string_match_operation ~equal_fun
-    to_check with_filters
+    ~match_fun:Fex_compiler__Match_in_order.match_operation ~equal_fun to_check
+    with_filters
 
 let empty () = Alcotest.(check bool "empty" true (filter_list_to_bool [] []))
 

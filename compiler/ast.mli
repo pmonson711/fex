@@ -18,9 +18,9 @@ type 'a match_type = [ `String of 'a ] [@@deriving show, eq]
 (** The type of operation to use in the the filter *)
 type 'a match_operation =
   | Exact of 'a match_type
-  | Contains of 'a list
-  | BeginsWith of 'a list
-  | EndsWith of 'a list
+  | Contains of 'a match_type list
+  | BeginsWith of 'a match_type list
+  | EndsWith of 'a match_type list
 [@@deriving show, eq]
 
 (** The full AST including opterations and include vs exclude result *)

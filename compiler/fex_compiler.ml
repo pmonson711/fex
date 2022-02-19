@@ -64,12 +64,14 @@ let filter_from_file filename = filename |> open_in |> filter_from_channel
 let pair_of_strings = Predicate.pair_of_strings
 
 let apply_filter =
-  Predicate.filter_to_predicate ~match_fun:Match_in_order.string_match_operation
+  Predicate.filter_to_predicate ~match_fun:Match_in_order.match_operation
+
+let equal_fun (`String a) (`String b) = CCString.equal a b
 
 let apply_list_filter =
   Combiner.apply_list_of_filters_for_pair
-    ~match_fun:Match_in_order.string_match_operation ~equal_fun:CCString.equal
+    ~match_fun:Match_in_order.match_operation ~equal_fun
 
 let apply_list_filter_for_pairs =
   Combiner.apply_list_of_filters_for_list_of_pairs
-    ~match_fun:Match_in_order.string_match_operation ~equal_fun:CCString.equal
+    ~match_fun:Match_in_order.match_operation ~equal_fun

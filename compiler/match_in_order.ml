@@ -29,25 +29,30 @@ let ends_with_in_order ~subs to_check =
     (CCString.rev to_check)
 
 let string_match_operation (from_input : string)
-    (ast : string Ast.match_operation) : bool =
+    (match_op : string Ast.match_operation) : bool =
   let open CCString in
-  match ast with
-  | Exact `String expected ->
+  let string_of (`String str) : string = str |> String.lowercase_ascii in
+  let lowercase_of_list (lst : string Ast.match_type list) : string list =
+    List.map (fun x -> x |> string_of |> String.lowercase_ascii) lst
+  in
+  match match_op with
+  | Exact expected ->
       equal
         (String.lowercase_ascii from_input)
-        (String.lowercase_ascii expected)
+        (String.lowercase_ascii @@ string_of expected)
   | Contains subs ->
-      contains_in_order
-        ~subs:(List.map String.lowercase_ascii subs)
+      contains_in_order ~subs:(lowercase_of_list subs)
         (String.lowercase_ascii from_input)
   | BeginsWith subs ->
-      begins_with_in_order
-        ~subs:(List.map String.lowercase_ascii subs)
+      begins_with_in_order ~subs:(lowercase_of_list subs)
         (String.lowercase_ascii from_input)
   | EndsWith subs ->
-      ends_with_in_order
-        ~subs:(List.map String.lowercase_ascii subs)
+      ends_with_in_order ~subs:(lowercase_of_list subs)
         (String.lowercase_ascii from_input)
+
+let match_operation (mt : string Ast.match_type)
+    (mo : string Ast.match_operation) =
+  match mt with `String s -> string_match_operation s mo
 
 module T = struct
   type t = string [@@deriving show]
