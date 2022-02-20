@@ -15,12 +15,27 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
+type number = int * float option [@@deriving show, eq, ord]
+type 'a match_type = [ `String of 'a ]
+
 (** The type of operation to use in the the filter *)
-type 'a match_operation =
+type 'a string_match_operation =
   | ExactString of 'a
   | ContainsString of 'a list
   | BeginsWithString of 'a list
   | EndsWithString of 'a list
+[@@deriving show, eq]
+
+type number_match_operation =
+  | ExactNumber of number
+  | LessThanNumber of number
+  | GreaterThanNumber of number
+  | BetweeNumber of number * number
+[@@deriving show, eq]
+
+type 'a match_operation =
+  | StringOp of 'a string_match_operation
+  | NumberOp of number_match_operation
 [@@deriving show, eq]
 
 (** The full AST including opterations and include vs exclude result *)
@@ -98,3 +113,7 @@ val is_exclude : 'a t -> bool
 
 val is_include : 'a t -> bool
 (** [is_include ast] Check if an ast is include *)
+
+val number_of_int : int -> number
+val number_of_float : float -> number
+val string_op_of_op : 'a match_operation -> 'a string_match_operation

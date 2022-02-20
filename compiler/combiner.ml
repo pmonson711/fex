@@ -11,6 +11,14 @@ type 'a t =
   | ExcludePairGroupContainsString of 'a list
   | ExcludePairGroupBeginsWithString of 'a list
   | ExcludePairGroupEndsWithString of 'a list
+  | IncludePairGroupExactNumber of Ast.number
+  | IncludePairGroupLessThanNumber of Ast.number
+  | IncludePairGroupGreaterThanNumber of Ast.number
+  | IncludePairGroupBetweenNumber of Ast.number * Ast.number
+  | ExcludePairGroupExactNumber of Ast.number
+  | ExcludePairGroupLessThanNumber of Ast.number
+  | ExcludePairGroupGreaterThanNumber of Ast.number
+  | ExcludePairGroupBetweenNumber of Ast.number * Ast.number
 [@@deriving eq]
 
 let group_as ~equal_fun a b =
@@ -21,27 +29,42 @@ let group_as ~equal_fun a b =
     | ValueFilter (Exclude, _) -> ExcludeValueGroup
     | KeyFilter (Include, _) -> IncludeKeyGroup
     | KeyFilter (Exclude, _) -> ExcludeKeyGroup
-    | PairFilter (Include, ExactString key, _) ->
+    | PairFilter (Include, StringOp (ExactString key), _) ->
         IncludePairGroupExactString key
-    | PairFilter (Include, ContainsString keys, _) ->
+    | PairFilter (Include, StringOp (ContainsString keys), _) ->
         IncludePairGroupContainsString keys
-    | PairFilter (Include, BeginsWithString keys, _) ->
+    | PairFilter (Include, StringOp (BeginsWithString keys), _) ->
         IncludePairGroupBeginsWithString keys
-    | PairFilter (Include, EndsWithString keys, _) ->
+    | PairFilter (Include, StringOp (EndsWithString keys), _) ->
         IncludePairGroupEndsWithString keys
-    | PairFilter (Exclude, ExactString key, _) ->
+    | PairFilter (Exclude, StringOp (ExactString key), _) ->
         ExcludePairGroupExactString key
-    | PairFilter (Exclude, ContainsString keys, _) ->
+    | PairFilter (Exclude, StringOp (ContainsString keys), _) ->
         ExcludePairGroupContainsString keys
-    | PairFilter (Exclude, BeginsWithString keys, _) ->
+    | PairFilter (Exclude, StringOp (BeginsWithString keys), _) ->
         ExcludePairGroupBeginsWithString keys
-    | PairFilter (Exclude, EndsWithString keys, _) ->
+    | PairFilter (Exclude, StringOp (EndsWithString keys), _) ->
         ExcludePairGroupEndsWithString keys
+    | PairFilter (Include, NumberOp (ExactNumber num), _) ->
+        IncludePairGroupExactNumber num
+    | PairFilter (Include, NumberOp (LessThanNumber num), _) ->
+        IncludePairGroupLessThanNumber num
+    | PairFilter (Include, NumberOp (GreaterThanNumber num), _) ->
+        IncludePairGroupGreaterThanNumber num
+    | PairFilter (Include, NumberOp (BetweeNumber (bottom, top)), _) ->
+        IncludePairGroupBetweenNumber (bottom, top)
+    | PairFilter (Exclude, NumberOp (ExactNumber num), _) ->
+        ExcludePairGroupExactNumber num
+    | PairFilter (Exclude, NumberOp (LessThanNumber num), _) ->
+        ExcludePairGroupLessThanNumber num
+    | PairFilter (Exclude, NumberOp (GreaterThanNumber num), _) ->
+        ExcludePairGroupGreaterThanNumber num
+    | PairFilter (Exclude, NumberOp (BetweeNumber (bottom, top)), _) ->
+        ExcludePairGroupBetweenNumber (bottom, top)
   in
   let category_a = categorize a in
   let category_b = categorize b in
   equal equal_fun category_a category_b
-(* constrain 'a to have equal *)
 
 let group ~fn lst =
   let rec grouping acc = function
