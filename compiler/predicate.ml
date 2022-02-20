@@ -1,17 +1,14 @@
-type 'a key = [ `Key of 'a ]
+type 'a key = [ `Key of [ `String of 'a ] ]
 type 'a value = [ `Value of [ `String of 'a ] ]
 type 'a pair = [ `Pair of 'a key * 'a value ]
 
 let invert = Bool.not
+let key_match_operation ~match_fun op (`Key k : 'a key) : bool = match_fun k op
 
-let key_match_operation ~match_fun op (`Key str : 'a key) : bool =
-  match_fun str op
+let value_match_operation ~match_fun op (`Value v : 'a value) : bool =
+  match_fun v op
 
-let value_match_operation ~match_fun op (`Value (`String str) : 'a value) : bool
-    =
-  match_fun str op
-
-let filter_to_predicate ~match_fun (ast : 'a Ast.t) (pair : 'a pair) =
+let filter_to_predicate ~match_fun ast pair =
   let open Ast in
   let (`Pair (_, value)) = pair in
   let (`Pair (key, _)) = pair in
@@ -31,4 +28,4 @@ let filter_to_predicate ~match_fun (ast : 'a Ast.t) (pair : 'a pair) =
       | false -> true
       | true -> invert @@ value_match_operation ~match_fun value_match_op value)
 
-let pair_of_strings k v = `Pair (`Key k, `Value (`String v))
+let pair_of_strings k v = `Pair (`Key (`String k), `Value (`String v))

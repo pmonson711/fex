@@ -1,9 +1,9 @@
 open Cmdliner
 
-let sprint_key (`Pair (`Key key, `Value (`String _value))) =
+let sprint_key (`Pair (`Key (`String key), `Value (`String _value))) =
   Printf.printf "%s|" key
 
-let sprint_pair (`Pair (`Key _key, `Value (`String value))) =
+let sprint_pair (`Pair (`Key (`String _key), `Value (`String value))) =
   Printf.printf "%s|" value
 
 let fex_record_op fex json =

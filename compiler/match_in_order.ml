@@ -31,7 +31,7 @@ let ends_with_in_order ~subs to_check =
     (CCString.rev to_check)
 
 let string_match_operation (from_input : string)
-    (ast : string Ast.match_operation) : bool =
+    (ast : string Ast.string_match_operation) : bool =
   let open CCString in
   match ast with
   | ExactString expected ->
@@ -50,6 +50,11 @@ let string_match_operation (from_input : string)
       ends_with_in_order
         ~subs:(List.map String.lowercase_ascii subs)
         (String.lowercase_ascii from_input)
+
+let match_operation (typed_from_input : string Ast.match_type)
+    (op : string Ast.match_operation) : bool =
+  match typed_from_input with
+  | `String s -> string_match_operation s (Ast.string_op_of_op op)
 
 module T = struct
   type t = string [@@deriving show]

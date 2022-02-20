@@ -18,7 +18,7 @@ end
 type t = [ `Pair of key * value ] [@@deriving show, eq]
 (** Tagged pair of keys and values *)
 
-and key = [ `Key of string ] [@@deriving show, eq]
+and key = [ `Key of [ `String of string ] ] [@@deriving show, eq]
 (** Tagged string to represent a key in a key-value pair *)
 
 and value = [ `Value of JsonPrimatives.t ] [@@deriving show, eq]
@@ -28,7 +28,7 @@ module StringPair : sig
   type t = [ `Pair of key * value ] [@@deriving show, eq]
   (** Tagged pair of keys and values *)
 
-  and key = [ `Key of string ] [@@deriving show, eq]
+  and key = [ `Key of [ `String of string ] ] [@@deriving show, eq]
   (** Tagged string to represent a key in a key-value pair *)
 
   and value = [ `Value of [ `String of string ] ] [@@deriving show, eq]
