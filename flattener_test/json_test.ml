@@ -14,20 +14,20 @@ let flatten_test expected from_input =
 let primitives () =
   let open Fex_flattener__Pair in
   let make_test expected from_input =
-    flatten_test [ of_strings "" expected ] from_input
+    flatten_test [ of_json_primatives "" expected ] from_input
   in
-  make_test "a" @@ `String "a" ;
-  make_test "" `Null ;
-  make_test "true" @@ `Bool true ;
-  make_test "false" @@ `Bool false ;
-  make_test "1" @@ `Int 1 ;
-  make_test "1" @@ `Intlit "1" ;
-  make_test "1.1" @@ `Float 1.1
+  make_test (`String "a") @@ `String "a" ;
+  make_test (`String "") `Null ;
+  make_test (`String "true") @@ `Bool true ;
+  make_test (`String "false") @@ `Bool false ;
+  make_test (`String "1") @@ `String "1" ;
+  make_test (`Int 1) @@ `Int 1 ;
+  make_test (`Float 1.1) @@ `Float 1.1
 
 let l1_composite () =
   let open Fex_flattener__Pair in
   let make_test expected_key expected_value from_input =
-    flatten_test [ of_strings expected_key expected_value ] from_input
+    flatten_test [ of_string expected_key expected_value ] from_input
   in
   make_test "key" "value" @@ `Assoc [ ("key", `String "value") ] ;
   make_test "l1.l2" "value"
@@ -48,14 +48,22 @@ let empty_composite () =
 let l2_composite () =
   let open Fex_flattener__Pair in
   let make_test expected input =
-    flatten_test (List.map (fun (k, v) -> of_strings k v) expected)
+    flatten_test (List.map (fun (k, v) -> of_json_primatives k v) expected)
     @@ Yojson.Safe.from_string input
   in
-  make_test [ ("l1.1", "a") ] {|{"l1": ["a"]}|} ;
-  make_test [ ("l1.1", "a"); ("l1.2", "b") ] {|{"l1": ["a","b"]}|} ;
-  make_test [ ("l1.a.1", "a"); ("l1.a.2", "b") ] {|{"l1": {"a":["a","b"]}}|} ;
+  make_test [ ("l1.1", `String "a") ] {|{"l1": ["a"]}|} ;
   make_test
-    [ ("1.a", "b"); ("2", "d"); ("3", "1"); ("4", "2.3") ]
+    [ ("l1.1", `String "a"); ("l1.2", `String "b") ]
+    {|{"l1": ["a","b"]}|} ;
+  make_test
+    [ ("l1.a.1", `String "a"); ("l1.a.2", `String "b") ]
+    {|{"l1": {"a":["a","b"]}}|} ;
+  make_test
+    [ ("1.a", `String "b")
+    ; ("2", `String "d")
+    ; ("3", `Int 1)
+    ; ("4", `Float 2.3)
+    ]
     {|[{"a": "b"}, "d", 1, 2.3]|}
 
 let suite =

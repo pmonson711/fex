@@ -3,7 +3,11 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type 'a match_type = [ `String of 'a ]
+type 'a match_type =
+  [ `String of 'a
+  | `Int of int
+  | `Float of float
+  ]
 
 module Number = struct
   type t = int * float option [@@deriving show, eq, ord]
@@ -46,11 +50,8 @@ type 'a t =
 let exc = Exclude
 let inc = Include
 let string_op op = StringOp op
-
-let string_op_of_op = function
-  | StringOp op -> op
-  | NumberOp _ -> failwith "Attempted to get StringOp for NumberOp"
-
+let string_op_of_op = function StringOp op -> Some op | NumberOp _ -> None
+let number_op_of_op = function StringOp _ -> None | NumberOp op -> Some op
 let exact str = string_op (ExactString str)
 let contains_in_order lst = string_op (ContainsString lst)
 let contains str = contains_in_order [ str ]
@@ -82,3 +83,4 @@ let is_exclude = function
 
 let number_of_int = Number.of_int
 let number_of_float = Number.of_float
+let number_comp = Number.compare

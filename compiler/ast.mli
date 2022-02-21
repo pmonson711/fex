@@ -16,7 +16,12 @@ type match_operation_result =
 [@@deriving show, eq]
 
 type number = int * float option [@@deriving show, eq, ord]
-type 'a match_type = [ `String of 'a ]
+
+type 'a match_type =
+  [ `String of 'a
+  | `Int of int
+  | `Float of float
+  ]
 
 (** The type of operation to use in the the filter *)
 type 'a string_match_operation =
@@ -116,4 +121,6 @@ val is_include : 'a t -> bool
 
 val number_of_int : int -> number
 val number_of_float : float -> number
-val string_op_of_op : 'a match_operation -> 'a string_match_operation
+val string_op_of_op : 'a match_operation -> 'a string_match_operation option
+val number_op_of_op : 'a match_operation -> number_match_operation option
+val number_comp : number -> number -> int

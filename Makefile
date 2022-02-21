@@ -39,7 +39,7 @@ install:
 
 .PHONY: test
 test:
-	@dune runtest
+	@dune runtest --force
 
 .PHONY: watch-test
 watch-test:
