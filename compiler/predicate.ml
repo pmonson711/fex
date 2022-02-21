@@ -1,9 +1,19 @@
+type 'a match_type =
+  [ `String of 'a
+  | `Int of int
+  | `Float of float
+  ]
+
 type 'a key = [ `Key of [ `String of 'a ] ]
-type 'a value = [ `Value of [ `String of 'a ] ]
+type 'a value = [ `Value of 'a match_type ]
 type 'a pair = [ `Pair of 'a key * 'a value ]
 
 let invert = Bool.not
-let key_match_operation ~match_fun op (`Key k : 'a key) : bool = match_fun k op
+let match_operation ~match_fun op (m : 'a match_type) : bool = match_fun m op
+let match_type_of_string str : 'a match_type = `String str
+
+let key_match_operation ~match_fun op (`Key (`String k) : 'a key) : bool =
+  match_operation ~match_fun op @@ match_type_of_string k
 
 let value_match_operation ~match_fun op (`Value v : 'a value) : bool =
   match_fun v op

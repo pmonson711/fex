@@ -38,12 +38,12 @@ let rec pair_from_json' ~prefix (json : JSON.t) : pairs =
     |> List.flatten
   in
   match json with
-  | `Null -> [ Pair.of_strings prefix "" ]
-  | `Bool b -> [ Pair.of_strings prefix @@ string_of_bool b ]
-  | `Int i -> [ Pair.of_strings prefix @@ string_of_int i ]
-  | `Intlit s -> [ Pair.of_strings prefix @@ s ]
-  | `Float f -> [ Pair.of_strings prefix @@ string_of_float f ]
-  | `String s -> [ Pair.of_strings prefix @@ s ]
+  | `Null -> [ Pair.of_string prefix "" ]
+  | `Bool b -> [ Pair.of_string prefix @@ string_of_bool b ]
+  | `Int i -> [ Pair.of_int prefix i ]
+  | `Intlit s -> [ Pair.of_string prefix @@ s ]
+  | `Float f -> [ Pair.of_float prefix f ]
+  | `String s -> [ Pair.of_string prefix @@ s ]
   | `Assoc l -> pair_list_of_json_assoc l
   | `List l -> pair_list_of_json_list l
   | `Tuple l -> pair_list_of_json_list l

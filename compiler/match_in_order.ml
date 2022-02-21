@@ -31,9 +31,9 @@ let ends_with_in_order ~subs to_check =
     (CCString.rev to_check)
 
 let string_match_operation (from_input : string)
-    (ast : string Ast.string_match_operation) : bool =
+    (match_op : string Ast.string_match_operation) : bool =
   let open CCString in
-  match ast with
+  match match_op with
   | ExactString expected ->
       equal
         (String.lowercase_ascii from_input)
@@ -51,10 +51,29 @@ let string_match_operation (from_input : string)
         ~subs:(List.map String.lowercase_ascii subs)
         (String.lowercase_ascii from_input)
 
+let number_match_operation (from_input : Ast.number)
+    (match_op : Ast.number_match_operation) : bool =
+  match match_op with
+  | ExactNumber expected -> Ast.number_comp from_input expected == 0
+  | Ast.LessThanNumber lower -> Ast.number_comp lower from_input == 1 (* TODO *)
+  | Ast.GreaterThanNumber upper ->
+      Ast.number_comp upper from_input == 1 (* TODO *)
+  | Ast.BetweeNumber (lower, upper) ->
+      Ast.number_comp upper from_input == 1 (* TODO *)
+      && Ast.number_comp lower from_input == 1
+
 let match_operation (typed_from_input : string Ast.match_type)
     (op : string Ast.match_operation) : bool =
   match typed_from_input with
-  | `String s -> string_match_operation s (Ast.string_op_of_op op)
+  | `String s -> string_match_operation s (Option.get @@ Ast.string_op_of_op op)
+  | `Int i -> (
+      match Ast.number_op_of_op op with
+      | Some num_op -> number_match_operation (Ast.number_of_int i) num_op
+      | None -> false)
+  | `Float f -> (
+      match Ast.number_op_of_op op with
+      | Some num_op -> number_match_operation (Ast.number_of_float f) num_op
+      | None -> false)
 
 module T = struct
   type t = string [@@deriving show]

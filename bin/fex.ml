@@ -1,10 +1,12 @@
 open Cmdliner
 
-let sprint_key (`Pair (`Key (`String key), `Value (`String _value))) =
-  Printf.printf "%s|" key
+let sprint_value = function
+  | `String value -> Printf.printf "%s|" value
+  | `Int value -> Printf.printf "%d|" value
+  | `Float value -> Printf.printf "%f|" value
 
-let sprint_pair (`Pair (`Key (`String _key), `Value (`String value))) =
-  Printf.printf "%s|" value
+let sprint_key (`Pair (`Key key, _value)) = sprint_value key
+let sprint_pair (`Pair (_key, `Value value)) = sprint_value value
 
 let fex_record_op fex json =
   let list_of_pairs =
@@ -15,9 +17,15 @@ let fex_record_op fex json =
         exit 124
   in
   let print_for_pairs filter_lst pairs =
-    if Fex_compiler.apply_list_filter_for_pairs filter_lst pairs then (
-      List.iter sprint_pair pairs ;
-      print_newline ())
+    if Fex_compiler.apply_list_filter_for_pairs filter_lst pairs then
+      try
+        List.iter sprint_pair pairs ;
+        print_newline ()
+      with
+      | Invalid_argument a ->
+          print_endline a ;
+          print_endline "fuck off"
+      | _ -> print_endline "shit"
   in
   let _ =
     list_of_pairs |> List.hd |> List.iter sprint_key ;

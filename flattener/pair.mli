@@ -31,7 +31,9 @@ module StringPair : sig
   and key = [ `Key of [ `String of string ] ] [@@deriving show, eq]
   (** Tagged string to represent a key in a key-value pair *)
 
-  and value = [ `Value of [ `String of string ] ] [@@deriving show, eq]
+  and value =
+    [ `Value of [ `String of string | `Int of int | `Float of float ] ]
+  [@@deriving show, eq]
   (** Tagged string to represent a value in a key-value pair *)
 end
 
@@ -46,8 +48,19 @@ val key_of_string : string -> key
 val value_of_string : string -> StringPair.value
 (** [value_of_string v] Build a value from a string with the value of [v] *)
 
-val of_strings : string -> string -> StringPair.t
+val of_string : string -> string -> StringPair.t
 (** [of_strings k v] Build a pair from k and v such that the key is [k] and the value is [v] *)
+
+val of_int : string -> int -> StringPair.t
+(** [of_strings k v] Build a pair from k and v such that the key is [k] and the value is [v] *)
+
+val of_float : string -> float -> StringPair.t
+(** [of_strings k v] Build a pair from k and v such that the key is [k] and the value is [v] *)
+
+val of_json_primatives :
+     string
+  -> [ `String of string | `Int of int | `Float of float ]
+  -> StringPair.t
 
 (** {1 Converters} *)
 
