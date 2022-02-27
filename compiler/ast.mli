@@ -101,6 +101,19 @@ val contains_pair : ?op:match_operation_result -> 'a -> 'a -> 'a t
 val contains_value : ?op:match_operation_result -> 'a -> 'a t
 (** [contains_value ?result v] Contains a value of v *)
 
+val exact_of_int : int -> 'a match_operation
+val exact_of_float : float -> 'a match_operation
+val exact_of_num : number -> 'a match_operation
+val less_than_of_int : int -> 'a match_operation
+val less_than_of_float : float -> 'a match_operation
+val less_than : number -> 'a match_operation
+val greater_than_of_int : int -> 'a match_operation
+val greater_than_of_float : float -> 'a match_operation
+val greater_than : number -> 'a match_operation
+val between_of_int : int -> int -> 'a match_operation
+val between_of_float : float -> float -> 'a match_operation
+val between : number -> number -> 'a match_operation
+
 (** {2 Ast helpers} *)
 
 val pair_filter :

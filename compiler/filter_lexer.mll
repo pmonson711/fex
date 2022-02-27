@@ -12,7 +12,10 @@ let next_line lexbuf =
     }
 }
 
-let str = [^ ':' '-' '+' ',' '\'' '"' '.' ' ']+
+let digit = ['0'-'9']
+let str_one = [^ ':' '-' '+' ',' '\'' '"' '.' ' ' '<' '>' '=']
+let str_rest = [^ ':' ',' '\'' '"' '.' ' ']
+let str = str_one str_rest*
 let whitespace = [' ' '\t']+
 let ws = [' ' '\t']*
 let newline = '\r' | '\n' | "\r\n"
@@ -21,18 +24,24 @@ rule read_tokens =
   parse
   | whitespace { SPACE }
   | newline    { next_line lexbuf; read_tokens lexbuf }
-  | ws ':'        { COLON }
-  | ws ','        { COMMA }
-  | ws '-'        { MINUS }
-  | ws '+'        { PLUS }
+  | ws ':'     { COLON }
+  | ws ','     { COMMA }
+  | ws '-'     { MINUS }
+  | ws '+'     { PLUS }
+  | ws '='     { EQUAL }
+  | ws '<'     { L_ANGLE }
+  | ws '>'     { R_ANGLE }
   | '.' '.'+   { DOTDOT }
-  | '\''       { read_string (Buffer.create 17) lexbuf }
-  | '"'        { read_string2 (Buffer.create 17) lexbuf }
+  | digit+     { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
+  | digit+ '.' digit+ 
+               { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
+  | '\''       { read_string (Buffer.create 1) lexbuf }
+  | '"'        { read_string2 (Buffer.create 1) lexbuf }
   | str        { STRING (Lexing.lexeme lexbuf |> String.trim) }
-  | (str+ '.'? str+)+
+  | (str '.' str_rest)+
                { STRING (Lexing.lexeme lexbuf |> String.trim) }
   | _          { raise (SyntaxError ("Unexpected char: " ^ Lexing.lexeme lexbuf)) }
-  | ws eof        { EOF }
+  | ws eof     { EOF }
 
 and read_string buf =
   parse
