@@ -32,8 +32,9 @@ rule read_tokens =
   | ws '<'     { L_ANGLE }
   | ws '>'     { R_ANGLE }
   | '.' '.'+   { DOTDOT }
-  | digit+     { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
-  | digit+ '.' digit+ 
+  | ws '-'? digit+ 
+               { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
+  | ws '-'? digit+ '.' digit+ 
                { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
   | '\''       { read_string (Buffer.create 1) lexbuf }
   | '"'        { read_string2 (Buffer.create 1) lexbuf }
