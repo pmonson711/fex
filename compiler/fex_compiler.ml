@@ -63,10 +63,6 @@ let filter_from_channel ic = ic |> Lexing.from_channel |> parse_from
 let filter_from_file filename = filename |> open_in |> filter_from_channel
 let pair_of_strings = Predicate.pair_of_strings
 
-(* let equal_fun (`String a : string Ast.match_type) *)
-(*     (`String b : string Ast.match_type) = *)
-(*   CCString.equal a b *)
-
 let apply_filter =
   Predicate.filter_to_predicate ~match_fun:Match_in_order.match_operation
 

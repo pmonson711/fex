@@ -84,3 +84,18 @@ let is_exclude = function
 let number_of_int = Number.of_int
 let number_of_float = Number.of_float
 let number_comp = Number.compare
+let number_op op = NumberOp op
+let exact_of_num num = number_op (ExactNumber num)
+let exact_of_int num = num |> number_of_int |> exact_of_num
+let exact_of_float num = num |> number_of_float |> exact_of_num
+let less_than num = number_op (LessThanNumber num)
+let less_than_of_int num = num |> number_of_int |> less_than
+let less_than_of_float num = num |> number_of_float |> less_than
+let greater_than num = number_op (GreaterThanNumber num)
+let greater_than_of_int num = num |> number_of_int |> greater_than
+let greater_than_of_float num = num |> number_of_float |> greater_than
+let between low high = number_op (BetweeNumber (low, high))
+let between_of_int low high = between (number_of_int low) (number_of_int high)
+
+let between_of_float low high =
+  between (number_of_float low) (number_of_float high)
