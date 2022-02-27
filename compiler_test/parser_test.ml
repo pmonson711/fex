@@ -210,6 +210,74 @@ let key_string_test () =
   make_test ~op:begins_with {|value"|} {|'value"'..|} ;
   make_test ~op:contains {|value"|} {|..'value"'..|}
 
+let int_value_number_test () =
+  let open Fex_compiler.Ast in
+  let make_test op expected input =
+    parse_single_test
+      ("quoted value is expected [" ^ string_of_int expected ^ "]")
+      (value_filter inc @@ op expected)
+      input
+  in
+  make_test greater_than_of_int 5 {|:> 5|} ;
+  make_test less_than_of_int 10 {|:< 10|} ;
+  make_test greater_than_of_int (-10) {|:> -10|} ;
+  make_test less_than_of_int (-15) {|:< -15|} ;
+  make_test greater_than_of_int 5 {|:>5|} ;
+  make_test less_than_of_int 10 {|:<10|} ;
+  make_test greater_than_of_int (-10) {|:>-10|} ;
+  make_test less_than_of_int (-15) {|:<-15|}
+
+let int_value_number_betwween_test () =
+  let open Fex_compiler.Ast in
+  let make_test op expected1 expected2 input =
+    parse_single_test
+      ("quoted value is expected [" ^ string_of_int expected1 ^ ", "
+     ^ string_of_int expected2 ^ "]")
+      (value_filter inc @@ op expected1 expected2)
+      input
+  in
+  make_test between_of_int 1 10 ":1..10" ;
+  make_test between_of_int (-1) 10 ":-1..10" ;
+  make_test between_of_int (-1) (-10) ":-1..-10"
+
+let float_value_number_betwween_test () =
+  let open Fex_compiler.Ast in
+  let make_test op expected1 expected2 input =
+    parse_single_test
+      ("quoted value is expected [" ^ string_of_float expected1 ^ ", "
+     ^ string_of_float expected2 ^ "]")
+      (value_filter inc @@ op expected1 expected2)
+      input
+  in
+  make_test between_of_float 1. 10.01 ":1..10.01" ;
+  make_test between_of_float (-1.01) 10. ":-1.01..10" ;
+  make_test between_of_float (-1.01) (-10.01) ":-1.01..-10.01"
+
+let float_value_number_test () =
+  let open Fex_compiler.Ast in
+  let make_test op expected input =
+    parse_single_test
+      ("quoted value is expected [" ^ string_of_float expected ^ "]")
+      (value_filter inc @@ op expected)
+      input
+  in
+  make_test greater_than_of_float 5. {|:> 5|} ;
+  make_test greater_than_of_float 5. {|:> 5.0|} ;
+  make_test greater_than_of_float 5.1 {|:> 5.1|} ;
+  make_test less_than_of_float 10. {|:< 10|} ;
+  make_test less_than_of_float 10. {|:< 10.0|} ;
+  make_test less_than_of_float 10.2 {|:< 10.2|} ;
+  make_test greater_than_of_float (-10.) {|:> -10|} ;
+  make_test greater_than_of_float (-10.) {|:> -10.0|} ;
+  make_test greater_than_of_float (-10.3) {|:> -10.3|} ;
+  make_test less_than_of_float (-15.) {|:< -15|} ;
+  make_test less_than_of_float (-15.) {|:< -15.0|} ;
+  make_test less_than_of_float (-15.4) {|:< -15.4|} ;
+  make_test greater_than_of_float 5. {|:>5|} ;
+  make_test less_than_of_float 10. {|:<10|} ;
+  make_test greater_than_of_float (-10.) {|:>-10|} ;
+  make_test less_than_of_float (-15.) {|:<-15|}
+
 let suite =
   let open Alcotest in
   ( test_name
@@ -224,4 +292,9 @@ let suite =
     ; test_case "Begins with" `Quick value_only_begins_with
     ; test_case "Ends with" `Quick value_only_ends_with
     ; test_case "String tests" `Quick key_string_test
+    ; test_case "Int Number tests" `Quick int_value_number_test
+    ; test_case "Int Between Number tests" `Quick int_value_number_betwween_test
+    ; test_case "Float Number tests" `Quick float_value_number_test
+    ; test_case "Float Between Number tests" `Quick
+        float_value_number_betwween_test
     ] )
