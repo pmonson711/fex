@@ -7,7 +7,9 @@ let match_in_order_acc ~comp ~subs:sub_list to_check =
     | _, idx ->
         let found = find ~start:idx ~sub:to_find to_check in
         let is_found = comp found idx in
-        let next_idx = if is_found then found + length to_find else idx in
+        let next_idx =
+          if is_found then found + length to_find else idx + length to_find
+        in
         (is_found, next_idx)
   in
   List.fold_left is_in_order init_acc sub_list
