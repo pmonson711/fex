@@ -55,17 +55,19 @@ let number_match_operation (from_input : Ast.number)
     (match_op : Ast.number_match_operation) : bool =
   match match_op with
   | ExactNumber expected -> Ast.number_comp from_input expected == 0
-  | Ast.LessThanNumber lower -> Ast.number_comp lower from_input == 1 (* TODO *)
-  | Ast.GreaterThanNumber upper ->
-      Ast.number_comp upper from_input == 1 (* TODO *)
+  | Ast.LessThanNumber lower -> Ast.number_comp lower from_input == 1
+  | Ast.GreaterThanNumber upper -> Ast.number_comp from_input upper == 1
   | Ast.BetweeNumber (lower, upper) ->
-      Ast.number_comp upper from_input == 1 (* TODO *)
-      && Ast.number_comp lower from_input == 1
+      Ast.number_comp from_input upper == -1
+      && Ast.number_comp lower from_input == -1
 
 let match_operation (typed_from_input : string Ast.match_type)
     (op : string Ast.match_operation) : bool =
   match typed_from_input with
-  | `String s -> string_match_operation s (Option.get @@ Ast.string_op_of_op op)
+  | `String s -> (
+      match Ast.string_op_of_op op with
+      | Some string_op -> string_match_operation s string_op
+      | None -> false)
   | `Int i -> (
       match Ast.number_op_of_op op with
       | Some num_op -> number_match_operation (Ast.number_of_int i) num_op
