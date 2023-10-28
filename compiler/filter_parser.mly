@@ -44,8 +44,8 @@ number_value_term:
   | "<"; f= number;             { Ast.less_than_of_float f }
   | ">"; f= number;             { Ast.greater_than_of_float f }
   | "="; f= number;             { Ast.exact_of_float f }
-  | l= number; " "*; ".."; h= number 
-                                      { Ast.between_of_float l h }
+  | l= number; " "*; ".."; h= number
+                                { Ast.between_of_float l h }
 
 %inline value_term:
   | " "*; term= standard_term         { term }
