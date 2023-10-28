@@ -29,7 +29,7 @@
              Show version information.
   
   EXIT STATUS
-         fex exits with the following status:
+         fex exits with:
   
          0   on success.
   
