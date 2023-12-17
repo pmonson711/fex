@@ -1,22 +1,14 @@
 OPAM_SWITCH_VER=5.0.0
-RELEASE_NAME!=git describe --tags --always --abbrev=7
-RELEASE_NAME ?= $(shell git describe --tags --always --abbrev=7)
+RELEASE_NAME!=git describe --tags --always --dirty --abbrev=7
+RELEASE_NAME ?= $(shell git describe --tags --always --dirty --abbrev=7)
 
 .PHONY: build
 build: deps
 	@opam exec -- dune build @all -j8
 
-.PHONY: build-js
-build-js:
-	@opam exec -- dune build fex_js/fex.bc.js --profile=release -j8
-
 .PHONY: watch
 watch:
 	@opam exec -- dune build @all --watch -j8
-
-.PHONY: build-js
-watch-js:
-	@opam exec -- dune build fex_js/fex.bc.js --profile=release -w -j8
 
 .PHONY: test
 test:
