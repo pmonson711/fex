@@ -12,17 +12,13 @@ bug-reports: "https://github.com/pmonson711/fex/issues"
 depends: [
   "dune" {>= "2.7" & >= "2.5"}
   "ocaml" {>= "4.08"}
-  "js_of_ocaml-compiler" {>= "3.7"}
-  "js_of_ocaml-ppx" {>= "3.7"}
   "cmdliner" {>= "0.9"}
   "bos" {>= "0.2"}
-  "brr" {>= "0.0.1"}
   "containers" {>= "3.2"}
   "menhir" {>= "20200624"}
   "yojson" {>= "1.7.0"}
   "ppx_deriving" {>= "4.4"}
   "alcotest" {with-test & >= "1.1"}
-  "merlin" {dev}
   "ocamlformat" {dev}
   "ocp-indent" {dev}
   "ocp-index" {dev}

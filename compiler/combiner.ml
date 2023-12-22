@@ -51,7 +51,7 @@ let group_as ~equal_fun a b =
         IncludePairGroupLessThanNumber num
     | PairFilter (Include, NumberOp (GreaterThanNumber num), _) ->
         IncludePairGroupGreaterThanNumber num
-    | PairFilter (Include, NumberOp (BetweeNumber (bottom, top)), _) ->
+    | PairFilter (Include, NumberOp (BetweenNumber (bottom, top)), _) ->
         IncludePairGroupBetweenNumber (bottom, top)
     | PairFilter (Exclude, NumberOp (ExactNumber num), _) ->
         ExcludePairGroupExactNumber num
@@ -59,7 +59,7 @@ let group_as ~equal_fun a b =
         ExcludePairGroupLessThanNumber num
     | PairFilter (Exclude, NumberOp (GreaterThanNumber num), _) ->
         ExcludePairGroupGreaterThanNumber num
-    | PairFilter (Exclude, NumberOp (BetweeNumber (bottom, top)), _) ->
+    | PairFilter (Exclude, NumberOp (BetweenNumber (bottom, top)), _) ->
         ExcludePairGroupBetweenNumber (bottom, top)
   in
   let category_a = categorize a in

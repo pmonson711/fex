@@ -1,6 +1,5 @@
 (lang dune 2.7)
 (using menhir 2.0)
-(explicit_js_mode)
 (cram enable)
 (name fex)
 
@@ -22,12 +21,9 @@
   (depends
     (dune (>= 2.5))
     (ocaml (>= 4.08))
-    (js_of_ocaml-compiler (>= 3.7))
-    (js_of_ocaml-ppx (>= 3.7))
 
     (cmdliner (>= 0.9))
     (bos (>= 0.2))
-    (brr (>= 0.0.1))
     (containers (>= 3.2))
     (menhir (>= 20200624))
     (yojson (>= 1.7.0))
@@ -36,7 +32,6 @@
     ;; Testing
     (alcotest (and :with-test (>= 1.1)))
 
-    (merlin :dev)
     (ocamlformat :dev)
     (ocp-indent :dev)
     (ocp-index :dev)

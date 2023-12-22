@@ -15,7 +15,7 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type number = int * float option [@@deriving show, eq, ord]
+type number = string * int * float option [@@deriving show, eq, ord]
 
 type 'a match_type =
   [ `String of 'a
@@ -35,7 +35,7 @@ type number_match_operation =
   | ExactNumber of number
   | LessThanNumber of number
   | GreaterThanNumber of number
-  | BetweeNumber of number * number
+  | BetweenNumber of number * number
 [@@deriving show, eq]
 
 type 'a match_operation =
@@ -103,15 +103,19 @@ val contains_value : ?op:match_operation_result -> 'a -> 'a t
 
 val exact_of_int : int -> 'a match_operation
 val exact_of_float : float -> 'a match_operation
+val exact_of_string : string -> 'a match_operation
 val exact_of_num : number -> 'a match_operation
 val less_than_of_int : int -> 'a match_operation
 val less_than_of_float : float -> 'a match_operation
+val less_than_of_string : string -> 'a match_operation
 val less_than : number -> 'a match_operation
 val greater_than_of_int : int -> 'a match_operation
 val greater_than_of_float : float -> 'a match_operation
+val greater_than_of_string : string -> 'a match_operation
 val greater_than : number -> 'a match_operation
 val between_of_int : int -> int -> 'a match_operation
 val between_of_float : float -> float -> 'a match_operation
+val between_of_string : string -> string -> 'a match_operation
 val between : number -> number -> 'a match_operation
 
 (** {2 Ast helpers} *)
@@ -134,6 +138,7 @@ val is_include : 'a t -> bool
 
 val number_of_int : int -> number
 val number_of_float : float -> number
+val number_of_string : string -> number
 val string_op_of_op : 'a match_operation -> 'a string_match_operation option
 val number_op_of_op : 'a match_operation -> number_match_operation option
 val number_comp : number -> number -> int

@@ -1,7 +1,7 @@
 ---
 name: Main workflow
 
-on:
+"on":
   - pull_request
 
 jobs:
@@ -33,9 +33,3 @@ jobs:
       - run: opam exec -- dune runtest --instrument-with bisect_ppx --force
 
       - run: opam exec -- bisect-ppx-report summary --per-file
-
-      - name: Upload the build artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.os }}-${{ matrix.ocaml-version }}-fex.exe
-          path: _build/default/bin/fex.exe

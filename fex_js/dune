@@ -1,6 +1,0 @@
-(executable
- (modes js)
- (name fex)
- (libraries js_of_ocaml fex.compiler brr fex.flattener yojson)
- (preprocess
-  (pps js_of_ocaml-ppx)))
