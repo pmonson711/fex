@@ -22,8 +22,6 @@ op_result:
 %inline string_list:
   | values= separated_nonempty_list(" ", STRING) 
                                       { values }
-  | f= FLOAT; values= separated_nonempty_list(" ", STRING) 
-                                      { (string_of_float f) :: values }
 
 %inline q_string_list:
   | values= separated_nonempty_list(" ", Q_STRING) { values }
@@ -40,12 +38,11 @@ standard_term:
 number:
   | f= FLOAT                          { f }
 
-number_value_term:
-  | "<"; f= number;             { Ast.less_than_of_float f }
-  | ">"; f= number;             { Ast.greater_than_of_float f }
-  | "="; f= number;             { Ast.exact_of_float f }
-  | l= number; " "*; ".."; h= number 
-                                      { Ast.between_of_float l h }
+number_value_term: (* The operator needs to be managed differently and moved into the term clause, it makes me wonder if we want a seperate value lexer clause to deal with this? *)
+  | "<"; f= number;                   { Ast.less_than_of_float f } (* should maybe be the Number.t here? *)
+  | ">"; f= number;                   { Ast.greater_than_of_float f }
+  | "="; f= number;                   { Ast.exact_of_float f }
+  | l= number; " "*; ".."; h= number  { Ast.between_of_float l h } 
 
 %inline value_term:
   | " "*; term= standard_term         { term }

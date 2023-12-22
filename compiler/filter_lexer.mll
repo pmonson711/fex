@@ -55,7 +55,7 @@ and read_string buf =
     { Buffer.add_string buf (Lexing.lexeme lexbuf);
       read_string buf lexbuf }
   | _          { raise (SyntaxError ("Illegal string character: " ^ Lexing.lexeme lexbuf)) }
-  | eof        { raise (SyntaxError ("String is not terminated")) }
+  | eof        { STRING ("'" ^ Buffer.contents buf) }
 
 and read_string2 buf =
   parse
@@ -68,4 +68,4 @@ and read_string2 buf =
     { Buffer.add_string buf (Lexing.lexeme lexbuf);
       read_string2 buf lexbuf }
   | _          { raise (SyntaxError ("Illegal string character: " ^ Lexing.lexeme lexbuf)) }
-  | eof        { raise (SyntaxError ("String is not terminated")) }
+  | eof        { STRING ("\"" ^ Buffer.contents buf) }

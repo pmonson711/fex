@@ -35,7 +35,7 @@ clean:
 
 .PHONY: create-switch
 create-switch: _opam/.opam-switch/config/ocaml.config
-	@echo "current switch: $$(opam switch show)"
+	@echo "current switch: $$(opam switch show) $(RELEASE_NAME)"
 
 .PHONY: setup
 setup: create-switch
@@ -52,4 +52,4 @@ deps: create-switch
 	fi;
 
 _opam/.opam-switch/config/ocaml.config:
-	-opam switch create . ${OPAM_SWITCH_VER} --deps-only --yes 2>>/dev/null
+	-opam switch create . ${OPAM_SWITCH_VER} --deps-only --with-test --locked --yes 2>>/dev/null
