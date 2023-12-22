@@ -31,11 +31,11 @@ rule read_tokens =
   | ws '='     { EQUAL }
   | ws '<'     { L_ANGLE }
   | ws '>'     { R_ANGLE }
-  | '.' '.'+   { DOTDOT }
+  | ws '.' '.'+ ws { DOTDOT }
   | ws '-'? digit+ 
-               { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
+               { NUMBER (Lexing.lexeme lexbuf) }
   | ws '-'? digit+ '.' digit+ 
-               { FLOAT (Lexing.lexeme lexbuf |> float_of_string) }
+               { NUMBER (Lexing.lexeme lexbuf) }
   | '\''       { read_string (Buffer.create 1) lexbuf }
   | '"'        { read_string2 (Buffer.create 1) lexbuf }
   | str        { STRING (Lexing.lexeme lexbuf |> String.trim) }

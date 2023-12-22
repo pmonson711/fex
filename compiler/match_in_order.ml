@@ -57,7 +57,7 @@ let number_match_operation (from_input : Ast.number)
   | ExactNumber expected -> Ast.number_comp from_input expected == 0
   | Ast.LessThanNumber lower -> Ast.number_comp lower from_input == 1
   | Ast.GreaterThanNumber upper -> Ast.number_comp from_input upper == 1
-  | Ast.BetweeNumber (lower, upper) ->
+  | Ast.BetweenNumber (lower, upper) ->
       Ast.number_comp from_input upper == -1
       && Ast.number_comp lower from_input == -1
 
