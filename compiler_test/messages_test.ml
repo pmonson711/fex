@@ -22,15 +22,7 @@ let parse_single_test case_name expected to_parse =
       (Result.get_error (parse to_parse) |> scanned))
 
 let base_cases =
-  let state_msg =
-    [ ( "COLON Q_STRING COLON"
-      , {|`:` (colon) in only valid between a key term and value term.
-Here the `:` both begins and ends the filter which is ambiguous.
-Did you forget a `,` (comma) or add an extra `:`?|}
-      )
-    ; ("DOTDOT Q_STRING STRING", "<YOUR SYNTAX ERROR MESSAGE HERE>")
-    ]
-  in
+  let state_msg = [] in
   let to_char = function
     | "MINUS" -> "-"
     | "PLUS" -> "+"
