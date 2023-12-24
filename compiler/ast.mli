@@ -13,9 +13,11 @@
 type match_operation_result =
   | Include
   | Exclude
-[@@deriving show, eq]
 
-type number = string * int * float option [@@deriving show, eq, ord]
+type number = string * int * float option
+
+val equal_number : number -> number -> bool
+val compare_number : number -> number -> int
 
 type 'a match_type =
   [ `String of 'a
@@ -29,19 +31,16 @@ type 'a string_match_operation =
   | ContainsString of 'a list
   | BeginsWithString of 'a list
   | EndsWithString of 'a list
-[@@deriving show, eq]
 
 type number_match_operation =
   | ExactNumber of number
   | LessThanNumber of number
   | GreaterThanNumber of number
   | BetweenNumber of number * number
-[@@deriving show, eq]
 
 type 'a match_operation =
   | StringOp of 'a string_match_operation
   | NumberOp of number_match_operation
-[@@deriving show, eq]
 
 (** The full AST including opterations and include vs exclude result *)
 type 'a t =
@@ -49,7 +48,10 @@ type 'a t =
   | KeyFilter of match_operation_result * 'a match_operation
   | PairFilter of
       match_operation_result * 'a match_operation * 'a match_operation
-[@@deriving show, eq]
+
+val pp : (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a t -> unit
+val show : (Format.formatter -> 'a -> unit) -> 'a t -> string
+val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool
 
 (** {1 Helpers }
 
