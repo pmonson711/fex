@@ -12,7 +12,7 @@
 %token R_ANGLE ">"
 %token EOF
 
-%start <string Ast.t list> terms
+%start <Ast.t list> terms
 %%
 
 op_result:

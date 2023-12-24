@@ -31,7 +31,7 @@ let ends_with_in_order ~subs to_check =
     (CCString.rev to_check)
 
 let string_match_operation (from_input : string)
-    (match_op : string Ast.string_match_operation) : bool =
+    (match_op : Ast.string_match_operation) : bool =
   let open CCString in
   match match_op with
   | ExactString expected ->
@@ -62,7 +62,7 @@ let number_match_operation (from_input : Ast.number)
       && Ast.number_comp lower from_input == -1
 
 let match_operation (typed_from_input : string Ast.match_type)
-    (op : string Ast.match_operation) : bool =
+    (op : Ast.match_operation) : bool =
   match typed_from_input with
   | `String s -> (
       match Ast.string_op_of_op op with

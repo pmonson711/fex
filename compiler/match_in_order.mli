@@ -1,7 +1,5 @@
-val match_operation :
-  string Ast.match_type -> string Ast.match_operation -> bool
-
-val string_match_operation : string -> string Ast.string_match_operation -> bool
+val match_operation : string Ast.match_type -> Ast.match_operation -> bool
+val string_match_operation : string -> Ast.string_match_operation -> bool
 val number_match_operation : Ast.number -> Ast.number_match_operation -> bool
 
 module T : sig

@@ -7,7 +7,7 @@ module Combiner = Combiner
 
 exception Grammar_error of string
 
-type parsed_result = (string Ast.t list, string) result [@@deriving show]
+type parsed_result = (Ast.t list, string) result [@@deriving show]
 
 exception Syntax_error of ((int * int * int option) option * string)
 
@@ -26,7 +26,7 @@ let get_parse_error env =
       with Not_found ->
         (None, "invalid syntax (no specific message for this eror)"))
 
-let rec parse lexbuf (checkpoint : string Ast.t list I.checkpoint) =
+let rec parse lexbuf (checkpoint : Ast.t list I.checkpoint) =
   match checkpoint with
   | I.InputNeeded _env ->
       let token = Filter_lexer.read_tokens lexbuf in

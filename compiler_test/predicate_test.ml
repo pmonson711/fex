@@ -9,7 +9,7 @@ let make_key_test op_result filter expected =
   let filter' = Fex_compiler.Ast.key_filter op_result filter in
   Alcotest.(
     check bool
-      (Fex_compiler.Ast.show string_pp filter' ^ {| to ("key", "value") |})
+      (Fex_compiler.Ast.show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
@@ -18,7 +18,7 @@ let make_value_test op_result filter expected =
   let filter' = value_filter op_result filter in
   Alcotest.(
     check bool
-      (show string_pp filter' ^ {| to ("key", "value") |})
+      (show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 
@@ -28,7 +28,7 @@ let make_pair_test op_result key_filter value_filter expected =
   in
   Alcotest.(
     check bool
-      (Fex_compiler.Ast.show string_pp filter' ^ {| to ("key", "value") |})
+      (Fex_compiler.Ast.show filter' ^ {| to ("key", "value") |})
       expected
       (filter_to_bool filter' (Fex_compiler.pair_of_strings "key" "value")))
 

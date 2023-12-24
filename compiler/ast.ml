@@ -24,11 +24,11 @@ module Number = struct
     (String.trim s, i, rf)
 end
 
-type 'a string_match_operation =
-  | ExactString of 'a
-  | ContainsString of 'a list
-  | BeginsWithString of 'a list
-  | EndsWithString of 'a list
+type string_match_operation =
+  | ExactString of string
+  | ContainsString of string list
+  | BeginsWithString of string list
+  | EndsWithString of string list
 [@@deriving show, eq]
 
 type number = Number.t [@@deriving show, eq, ord]
@@ -40,16 +40,15 @@ type number_match_operation =
   | BetweenNumber of number * number
 [@@deriving show, eq]
 
-type 'a match_operation =
-  | StringOp of 'a string_match_operation
+type match_operation =
+  | StringOp of string_match_operation
   | NumberOp of number_match_operation
 [@@deriving show, eq]
 
-type 'a t =
-  | ValueFilter of match_operation_result * 'a match_operation
-  | KeyFilter of match_operation_result * 'a match_operation
-  | PairFilter of
-      match_operation_result * 'a match_operation * 'a match_operation
+type t =
+  | ValueFilter of match_operation_result * match_operation
+  | KeyFilter of match_operation_result * match_operation
+  | PairFilter of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
 let exc = Exclude
