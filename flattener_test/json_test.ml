@@ -66,6 +66,19 @@ let l2_composite () =
     ]
     {|[{"a": "b"}, "d", 1, 2.3]|}
 
+let to_string_pairs () =
+  let open Alcotest in
+  let make_test input expect =
+    check
+      (list (pair string string))
+      (Printf.sprintf "%s value" @@ Yojson.Safe.to_string input)
+      (Fex_flattener.pair_to_string_tuple @@ Fex_flattener.pair_from_json input)
+      expect
+  in
+  make_test
+    (`Assoc [ ("a", `String "b"); ("b", `Int 1); ("c", `Float 1.1) ])
+    [ ("a", "b"); ("b", "1"); ("c", "1.1") ]
+
 let suite =
   let open Alcotest in
   ( test_name
@@ -73,4 +86,5 @@ let suite =
     ; test_case "Empty Composite values" `Quick empty_composite
     ; test_case "Level 1 Composite values" `Quick l1_composite
     ; test_case "Level 2 Composite values" `Quick l2_composite
+    ; test_case "String pairs" `Quick to_string_pairs
     ] )

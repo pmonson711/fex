@@ -1,70 +1,55 @@
+OPAM_SWITCH_VER=5.0.0
+RELEASE_NAME!=git describe --tags --always --dirty --abbrev=7
+RELEASE_NAME ?= $(shell git describe --tags --always --dirty --abbrev=7)
+
 .PHONY: build
-build:
-	@dune build @all -j8
-
-.PHONY: build-js
-build-js:
-	@dune build fex_js/fex.bc.js --profile=release -j8
-
-.PHONY: install-deps
-install-deps:
-	@opam install . --deps-only --with-doc --with-test
-
-.PHONY: update
-update:
-	opam update
-
-.PHONY: upgrade
-upgrade:
-	opam upgrade
-
-.PHONY: lock
-lock:
-	opam lock -d fex
-
-.PHONY: update-deps
-update-deps: update upgrade lock
+build: deps
+	@opam exec -- dune build @all -j8
 
 .PHONY: watch
 watch:
-	@dune build @all --watch -j8
-
-.PHONY: build-js
-watch-js:
-	@dune build fex_js/fex.bc.js --profile=release -w -j8
-
-.PHONY: install
-install:
-	@dune install
+	@opam exec -- dune build @all --watch -j8
 
 .PHONY: test
 test:
-	@dune runtest --force
+	@opam exec -- dune runtest --force
 
 .PHONY: watch-test
 watch-test:
-	@dune runtest -w
+	@opam exec -- dune runtest -w
 
 .PHONY: coverage
 coverage:
-	@dune runtest --instrument-with bisect_ppx --force
-	@bisect-ppx-report summary --per-file
-	@bisect-ppx-report html
+	@opam exec -- dune runtest --instrument-with bisect_ppx --force
+	@opam exec -- bisect-ppx-report summary --per-file
+	@opam exec -- bisect-ppx-report html
 
-.PHONY: fmt
+.PHONY: format
 format:
-	@dune build @fmt --auto-promote
+	@opam exec -- dune build @fmt --auto-promote
 
 .PHONY: clean
 clean:
 	@dune clean
 	@rm -Rf _coverage
 
-.PHONY: doc
-doc:
-	@dune build @doc
+.PHONY: create-switch
+create-switch: _opam/.opam-switch/config/ocaml.config
+	@echo "current switch: $$(opam switch show) $(RELEASE_NAME)"
 
-.PHONY: doc-serve
-doc-serve:
-	@dune build @doc -w &
-	@(cd _build/default/_doc/_html/; cohttp-server-lwt)
+.PHONY: setup
+setup: create-switch
+	-opam install dune
+	-opam install ocaml-lsp-server ocamlformat odig utop bisect_ppx
+	-opam exec -- dune build @install
+	opam install . --deps-only --with-test
+
+.PHONY: deps
+deps: create-switch
+	@if ! opam install . --check --deps-only; then \
+		echo "Fetching and building deps..."; \
+		opam install . --deps-only --yes; \
+	fi;
+
+_opam/.opam-switch/config/ocaml.config:
+	-opam switch create . ${OPAM_SWITCH_VER} --deps-only --with-test --locked --yes 2>>/dev/null
