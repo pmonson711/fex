@@ -10,13 +10,18 @@ type 'a match_type =
   ]
 
 module Number = struct
-  type t = int * float option [@@deriving show, eq, ord]
+  type t = string * int * float option [@@deriving show, ord]
 
-  let of_int i = (i, None)
+  let equal (_, i1, rf1) (_, i2, rf2) = i1 = i2 && rf1 = rf2
+  let of_int i = (string_of_int i, i, None)
 
   let of_float f =
-    if Float.is_integer f then (Float.to_int f, None)
-    else (Float.to_int f, Some (f -. Float.trunc f))
+    if Float.is_integer f then (Float.to_string f, Float.to_int f, None)
+    else (Float.to_string f, Float.to_int f, Some (f -. Float.trunc f))
+
+  let of_string s =
+    let _, i, rf = of_float @@ Float.of_string s in
+    (String.trim s, i, rf)
 end
 
 type 'a string_match_operation =
@@ -32,7 +37,7 @@ type number_match_operation =
   | ExactNumber of number
   | LessThanNumber of number
   | GreaterThanNumber of number
-  | BetweeNumber of number * number
+  | BetweenNumber of number * number
 [@@deriving show, eq]
 
 type 'a match_operation =
@@ -83,19 +88,26 @@ let is_exclude = function
 
 let number_of_int = Number.of_int
 let number_of_float = Number.of_float
+let number_of_string = Number.of_string
 let number_comp = Number.compare
 let number_op op = NumberOp op
 let exact_of_num num = number_op (ExactNumber num)
 let exact_of_int num = num |> number_of_int |> exact_of_num
 let exact_of_float num = num |> number_of_float |> exact_of_num
+let exact_of_string num = num |> number_of_string |> exact_of_num
 let less_than num = number_op (LessThanNumber num)
 let less_than_of_int num = num |> number_of_int |> less_than
 let less_than_of_float num = num |> number_of_float |> less_than
+let less_than_of_string num = num |> number_of_string |> less_than
 let greater_than num = number_op (GreaterThanNumber num)
 let greater_than_of_int num = num |> number_of_int |> greater_than
 let greater_than_of_float num = num |> number_of_float |> greater_than
-let between low high = number_op (BetweeNumber (low, high))
+let greater_than_of_string num = num |> number_of_string |> greater_than
+let between low high = number_op (BetweenNumber (low, high))
 let between_of_int low high = between (number_of_int low) (number_of_int high)
 
 let between_of_float low high =
   between (number_of_float low) (number_of_float high)
+
+let between_of_string low high =
+  between (number_of_string low) (number_of_string high)

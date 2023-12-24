@@ -18,3 +18,4 @@ type pairs = Pair.StringPair.t list [@@deriving show, eq]
 val pair_from_json : JSON.t -> pairs
 val pairs_from_json_array : [ `List of JSON.t list ] -> pairs list
 val pair_list_of_json : JSON.t -> pairs
+val pair_to_string_tuple : pairs -> (string * string) list

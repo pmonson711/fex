@@ -44,7 +44,9 @@ let value_only () =
   make_test "leadingspace" "+ leadingspace" ;
   make_test "leadingspace" " +leadingspace" ;
   make_test "trailingspace" "trailingspace " ;
-  make_test "trailingspace" "+trailingspace "
+  make_test "trailingspace" "+trailingspace " ;
+  make_test "5" " 5" ;
+  make_test "-5" " -5"
 
 let value_only_exclude () =
   let open Fex_compiler.Ast in
@@ -60,7 +62,9 @@ let value_only_exclude () =
   make_test "surround" " -surround " ;
   make_test "leadingspace" "- leadingspace" ;
   make_test "leadingspace" " -leadingspace" ;
-  make_test "trailingspace" "-trailingspace "
+  make_test "trailingspace" "-trailingspace " ;
+  make_test "5" "- 5 " ;
+  make_test "-5" "--5 "
 
 let key_only () =
   let open Fex_compiler.Ast in
@@ -78,7 +82,9 @@ let key_only () =
   make_test "surround" " +surround :" ;
   make_test "leadingspace" "+ leadingspace:" ;
   make_test "leadingspace" " +leadingspace:" ;
-  make_test "trailingspace" "+trailingspace :"
+  make_test "trailingspace" "+trailingspace :" ;
+  make_test "5" "5 :" ;
+  make_test "-5" "-5 :"
 
 let key_only_exclude () =
   let open Fex_compiler.Ast in
@@ -93,7 +99,10 @@ let key_only_exclude () =
   make_test "surround" " -surround :" ;
   make_test "leadingspace" "- leadingspace:" ;
   make_test "leadingspace" " -leadingspace:" ;
-  make_test "trailingspace" "-trailingspace :"
+  make_test "trailingspace" "-trailingspace :" ;
+  make_test "5" "- 5:" ;
+  make_test "-5" "--5:" ;
+  make_test "-5" "- -5:"
 
 let key_value () =
   let open Fex_compiler.Ast in
@@ -118,7 +127,15 @@ let key_value () =
   make_test ("trailingspace", "value") "+trailingspace :value" ;
   make_test ("key", "surround") "+key: surround " ;
   make_test ("key", "leadingspace") "+key: leadingspace" ;
-  make_test ("key", "trailingspace") "+key:trailingspace "
+  make_test ("key", "trailingspace") "+key:trailingspace " ;
+  make_test ("key", "-leadingminus") "key:-leadingminus" ;
+  make_test ("key", "--leadingminus") "key:--leadingminus" ;
+  make_test ("key", "trailingminus-") "key:trailingminus-" ;
+  make_test ("key", "trailingminus--") "key:trailingminus--" ;
+  make_test ("key", "+leadingplus") "key:+leadingplus" ;
+  make_test ("key", "++leadingplus") "key:++leadingplus" ;
+  make_test ("key", "trailingplus+") "key:trailingplus+" ;
+  make_test ("key", "trailingplus++") "key:trailingplus++"
 
 let key_value_exclude () =
   let open Fex_compiler.Ast in
@@ -236,9 +253,10 @@ let int_value_number_betwween_test () =
       (value_filter inc @@ op expected1 expected2)
       input
   in
-  make_test between_of_int 1 10 ":1..10" ;
-  make_test between_of_int (-1) 10 ":-1..10" ;
-  make_test between_of_int (-1) (-10) ":-1..-10"
+  make_test between_of_int 1 10 ":= 1..10" ;
+  make_test between_of_int (-1) 10 ":= -1..10" ;
+  make_test between_of_int (-1) (-10) ":= -1..-10" ;
+  make_test between_of_int 1 (-10) ":= 1..-10"
 
 let float_value_number_betwween_test () =
   let open Fex_compiler.Ast in
@@ -249,9 +267,9 @@ let float_value_number_betwween_test () =
       (value_filter inc @@ op expected1 expected2)
       input
   in
-  make_test between_of_float 1. 10.01 ":1..10.01" ;
-  make_test between_of_float (-1.01) 10. ":-1.01..10" ;
-  make_test between_of_float (-1.01) (-10.01) ":-1.01..-10.01"
+  make_test between_of_float 1. 10.01 ":= 1..10.01" ;
+  make_test between_of_float (-1.01) 10. ":= -1.01..10" ;
+  make_test between_of_float (-1.01) (-10.01) ":= -1.01..-10.01"
 
 let float_value_number_test () =
   let open Fex_compiler.Ast in
@@ -287,7 +305,7 @@ let suite =
     ; test_case "Key Only" `Quick key_only
     ; test_case "Key Only Exclude" `Quick key_only_exclude
     ; test_case "Key Value" `Quick key_value
-    ; test_case "Key Value Exclude" `Quick key_only_exclude
+    ; test_case "Key Value Exclude" `Quick key_value_exclude
     ; test_case "Splits" `Quick combinatorials
     ; test_case "Begins with" `Quick value_only_begins_with
     ; test_case "Ends with" `Quick value_only_ends_with

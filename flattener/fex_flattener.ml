@@ -57,3 +57,5 @@ let pairs_from_json_array (`List lst) = List.map pair_from_json lst
 let pair_list_of_json = function
   | `List lst -> pairs_from_json_array (`List lst) |> List.flatten
   | json -> pair_from_json json
+
+let pair_to_string_tuple = List.map to_string_tuple
