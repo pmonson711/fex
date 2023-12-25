@@ -70,8 +70,7 @@ let apply_filter ?(match_fun = Match_in_order.match_operation) =
   Predicate.filter_to_predicate ~match_fun
 
 let apply_list_filter ?(match_fun = Match_in_order.match_operation) =
-  Combiner.apply_list_of_filters_for_pair ~match_fun ~equal_fun:CCString.equal
+  Combiner.apply_list_of_filters_for_pair ~match_fun
 
 let apply_list_filter_for_pairs ?(match_fun = Match_in_order.match_operation) =
   Combiner.apply_list_of_filters_for_list_of_pairs ~match_fun
-    ~equal_fun:CCString.equal

@@ -61,7 +61,7 @@ let number_match_operation (from_input : Ast.number)
       Ast.number_comp from_input upper == -1
       && Ast.number_comp lower from_input == -1
 
-let match_operation (typed_from_input : string Ast.match_type)
+let match_operation (typed_from_input : Ast.match_type)
     (op : Ast.match_operation) : bool =
   match typed_from_input with
   | `String s -> (

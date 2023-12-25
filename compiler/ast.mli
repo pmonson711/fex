@@ -19,8 +19,8 @@ type number = string * int * float option
 val equal_number : number -> number -> bool
 val compare_number : number -> number -> int
 
-type 'a match_type =
-  [ `String of 'a
+type match_type =
+  [ `String of string
   | `Int of int
   | `Float of float
   ]
@@ -47,11 +47,10 @@ type t =
   | ValueFilter of match_operation_result * match_operation
   | KeyFilter of match_operation_result * match_operation
   | PairFilter of match_operation_result * match_operation * match_operation
-[@@deriving eq, show]
 
-(* val pp : (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a t -> unit *)
-(* val show : (Format.formatter -> 'a -> unit) -> 'a t -> string *)
-(* val equal : ('a -> 'a -> bool) -> 'a t -> 'a t -> bool *)
+val pp : Format.formatter -> t -> unit
+val show : t -> string
+val equal : t -> t -> bool
 
 (** {1 Helpers }
 

@@ -3,8 +3,8 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type 'a match_type =
-  [ `String of 'a
+type match_type =
+  [ `String of string
   | `Int of int
   | `Float of float
   ]

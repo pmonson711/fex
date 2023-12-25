@@ -1,16 +1,16 @@
-type 'a t =
+type t =
   | IncludeValueGroup
   | ExcludeValueGroup
   | IncludeKeyGroup
   | ExcludeKeyGroup
-  | IncludePairGroupExactString of 'a
-  | IncludePairGroupContainsString of 'a list
-  | IncludePairGroupBeginsWithString of 'a list
-  | IncludePairGroupEndsWithString of 'a list
-  | ExcludePairGroupExactString of 'a
-  | ExcludePairGroupContainsString of 'a list
-  | ExcludePairGroupBeginsWithString of 'a list
-  | ExcludePairGroupEndsWithString of 'a list
+  | IncludePairGroupExactString of string
+  | IncludePairGroupContainsString of string list
+  | IncludePairGroupBeginsWithString of string list
+  | IncludePairGroupEndsWithString of string list
+  | ExcludePairGroupExactString of string
+  | ExcludePairGroupContainsString of string list
+  | ExcludePairGroupBeginsWithString of string list
+  | ExcludePairGroupEndsWithString of string list
   | IncludePairGroupExactNumber of Ast.number
   | IncludePairGroupLessThanNumber of Ast.number
   | IncludePairGroupGreaterThanNumber of Ast.number
@@ -21,7 +21,7 @@ type 'a t =
   | ExcludePairGroupBetweenNumber of Ast.number * Ast.number
 [@@deriving eq]
 
-let group_as ~equal_fun a b =
+let as_group a b =
   let categorize =
     let open Ast in
     function
@@ -64,7 +64,7 @@ let group_as ~equal_fun a b =
   in
   let category_a = categorize a in
   let category_b = categorize b in
-  equal equal_fun category_a category_b
+  equal category_a category_b
 
 let group ~fn lst =
   let rec grouping acc = function
@@ -75,19 +75,20 @@ let group ~fn lst =
   in
   grouping [] lst
 
-let imply_logical_operators ~equal_fun a = group ~fn:(group_as ~equal_fun) a
+let imply_logical_operators a = group ~fn:as_group a
+let apply ~fn groups = List.for_all fn groups
+let apply_list = apply
 
-let apply_list_of_filters_for_pair ~match_fun ~equal_fun lst pair =
-  let and_group = imply_logical_operators ~equal_fun lst in
-  let if_has_one =
-    List.exists (fun filter ->
-        Predicate.filter_to_predicate ~match_fun filter pair)
-  in
-  List.for_all if_has_one and_group
+let list_of_filters_for_pair ~match_fun pair =
+  List.exists (fun filter ->
+      Predicate.filter_to_predicate ~match_fun filter pair)
 
-let apply_list_of_filters_for_list_of_pairs ~match_fun ~equal_fun lst
-    (pairs : 'a Predicate.pair list) =
-  let and_group = imply_logical_operators ~equal_fun lst in
+let apply_list_of_filters_for_pair ~match_fun lst pair =
+  let and_group = imply_logical_operators lst in
+  let if_has_one = list_of_filters_for_pair ~match_fun pair in
+  apply ~fn:if_has_one and_group
+
+let list_of_filters_for_list_of_pairs ~match_fun (pairs : Predicate.pair list) =
   let apply_logic group =
     let hd = List.hd group in
     match Ast.is_include hd with
@@ -102,4 +103,12 @@ let apply_list_of_filters_for_list_of_pairs ~match_fun ~equal_fun lst
             List.for_all (Predicate.filter_to_predicate ~match_fun filter) pairs)
           group
   in
-  List.for_all apply_logic and_group
+  apply_logic
+
+let apply_list_of_filters_for_list_of_pairs ~match_fun lst
+    (pairs : Predicate.pair list) =
+  let and_group = imply_logical_operators lst in
+  let (apply_logic : Ast.t list -> bool) =
+    list_of_filters_for_list_of_pairs ~match_fun pairs
+  in
+  apply ~fn:apply_logic and_group

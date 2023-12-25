@@ -1,21 +1,21 @@
-type 'a match_type =
-  [ `String of 'a
+type match_type =
+  [ `String of string
   | `Int of int
   | `Float of float
   ]
 
-type 'a key = [ `Key of [ `String of 'a ] ]
-type 'a value = [ `Value of 'a match_type ]
-type 'a pair = [ `Pair of 'a key * 'a value ]
+type key = [ `Key of [ `String of string ] ]
+type value = [ `Value of match_type ]
+type pair = [ `Pair of key * value ]
 
 let invert = Bool.not
-let match_operation ~match_fun op (m : 'a match_type) : bool = match_fun m op
-let match_type_of_string str : 'a match_type = `String str
+let match_operation ~match_fun op (m : match_type) : bool = match_fun m op
+let match_type_of_string str : match_type = `String str
 
-let key_match_operation ~match_fun op (`Key (`String k) : 'a key) : bool =
+let key_match_operation ~match_fun op (`Key (`String k) : key) : bool =
   match_operation ~match_fun op @@ match_type_of_string k
 
-let value_match_operation ~match_fun op (`Value v : 'a value) : bool =
+let value_match_operation ~match_fun op (`Value v : value) : bool =
   match_fun v op
 
 let filter_to_predicate ~match_fun ast pair =
