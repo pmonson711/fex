@@ -20,10 +20,9 @@ val equal_number : number -> number -> bool
 val compare_number : number -> number -> int
 
 type match_type =
-  [ `String of string
-  | `Int of int
-  | `Float of float
-  ]
+  | String of string
+  | Int of int
+  | Float of float
 
 (** The type of operation to use in the the filter *)
 type string_match_operation =

@@ -1,6 +1,4 @@
-type key = [ `Key of [ `String of string ] ]
-type value = [ `Value of [ `String of string | `Int of int | `Float of float ] ]
-type pair = [ `Pair of key * value ]
+type pair = string * Ast.match_type
 
 val filter_to_predicate :
      match_fun:(Ast.match_type -> Ast.match_operation -> bool)
@@ -9,3 +7,10 @@ val filter_to_predicate :
   -> bool
 
 val pair_of_strings : string -> string -> pair
+
+val pair_of :
+     [ `Pair of
+       [ `Key of [ `String of string ] ]
+       * [ `Value of [ `String of string | `Int of int | `Float of float ] ]
+     ]
+  -> pair

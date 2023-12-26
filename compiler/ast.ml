@@ -4,10 +4,9 @@ type match_operation_result =
 [@@deriving show, eq]
 
 type match_type =
-  [ `String of string
-  | `Int of int
-  | `Float of float
-  ]
+  | String of string
+  | Int of int
+  | Float of float
 
 module Number = struct
   type t = string * int * float option [@@deriving show, ord]

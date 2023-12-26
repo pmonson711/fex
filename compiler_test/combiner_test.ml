@@ -27,7 +27,7 @@ let two_include_union () =
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter inc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key (`String ""), `Value (`String value)) in
+  let pair_of_value value = ("", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -47,7 +47,7 @@ let one_include_one_exclude_union () =
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter exc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key (`String ""), `Value (`String value)) in
+  let pair_of_value value = ("", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -69,9 +69,7 @@ let paired_union () =
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -96,9 +94,7 @@ let mixed_paired_union () =
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -123,12 +119,8 @@ let mixed_paired_intersect () =
     ; pair_filter inc (exact "b") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
-  let pair_of_keyed_b value =
-    `Pair (`Key (`String "b"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
+  let pair_of_keyed_b value = ("b", String value) in
   let make_test expected a_value b_value =
     Alcotest.(
       check bool

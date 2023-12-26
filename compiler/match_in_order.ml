@@ -64,15 +64,15 @@ let number_match_operation (from_input : Ast.number)
 let match_operation (typed_from_input : Ast.match_type)
     (op : Ast.match_operation) : bool =
   match typed_from_input with
-  | `String s -> (
+  | String s -> (
       match Ast.string_op_of_op op with
       | Some string_op -> string_match_operation s string_op
       | None -> false)
-  | `Int i -> (
+  | Int i -> (
       match Ast.number_op_of_op op with
       | Some num_op -> number_match_operation (Ast.number_of_int i) num_op
       | None -> false)
-  | `Float f -> (
+  | Float f -> (
       match Ast.number_op_of_op op with
       | Some num_op -> number_match_operation (Ast.number_of_float f) num_op
       | None -> false)
