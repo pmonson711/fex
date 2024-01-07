@@ -14,28 +14,20 @@ type match_operation_result =
   | Include
   | Exclude
 
-type number = string * int * float option
+type number = Match_number.t
 
+val pp_number : Format.formatter -> number -> unit
+val show_number : number -> string
 val equal_number : number -> number -> bool
 val compare_number : number -> number -> int
 
-type match_type =
-  | String of string
-  | Int of int
-  | Float of float
+type match_type = ..
+type match_type += String of string | Int of int | Float of float
 
+type string_match_operation = Match_string.op
 (** The type of operation to use in the the filter *)
-type string_match_operation =
-  | ExactString of string
-  | ContainsString of string list
-  | BeginsWithString of string list
-  | EndsWithString of string list
 
-type number_match_operation =
-  | ExactNumber of number
-  | LessThanNumber of number
-  | GreaterThanNumber of number
-  | BetweenNumber of number * number
+type number_match_operation = Match_number.op
 
 type match_operation =
   | StringOp of string_match_operation

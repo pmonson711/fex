@@ -2,7 +2,7 @@ type pair = string * Ast.match_type
 
 let invert = Bool.not
 let match_operation ~match_fun op (m : Ast.match_type) : bool = match_fun m op
-let match_type_of_string str : Ast.match_type = String str
+let match_type_of_string str : Ast.match_type = Ast.String str
 
 let key_match_operation ~match_fun op (k : string) : bool =
   match_operation ~match_fun op @@ match_type_of_string k

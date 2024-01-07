@@ -1,6 +1,6 @@
 let test_name = "Predicate"
 let match_fun = Fex_compiler__Match_in_order.match_operation
-let string_pp = Fex_compiler__Match_in_order.T.pp
+let string_pp = Fex_compiler__Match_string.pp
 
 let filter_to_bool to_check with_filter =
   Fex_compiler__Predicate.filter_to_predicate ~match_fun to_check with_filter

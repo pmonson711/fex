@@ -3,41 +3,11 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type match_type =
-  | String of string
-  | Int of int
-  | Float of float
-
-module Number = struct
-  type t = string * int * float option [@@deriving show, ord]
-
-  let equal (_, i1, rf1) (_, i2, rf2) = i1 = i2 && rf1 = rf2
-  let of_int i = (string_of_int i, i, None)
-
-  let of_float f =
-    if Float.is_integer f then (Float.to_string f, Float.to_int f, None)
-    else (Float.to_string f, Float.to_int f, Some (f -. Float.trunc f))
-
-  let of_string s =
-    let _, i, rf = of_float @@ Float.of_string s in
-    (String.trim s, i, rf)
-end
-
-type string_match_operation =
-  | ExactString of string
-  | ContainsString of string list
-  | BeginsWithString of string list
-  | EndsWithString of string list
-[@@deriving show, eq]
-
-type number = Number.t [@@deriving show, eq, ord]
-
-type number_match_operation =
-  | ExactNumber of number
-  | LessThanNumber of number
-  | GreaterThanNumber of number
-  | BetweenNumber of number * number
-[@@deriving show, eq]
+type match_type = ..
+type match_type += String of string | Int of int | Float of float
+type string_match_operation = Match_string.op [@@deriving show, eq]
+type number = Match_number.t [@@deriving show, eq, ord]
+type number_match_operation = Match_number.op [@@deriving show, eq]
 
 type match_operation =
   | StringOp of string_match_operation
@@ -84,10 +54,10 @@ let is_exclude = function
   | PairFilter (Exclude, _, _) -> true
   | _ -> false
 
-let number_of_int = Number.of_int
-let number_of_float = Number.of_float
-let number_of_string = Number.of_string
-let number_comp = Number.compare
+let number_of_int = Match_number.T.of_int
+let number_of_float = Match_number.T.of_float
+let number_of_string = Match_number.T.of_string
+let number_comp = Match_number.T.compare
 let number_op op = NumberOp op
 let exact_of_num num = number_op (ExactNumber num)
 let exact_of_int num = num |> number_of_int |> exact_of_num
