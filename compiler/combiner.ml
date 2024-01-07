@@ -11,14 +11,8 @@ type t =
   | ExcludePairGroupContainsString of string list
   | ExcludePairGroupBeginsWithString of string list
   | ExcludePairGroupEndsWithString of string list
-  | IncludePairGroupExactNumber of Ast.number
-  | IncludePairGroupLessThanNumber of Ast.number
-  | IncludePairGroupGreaterThanNumber of Ast.number
-  | IncludePairGroupBetweenNumber of Ast.number * Ast.number
-  | ExcludePairGroupExactNumber of Ast.number
-  | ExcludePairGroupLessThanNumber of Ast.number
-  | ExcludePairGroupGreaterThanNumber of Ast.number
-  | ExcludePairGroupBetweenNumber of Ast.number * Ast.number
+  | IncludeOther
+  | ExcludeOther
 [@@deriving eq]
 
 let as_group a b =
@@ -45,22 +39,8 @@ let as_group a b =
         ExcludePairGroupBeginsWithString keys
     | PairFilter (Exclude, StringOp (EndsWithString keys), _) ->
         ExcludePairGroupEndsWithString keys
-    | PairFilter (Include, NumberOp (ExactNumber num), _) ->
-        IncludePairGroupExactNumber num
-    | PairFilter (Include, NumberOp (LessThanNumber num), _) ->
-        IncludePairGroupLessThanNumber num
-    | PairFilter (Include, NumberOp (GreaterThanNumber num), _) ->
-        IncludePairGroupGreaterThanNumber num
-    | PairFilter (Include, NumberOp (BetweenNumber (bottom, top)), _) ->
-        IncludePairGroupBetweenNumber (bottom, top)
-    | PairFilter (Exclude, NumberOp (ExactNumber num), _) ->
-        ExcludePairGroupExactNumber num
-    | PairFilter (Exclude, NumberOp (LessThanNumber num), _) ->
-        ExcludePairGroupLessThanNumber num
-    | PairFilter (Exclude, NumberOp (GreaterThanNumber num), _) ->
-        ExcludePairGroupGreaterThanNumber num
-    | PairFilter (Exclude, NumberOp (BetweenNumber (bottom, top)), _) ->
-        ExcludePairGroupBetweenNumber (bottom, top)
+    | PairFilter (Include, _, _) -> IncludeOther
+    | PairFilter (Exclude, _, _) -> ExcludeOther
   in
   let category_a = categorize a in
   let category_b = categorize b in
