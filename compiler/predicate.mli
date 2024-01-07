@@ -1,11 +1,16 @@
-type 'a key = [ `Key of [ `String of 'a ] ]
-type 'a value = [ `Value of [ `String of 'a | `Int of int | `Float of float ] ]
-type 'a pair = [ `Pair of 'a key * 'a value ]
+type pair = string * Ast.match_type
 
 val filter_to_predicate :
-     match_fun:('a Ast.match_type -> 'a Ast.match_operation -> bool)
-  -> 'a Ast.t
-  -> 'a pair
+     match_fun:(Ast.match_type -> Ast.match_operation -> bool)
+  -> Ast.t
+  -> pair
   -> bool
 
-val pair_of_strings : 'a -> 'a -> 'a pair
+val pair_of_strings : string -> string -> pair
+
+val pair_of :
+     [ `Pair of
+       [ `Key of [ `String of string ] ]
+       * [ `Value of [ `String of string | `Int of int | `Float of float ] ]
+     ]
+  -> pair

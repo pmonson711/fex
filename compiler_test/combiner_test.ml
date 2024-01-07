@@ -1,10 +1,9 @@
 let test_name = "Combiner"
-let equal_fun = CCString.equal
 
 let filter_list_to_bool to_check with_filters =
-  Fex_compiler__Combiner.apply_list_of_filters_for_list_of_pairs
-    ~match_fun:Fex_compiler__Match_in_order.match_operation ~equal_fun to_check
-    with_filters
+  let match_fun = Fex_compiler.Matcher.match_operation in
+  Fex_compiler__Combiner.apply_list_of_filters_for_list_of_pairs ~match_fun
+    to_check with_filters
 
 let empty () = Alcotest.(check bool "empty" true (filter_list_to_bool [] []))
 
@@ -16,11 +15,10 @@ let simple_implies () =
   let contains_bb = pair_filter inc (exact "b") (contains "b") in
   Alcotest.(
     check bool {|[["a"; "b"]] matches `a,c`|} true
-      (Fex_compiler__Combiner.imply_logical_operators ~equal_fun
-         [ contains_a; contains_b ]
+      (Fex_compiler__Combiner.imply_logical_operators [ contains_a; contains_b ]
       = [ [ contains_a; contains_b ] ]) ;
     check bool {|[["a:a"; "b:b"]] matches `a:a,b:b`|} true
-      (Fex_compiler__Combiner.imply_logical_operators ~equal_fun
+      (Fex_compiler__Combiner.imply_logical_operators
          [ contains_aa; contains_bb ]
       = [ [ contains_bb ]; [ contains_aa ] ]))
 
@@ -29,7 +27,7 @@ let two_include_union () =
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter inc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key (`String ""), `Value (`String value)) in
+  let pair_of_value value = ("", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -49,7 +47,7 @@ let one_include_one_exclude_union () =
   let contains_ab_or_c =
     [ value_filter inc (contains "a"); value_filter exc (contains "c") ]
   in
-  let pair_of_value value = `Pair (`Key (`String ""), `Value (`String value)) in
+  let pair_of_value value = ("", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -71,9 +69,7 @@ let paired_union () =
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -98,9 +94,7 @@ let mixed_paired_union () =
     ; pair_filter inc (exact "a") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
   let make_test expected str_value =
     Alcotest.(
       check bool
@@ -125,12 +119,8 @@ let mixed_paired_intersect () =
     ; pair_filter inc (exact "b") (contains "b")
     ]
   in
-  let pair_of_keyed_a value =
-    `Pair (`Key (`String "a"), `Value (`String value))
-  in
-  let pair_of_keyed_b value =
-    `Pair (`Key (`String "b"), `Value (`String value))
-  in
+  let pair_of_keyed_a value = ("a", String value) in
+  let pair_of_keyed_b value = ("b", String value) in
   let make_test expected a_value b_value =
     Alcotest.(
       check bool

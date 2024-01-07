@@ -3,48 +3,21 @@ type match_operation_result =
   | Exclude
 [@@deriving show, eq]
 
-type 'a match_type =
-  [ `String of 'a
-  | `Int of int
-  | `Float of float
-  ]
+type match_type = ..
+type match_type += String of string | Int of int | Float of float
+type string_match_operation = Match_string.op [@@deriving show, eq]
+type number = Match_number.t [@@deriving show, eq, ord]
+type number_match_operation = Match_number.op [@@deriving show, eq]
 
-module Number = struct
-  type t = int * float option [@@deriving show, eq, ord]
-
-  let of_int i = (i, None)
-
-  let of_float f =
-    if Float.is_integer f then (Float.to_int f, None)
-    else (Float.to_int f, Some (f -. Float.trunc f))
-end
-
-type 'a string_match_operation =
-  | ExactString of 'a
-  | ContainsString of 'a list
-  | BeginsWithString of 'a list
-  | EndsWithString of 'a list
-[@@deriving show, eq]
-
-type number = Number.t [@@deriving show, eq, ord]
-
-type number_match_operation =
-  | ExactNumber of number
-  | LessThanNumber of number
-  | GreaterThanNumber of number
-  | BetweeNumber of number * number
-[@@deriving show, eq]
-
-type 'a match_operation =
-  | StringOp of 'a string_match_operation
+type match_operation =
+  | StringOp of string_match_operation
   | NumberOp of number_match_operation
 [@@deriving show, eq]
 
-type 'a t =
-  | ValueFilter of match_operation_result * 'a match_operation
-  | KeyFilter of match_operation_result * 'a match_operation
-  | PairFilter of
-      match_operation_result * 'a match_operation * 'a match_operation
+type t =
+  | ValueFilter of match_operation_result * match_operation
+  | KeyFilter of match_operation_result * match_operation
+  | PairFilter of match_operation_result * match_operation * match_operation
 [@@deriving show, eq]
 
 let exc = Exclude
@@ -81,21 +54,28 @@ let is_exclude = function
   | PairFilter (Exclude, _, _) -> true
   | _ -> false
 
-let number_of_int = Number.of_int
-let number_of_float = Number.of_float
-let number_comp = Number.compare
+let number_of_int = Match_number.T.of_int
+let number_of_float = Match_number.T.of_float
+let number_of_string = Match_number.T.of_string
+let number_comp = Match_number.T.compare
 let number_op op = NumberOp op
 let exact_of_num num = number_op (ExactNumber num)
 let exact_of_int num = num |> number_of_int |> exact_of_num
 let exact_of_float num = num |> number_of_float |> exact_of_num
+let exact_of_string num = num |> number_of_string |> exact_of_num
 let less_than num = number_op (LessThanNumber num)
 let less_than_of_int num = num |> number_of_int |> less_than
 let less_than_of_float num = num |> number_of_float |> less_than
+let less_than_of_string num = num |> number_of_string |> less_than
 let greater_than num = number_op (GreaterThanNumber num)
 let greater_than_of_int num = num |> number_of_int |> greater_than
 let greater_than_of_float num = num |> number_of_float |> greater_than
-let between low high = number_op (BetweeNumber (low, high))
+let greater_than_of_string num = num |> number_of_string |> greater_than
+let between low high = number_op (BetweenNumber (low, high))
 let between_of_int low high = between (number_of_int low) (number_of_int high)
 
 let between_of_float low high =
   between (number_of_float low) (number_of_float high)
+
+let between_of_string low high =
+  between (number_of_string low) (number_of_string high)
